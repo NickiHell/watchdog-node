@@ -1,0 +1,35 @@
+version: "3.7"
+services:
+  web:
+    container_name: watchdog
+    image: "watchdog:dev"
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+      cache_from:
+        - "watchdog:dev"
+        - "watchdog:latest"
+        - "*"
+    command: python src/bot.py
+    restart: always
+    env_file: .env
+    networks:
+      - watchdog_net
+
+  redis:
+    container_name: redis
+    image: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: always
+    networks:
+      - watchdog_net
+
+
+volumes:
+  redis_data:
+
+networks:
+  watchdog_net:

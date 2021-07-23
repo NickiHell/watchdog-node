@@ -1,0 +1,58 @@
+[tool.poetry]
+name = "watchdog"
+version = "0.1.0"
+description = ""
+authors = ["NickiHell <nickihell@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+transformers = "^4.8.2"
+torch = "^1.9.0"
+python-telegram-bot = "^13.7"
+python-dotenv = "^0.18.0"
+
+[tool.poetry.dev-dependencies]
+ipython = "^7.25.0"
+pytest = "^6.2.4"
+taskipy = "^1.8.1"
+pylint = "^2.9.5"
+mypy = "^0.910"
+flake8 = "^3.9.2"
+coverage = "^5.5"
+flake8-functions = "^0.0.6"
+wemake-python-styleguide = "^0.15.3"
+flakehell = "^0.9.0"
+isort = "^5.9.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.flakehell]
+#baseline = ".flakehell_baseline"
+extended_default_ignore=[] # https://github.com/flakehell/flakehell/issues/10
+format = "grouped"
+max_complexity = 10
+max_function_length = 24
+max_line_length = 120
+show_source = true
+statistics = true
+
+[tool.flakehell.plugins]
+flake8 = ["+*"]
+flake8-functions = ["+*"]
+flake8-eradicate = ["+*"]
+flake8-bugbear = ["+*"]
+flake8-comprehensions = ["+*"]
+flake8-commas = ["+*"]
+flake8-quotes = ["+*"]
+mccabe = ["+*"]
+pep8-naming = ["+*"]
+pycodestyle = ["+*", "-E501"]
+wemake-python-styleguide = ["+*", "-WPS305"]
+
+
+[tool.taskipy.tasks]
+isort = "isort src"
+isort-lint = "isort --check-only src"
+flakehell-lint = "flakehell lint --jobs 8"
