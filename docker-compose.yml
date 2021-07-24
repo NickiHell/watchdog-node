@@ -1,5 +1,15 @@
 version: "3.7"
 services:
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - watchdog_net
+
   web:
     container_name: watchdog
     image: "watchdog:dev"
@@ -10,7 +20,7 @@ services:
         - "watchdog:dev"
         - "watchdog:latest"
         - "*"
-    command: python src/bot.py
+    command: poetry run uvicorn app.main:start --host 0.0.0.0 --port 8080
     restart: always
     env_file: .env
     networks:
@@ -27,9 +37,22 @@ services:
     networks:
       - watchdog_net
 
+  postgres:
+    container_name: db
+    image: "postgres:latest"
+    ports:
+      - "5432:5432"
+    env_file: .env
+    volumes:
+      - "postgres-data:/var/lib/postgresql/data"
+    restart: always
+    networks:
+      - watchdog_net
+
 
 volumes:
   redis_data:
+  postgres-data:
 
 networks:
   watchdog_net:

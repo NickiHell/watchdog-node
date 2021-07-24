@@ -7,8 +7,6 @@ readonly cmd="$*"
 
 export poetry=$HOME/.poetry/bin/poetry
 
-cd /app
-
 poetry shell
 
 exec $cmd

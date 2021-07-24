@@ -10,6 +10,13 @@ transformers = "^4.8.2"
 torch = "^1.9.0"
 python-telegram-bot = "^13.7"
 python-dotenv = "^0.18.0"
+fastapi = "^0.67.0"
+uvicorn = "^0.14.0"
+aerich = "^0.5.4"
+tortoise-orm = "^0.17.5"
+asyncpg = "^0.23.0"
+loguru = "^0.5.3"
+fastapi-admin = "^1.0.2"
 
 [tool.poetry.dev-dependencies]
 ipython = "^7.25.0"
@@ -18,11 +25,11 @@ taskipy = "^1.8.1"
 pylint = "^2.9.5"
 mypy = "^0.910"
 flake8 = "^3.9.2"
-coverage = "^5.5"
 flake8-functions = "^0.0.6"
 wemake-python-styleguide = "^0.15.3"
 flakehell = "^0.9.0"
 isort = "^5.9.2"
+pytest-cov = "^2.12.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -53,6 +60,7 @@ wemake-python-styleguide = ["+*", "-WPS305"]
 
 
 [tool.taskipy.tasks]
-isort = "isort src"
-isort-lint = "isort --check-only src"
-flakehell-lint = "flakehell lint --jobs 8"
+isort = "isort --check-only app"
+flakehell = "flakehell lint --jobs 4"
+pytest = "pytest tests"
+mypy-lint = "mypy app"
