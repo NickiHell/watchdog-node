@@ -5,34 +5,17 @@ Usage:
 Press Ctrl-C on the command line or send a signal to the process to stop the
 bot.
 """
-
-import logging
 import os
 import random
 from datetime import datetime
-from typing import Generator, Optional, Tuple
 
-import sacremoses.util
 from dotenv import load_dotenv
-from telegram import Chat, ChatMember, ChatMemberUpdated, ParseMode, Update
-from telegram.ext import (
-    CallbackContext,
-    ChatMemberHandler,
-    CommandHandler,
-    Filters,
-    MessageHandler,
-    Updater,
-)
+from loguru import logger
+from telegram import Update
+from telegram.ext import CommandHandler, Filters, MessageHandler, Updater
 
 # Enable logging
-from main import generate_rut5_base_multitask, sberbank_small_gpt3
-
-logging.basicConfig(
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
-)
-
-logger = logging.getLogger(__name__)
-
+from app.ml.nets import sberbank_small_gpt3
 
 
 def repry(update, context):
@@ -51,7 +34,7 @@ def cmd_handler(update, context):
     update.message.reply_text("You said: " + user_says)
 
 
-def main() -> None:
+def bot_idle() -> None:
     load_dotenv()
     token = os.getenv('TOKEN')
     sberbank_small_gpt3('1', model_name="sberbank-ai/rugpt3small_based_on_gpt2", max_length=24)
@@ -67,7 +50,3 @@ def main() -> None:
 
     updater.start_polling(allowed_updates=Update.ALL_TYPES)
     updater.idle()
-
-
-if __name__ == "__main__":
-    main()

@@ -38,14 +38,11 @@ WORKDIR /app
 
 COPY ./poetry.lock ./poetry.lock
 COPY ./pyproject.toml ./pyproject.toml
-COPY ./docker/entrypoint.sh entrypoint.sh
 
 RUN poetry install --no-interaction --no-ansi
 
-COPY ./src /app/src
+COPY ./docker/entrypoint.sh entrypoint.sh
+COPY ./app/ /app/app
 
 
 ENTRYPOINT ["bash", "entrypoint.sh"]
-
-
-

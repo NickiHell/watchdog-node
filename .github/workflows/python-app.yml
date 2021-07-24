@@ -34,4 +34,7 @@ jobs:
           poetry run task flakehell-lint
       - name: Pytest
         run: |
-          poetry run pytest src
+          poetry run task pytest
+      - name: Mypy
+        run: |
+          poetry run task mypy
