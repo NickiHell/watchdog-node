@@ -665,6 +665,21 @@ testing = ["pytest"]
 torch = ["torch"]
 
 [[package]]
+name = "hvac"
+version = "0.11.0"
+description = "HashiCorp Vault API client"
+category = "main"
+optional = false
+python-versions = ">=2.7"
+
+[package.dependencies]
+requests = ">=2.21.0"
+six = ">=1.5.0"
+
+[package.extras]
+parser = ["pyhcl (>=0.3.10)"]
+
+[[package]]
 name = "idna"
 version = "3.2"
 description = "Internationalized Domain Names in Applications (IDNA)"
@@ -1628,8 +1643,8 @@ python-versions = "*"
 
 [metadata]
 lock-version = "1.1"
-python-versions = "^3.8"
-content-hash = "4a23a1da6140a2f17010838304335a815087d56bfa2502cbf2842704493d8370"
+python-versions = "^3.9"
+content-hash = "079ae43b08f5c54bb2a16828aa2027cacf7c5e520d25cf5c80b58c3892fe77df"
 
 [metadata.files]
 aerich = [
@@ -2015,6 +2030,10 @@ httptools = [
 huggingface-hub = [
     {file = "huggingface_hub-0.0.12-py3-none-any.whl", hash = "sha256:5c82ff96897a72e1ed48a94c1796686f120dea05888200522f3994f130c12e6a"},
     {file = "huggingface_hub-0.0.12.tar.gz", hash = "sha256:661b17fab0c475276fd71603ee7e16c3b3d1d6e812e1b29f40144f64d361e59d"},
+]
+hvac = [
+    {file = "hvac-0.11.0-py2.py3-none-any.whl", hash = "sha256:705822074cceb10a498a809b2e14f6e296e86f045ae9635529c41b8af5e07a18"},
+    {file = "hvac-0.11.0.tar.gz", hash = "sha256:9d5504e35388e665db5086edf75d2425831573c6569bb0bf3c2c6eaff30e034e"},
 ]
 idna = [
     {file = "idna-3.2-py3-none-any.whl", hash = "sha256:14475042e284991034cb48e06f6851428fb14c4dc953acd9be9a5e95c7b6dd7a"},

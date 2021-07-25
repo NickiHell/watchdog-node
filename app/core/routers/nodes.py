@@ -1,6 +1,8 @@
 from fastapi import APIRouter
 from starlette.responses import HTMLResponse, JSONResponse
 
+from app.core.models.tortoise.metrics import NetReply
+
 router = APIRouter()
 
 
@@ -10,5 +12,5 @@ async def random_task():
 
 @router.get("/get", description="Get all nodes'", response_description="Some", response_class=JSONResponse)
 async def get():
-    # random_task()
+    items = NetReply.all()
     return JSONResponse({})
