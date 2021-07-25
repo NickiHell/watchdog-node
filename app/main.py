@@ -1,13 +1,13 @@
+import os
 from concurrent.futures import ProcessPoolExecutor
-from multiprocessing import Pool
 
-import uvicorn
+from dotenv import load_dotenv
 from fastapi import FastAPI
-from loguru import logger
 
-from app.bot.bot import bot_idle
+from app.bot.classes.bots import DumdBot
 from app.config import openapi_config
 from app.initializer import init
+from app.ml.classes.sberbank import SberbankSmallGPT3
 
 
 def start():
@@ -16,6 +16,15 @@ def start():
         version=openapi_config.version,
         description=openapi_config.description,
     )
-    ProcessPoolExecutor(max_workers=2).submit(bot_idle)
+
+    load_dotenv()
+    token = os.getenv('TOKEN')
+    model = SberbankSmallGPT3('sberbank-ai/rugpt3small_based_on_gpt2')
+    model()
+    bot = DumdBot(token, model)
+
+    with ProcessPoolExecutor(max_workers=2) as pool:
+        pool.submit(bot())
+
     init(app)
     return app

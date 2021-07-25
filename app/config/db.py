@@ -4,7 +4,7 @@ from pydantic import Field
 from app.config.base import BaseSettings
 from app.config.cfg import IS_TEST
 
-DB_MODELS = ["app.core.models.tortoise"]
+DB_MODELS = []
 POSTGRES_DB_URL = "postgres://{postgres_user}:{postgres_password}@{postgres_host}:{postgres_port}/{postgres_db}"
 SQLITE_DB_URL = 'sqlite://db.sqlite3'
 

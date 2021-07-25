@@ -28,10 +28,10 @@ jobs:
           poetry install
       - name: Lint Isort
         run: |
-          poetry run task isort-lint
+          poetry run task isort
       - name: Lint FlakeHell
         run: |
-          poetry run task flakehell-lint
+          poetry run task flakehell
       - name: Pytest
         run: |
           poetry run task pytest

@@ -5,7 +5,7 @@ description = ""
 authors = ["NickiHell <nickihell@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 transformers = "^4.8.2"
 torch = "^1.9.0"
 python-telegram-bot = "^13.7"
@@ -17,6 +17,7 @@ tortoise-orm = "^0.17.5"
 asyncpg = "^0.23.0"
 loguru = "^0.5.3"
 fastapi-admin = "^1.0.2"
+hvac = "^0.11.0"
 
 [tool.poetry.dev-dependencies]
 ipython = "^7.25.0"
@@ -63,4 +64,4 @@ wemake-python-styleguide = ["+*", "-WPS305"]
 isort = "isort --check-only app"
 flakehell = "flakehell lint --jobs 4"
 pytest = "pytest tests"
-mypy-lint = "mypy app"
+mypy = "mypy app"
