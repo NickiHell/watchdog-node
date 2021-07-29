@@ -19,7 +19,7 @@ def start():
     )
 
     load_dotenv()
-    token_choir = os.getenv('TOKEN_CHOIR')
+    token_choir = os.getenv('TOKEN_SCARLET_CHOIR')
     token_citadel = os.getenv('TOKEN_CITADEL')
 
     citadel_model = SberbankSmallGPT3('Nicki/citadel')
