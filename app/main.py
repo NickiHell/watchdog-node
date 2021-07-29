@@ -3,6 +3,7 @@ from concurrent.futures import ProcessPoolExecutor
 
 from dotenv import load_dotenv
 from fastapi import FastAPI
+from transformers import GPT2LMHeadModel
 
 from app.bot.classes.bots import DumdBot
 from app.config import openapi_config
@@ -17,14 +18,25 @@ def start():
         description=openapi_config.description,
     )
 
-    load_dotenv()
-    token = os.getenv('TOKEN')
-    model = SberbankSmallGPT3('sberbank-ai/rugpt3small_based_on_gpt2')
-    model()
-    bot = DumdBot(token, model)
+    scarlet_choir = GPT2LMHeadModel.from_pretrained('app/ml/models/pytorch/scarlet-choir/')
+    #
+    # base.push_to_hub("gpt3-base")
+    scarlet_choir.push_to_hub("scarlet-choir")
 
-    with ProcessPoolExecutor(max_workers=2) as pool:
-        pool.submit(bot())
+
+    load_dotenv()
+    token_choir = os.getenv('TOKEN_CHOIR')
+    token_citadel = os.getenv('TOKEN_CITADEL')
+
+    citadel_model = SberbankSmallGPT3('Nicki/citadel')
+    scarlet_choir_model = SberbankSmallGPT3('Nicki/scarlet-choir')
+
+    citadel_bot = DumdBot(token_citadel, citadel_model)
+    scarlet_choir_bot = DumdBot(token_choir, scarlet_choir_model)
+
+    with ProcessPoolExecutor(max_workers=4) as pool:
+        pool.submit(citadel_bot())
+        pool.submit(scarlet_choir_bot())
 
     init(app)
     return app
