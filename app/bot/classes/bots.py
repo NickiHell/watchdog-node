@@ -4,6 +4,7 @@ from functools import partial
 from logging import Handler
 from typing import Tuple
 
+from loguru import logger
 from telegram import Update
 from telegram.ext import Filters, MessageHandler, Updater
 
@@ -23,6 +24,7 @@ class DumdBot:
         self._dispatcher = self._updater.dispatcher
 
     def reply(self, update, context):
+        logger.info(f'{self.__class__}: {update.message.bot["username"]} - Reply')
         random.seed(datetime.now().timestamp())
         message: str = getattr(update, 'message', {'text': ''})['text'] or ''
         private_chat: bool = update.effective_chat.type == 'private'
@@ -38,6 +40,7 @@ class DumdBot:
             self._dispatcher.add_handler(handler(func))
 
     def __call__(self, *args, **kwargs):
+        logger.info(f'{self.__class__}: __call__ - {self._token}')
         handlers = (
             (partial(MessageHandler, Filters.text & (~Filters.command)), self.reply),
         )

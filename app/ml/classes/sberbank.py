@@ -53,5 +53,4 @@ class SberbankSmallGPT3:
         message: str = kwargs.get('message', 'test')
         max_length: int = kwargs.get('max_length', self._max_length)
         output: str = self._text_post_processing(message, self._generate(message, max_length))
-        logger.info(f'Message: {message} -> {output}')
         return output

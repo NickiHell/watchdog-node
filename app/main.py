@@ -1,9 +1,10 @@
 import os
 from concurrent.futures import ProcessPoolExecutor
+from multiprocessing import Process
+from time import sleep
 
 from dotenv import load_dotenv
 from fastapi import FastAPI
-from transformers import GPT2LMHeadModel
 
 from app.bot.classes.bots import DumdBot
 from app.config import openapi_config
@@ -20,17 +21,16 @@ def start():
 
     load_dotenv()
     token_choir = os.getenv('TOKEN_SCARLET_CHOIR')
-    # token_citadel = os.getenv('TOKEN_CITADEL')
+    token_citadel = os.getenv('TOKEN_CITADEL')
 
-    # citadel_model = SberbankSmallGPT3('Nicki/citadel')
+    citadel_model = SberbankSmallGPT3('Nicki/citadel')
     scarlet_choir_model = SberbankSmallGPT3('Nicki/scarlet-choir')
 
-    # citadel_bot = DumdBot(token_citadel, citadel_model)
+    citadel_bot = DumdBot(token_citadel, citadel_model)
     scarlet_choir_bot = DumdBot(token_choir, scarlet_choir_model)
 
-    with ProcessPoolExecutor(max_workers=4) as pool:
-        # pool.submit(citadel_bot())
-        pool.submit(scarlet_choir_bot())
+    Process(target=scarlet_choir_bot).start()
+    Process(target=citadel_bot).start()
 
     init(app)
     return app
