@@ -18,12 +18,6 @@ def start():
         description=openapi_config.description,
     )
 
-    scarlet_choir = GPT2LMHeadModel.from_pretrained('app/ml/models/pytorch/scarlet-choir/')
-    #
-    # base.push_to_hub("gpt3-base")
-    scarlet_choir.push_to_hub("scarlet-choir")
-
-
     load_dotenv()
     token_choir = os.getenv('TOKEN_CHOIR')
     token_citadel = os.getenv('TOKEN_CITADEL')
