@@ -20,7 +20,6 @@ services:
       cache_from:
         - "watchdog:dev"
         - "watchdog:latest"
-        - "*"
     command: poetry run uvicorn app.main:start --host 0.0.0.0 --port 8080
     restart: always
     env_file: .env

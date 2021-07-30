@@ -1,7 +1,5 @@
 import os
-from concurrent.futures import ProcessPoolExecutor
 from multiprocessing import Process
-from time import sleep
 
 from dotenv import load_dotenv
 from fastapi import FastAPI
@@ -18,7 +16,6 @@ def start():
         version=openapi_config.version,
         description=openapi_config.description,
     )
-
     load_dotenv()
     token_choir = os.getenv('TOKEN_SCARLET_CHOIR')
     token_citadel = os.getenv('TOKEN_CITADEL')

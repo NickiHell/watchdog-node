@@ -1,6 +1,3 @@
-import os
-import random
-
 from loguru import logger
 from transformers import GPT2LMHeadModel, GPT2Tokenizer, GPT2TokenizerFast
 
@@ -43,7 +40,6 @@ class SberbankSmallGPT3:
 
     @staticmethod
     def _text_post_processing(message: str, text: str) -> str:
-        # text = clean(output, lang='ru')
         text: str = text.replace(message, '').strip().capitalize()
         text: str = text[1:] if text[0] == ',' else text
         text: str = ' '.join([x for x in text.split() if x])
