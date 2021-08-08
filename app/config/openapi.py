@@ -1,9 +1,9 @@
 """OpenAPI-schema"""
 from app.config.base import BaseSettings
 
-OPENAPI_API_NAME = "The best API ever"
-OPENAPI_API_VERSION = "0.0.1 beta"
-OPENAPI_API_DESCRIPTION = "API for humans"
+OPENAPI_API_NAME = "WatchDog API"
+OPENAPI_API_VERSION = "0.1"
+OPENAPI_API_DESCRIPTION = ""
 
 
 class OpenAPISettings(BaseSettings):
