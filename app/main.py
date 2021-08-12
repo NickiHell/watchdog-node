@@ -1,5 +1,5 @@
+import asyncio
 import os
-from multiprocessing import Process
 
 from dotenv import load_dotenv
 from fastapi import FastAPI
@@ -27,8 +27,10 @@ def start():
     citadel_bot = DumdBot(token_citadel, citadel_model)
     scarlet_choir_bot = DumdBot(token_choir, scarlet_choir_model)
 
-    Process(target=scarlet_choir_bot).start()
-    Process(target=citadel_bot).start()
+    loop = asyncio.get_event_loop()
+
+    loop.create_task(scarlet_choir_bot())
+    loop.create_task(citadel_bot())
 
     init(app)
     return app

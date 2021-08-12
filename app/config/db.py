@@ -7,8 +7,8 @@ from app.config.cfg import IS_TEST
 DB_MODELS = [
     'app.bots.models.tortoise.bots',
     'app.ml.models.tortoise.ml',
-    'app.core.models.tortoise.metrics',
 ]
+
 POSTGRES_DB_URL = "postgres://{postgres_user}:{postgres_password}@{postgres_host}:{postgres_port}/{postgres_db}"
 SQLITE_DB_URL = 'sqlite://db.sqlite3'
 
