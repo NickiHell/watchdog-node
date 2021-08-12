@@ -1,14 +1,12 @@
-from inspect import getmembers
-
 from fastapi import FastAPI
 from fastapi_admin.app import app as admin_app
 from tortoise.contrib.fastapi import register_tortoise
 
+from app.api.router import TypedAPIRouter
 from app.config import tortoise_config
-from app.utils.api.router import TypedAPIRouter
 
 
-def init(app: FastAPI):
+def init(app: FastAPI) -> None:
     """
     Init routers and etc.
     :return:
@@ -18,7 +16,7 @@ def init(app: FastAPI):
     init_db(app)
 
 
-def init_db(app: FastAPI):
+def init_db(app: FastAPI) -> None:
     """
     Init database models.
     :param app:
@@ -32,15 +30,10 @@ def init_db(app: FastAPI):
     )
 
 
-def init_routers(app: FastAPI):
-    """
-    Initialize routers defined in `app.api`
-    :param app:
-    :return:
-    """
-    from app.core import routers
+def init_routers(app: FastAPI) -> None:
+    from app.api.v1 import routers
 
-    routers = [o[1] for o in getmembers(routers) if isinstance(o[1], TypedAPIRouter)]
+    routers = [router for router in routers if isinstance(router, TypedAPIRouter)]
 
     for router in routers:
         app.include_router(**router.dict())

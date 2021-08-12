@@ -1,10 +1,10 @@
+import asyncio
 import os
-from multiprocessing import Process
 
 from dotenv import load_dotenv
 from fastapi import FastAPI
 
-from app.bot.classes.bots import DumdBot
+from app.bots.classes.bots import DumdBot
 from app.config import openapi_config
 from app.initializer import init
 from app.ml.classes.sberbank import SberbankSmallGPT3
@@ -16,6 +16,7 @@ def start():
         version=openapi_config.version,
         description=openapi_config.description,
     )
+
     load_dotenv()
     token_choir = os.getenv('TOKEN_SCARLET_CHOIR')
     token_citadel = os.getenv('TOKEN_CITADEL')
@@ -26,8 +27,10 @@ def start():
     citadel_bot = DumdBot(token_citadel, citadel_model)
     scarlet_choir_bot = DumdBot(token_choir, scarlet_choir_model)
 
-    Process(target=scarlet_choir_bot).start()
-    Process(target=citadel_bot).start()
+    loop = asyncio.get_event_loop()
+
+    loop.create_task(scarlet_choir_bot())
+    loop.create_task(citadel_bot())
 
     init(app)
     return app
