@@ -43,7 +43,7 @@ class DumdBot:
 
     async def _morning(self):
         while True:
-            await asyncio.sleep(1)
+            await asyncio.sleep(30)
             morning = datetime.now().replace(hour=9)
             if abs(datetime.now() - morning) < timedelta(minutes=1):
                 chat_id: int = -1001304348662
