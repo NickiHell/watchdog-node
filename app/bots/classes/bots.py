@@ -23,7 +23,7 @@ class DumdBot:
         url = f'http://theoldreader.com/kittens/{random.randint(200, 600)}/{random.randint(200, 600)}'
         await types.ChatActions.upload_photo(2)
         media = types.MediaGroup()
-        media.attach_photo(url, f'Однаждый философ сказал: {text}')
+        media.attach_photo(url, text)
         await message.reply_media_group(media=media)
 
     async def ping_pong(self, message: types.Message):
