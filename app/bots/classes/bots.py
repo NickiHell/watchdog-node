@@ -17,12 +17,15 @@ class DumdBot:
         self._dispatcher = Dispatcher(self._bot)
 
     async def ping_pong(self, message: types.Message):
+        await types.ChatActions.typing(3)
         await message.answer('pong')
 
     async def reply_private(self, message: types.Message):
+        await types.ChatActions.typing(3)
         await message.answer(await self._loop.run_in_executor(None, self._model, message.text))
 
     async def reply_supergroup(self, message: types.Message):
+        await types.ChatActions.typing(3)
         bot_info = await self._bot.get_me()
         pinged: bool = bot_info['username'] in message.text
         if any((pinged, random.randint(0, 40) == 5, message.reply_to_message)):
