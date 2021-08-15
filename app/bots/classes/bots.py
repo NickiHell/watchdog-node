@@ -5,7 +5,6 @@ from datetime import datetime, timedelta
 from aiogram import Bot, Dispatcher, types
 from aiogram.dispatcher.filters import Text
 from aiogram.types import ChatType
-from loguru import logger
 
 from app.ml.classes.sberbank import SmallGPT3
 
@@ -46,11 +45,10 @@ class DumdBot:
         while True:
             await asyncio.sleep(1)
             morning = datetime.now().replace(hour=9)
-            if (morning - datetime.now()) < timedelta(minutes=1):
-                logger.info(f'Good morning {morning - datetime.now()}')
+            if abs(datetime.now() - morning) < timedelta(minutes=1):
                 chat_id: int = -1001304348662
                 text: str = await self._loop.run_in_executor(None, self._model, 'Доброе утро!')
-                # await self._bot.send_message(chat_id, f'Доброе утро {text}')
+                await self._bot.send_message(chat_id, f'Доброе утро {text}')
 
     async def _make_handlers(self):
         self._dispatcher.register_message_handler(self._post_cat_pic, Text(contains='cat', ignore_case=True))
