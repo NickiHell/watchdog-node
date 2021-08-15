@@ -1,13 +1,9 @@
 import asyncio
 import random
-from datetime import datetime
-from functools import partial
-from logging import Handler
-from typing import Tuple
 
-from loguru import logger
-from telegram import Update
-from telegram.ext import Filters, MessageHandler, Updater
+from aiogram import Bot, Dispatcher, types
+from aiogram.dispatcher.filters import Text
+from aiogram.types import ChatType
 
 from app.ml.classes.sberbank import SmallGPT3
 
@@ -16,31 +12,32 @@ class DumdBot:
     def __init__(self, token: str, model: SmallGPT3 = None):
         self._token: str = token
         self._model: SmallGPT3 = model
-        self._updater: Updater = Updater(self._token)
-        self._dispatcher = self._updater.dispatcher
         self._loop = asyncio.get_event_loop()
+        self._bot = Bot(token=self._token)
+        self._dispatcher = Dispatcher(self._bot)
 
-    def reply(self, update, _):
-        random.seed(datetime.now().timestamp())
-        message: str = getattr(update, 'message', {'text': ''})['text'] or ''
-        private_chat: bool = update.effective_chat.type == 'private'
-        pinged = update.message.bot['username'] in message
-        if any((pinged, private_chat, random.randint(0, 40) == 5)):
-            message: str = message if private_chat else message.replace(f'@{update.message.bot["username"]}',
-                                                                        '').strip()
-            answer: str = self._model(message=message, max_length=random.randint(64, 128))
-            update.message.reply_text(answer)
-            logger.info(f'{update.message.bot["username"]} - {update.effective_chat.full_name}: {message}  -> {answer}')
+    async def ping_pong(self, message: types.Message):
+        await message.answer('pong')
 
-    def _make_handlers(self, handlers_and_func: Tuple[Tuple[Handler, callable]] = None):
-        for handler, func in handlers_and_func:
-            self._dispatcher.add_handler(handler(func))
+    async def reply_private(self, message: types.Message):
+        await message.answer(await self._loop.run_in_executor(None, self._model, message.text))
+
+    async def reply_supergroup(self, message: types.Message):
+        bot_info = await self._bot.get_me()
+        pinged: bool = bot_info['username'] in message.text
+        if any((pinged, random.randint(0, 40) == 5, message.reply_to_message)):
+            answer: str = await self._loop.run_in_executor(None, self._model, message.text)
+            answer: str = answer.replace(f'@{bot_info["username"]}', '') if pinged else answer
+            await message.answer(answer)
+
+    async def _make_handlers(self):
+        self._dispatcher.register_message_handler(self.ping_pong, Text(equals='ping', ignore_case=True))
+        self._dispatcher.register_message_handler(self.reply_private, chat_type=[ChatType.PRIVATE])
+        self._dispatcher.register_message_handler(self.reply_supergroup, chat_type=[ChatType.SUPERGROUP])
 
     async def __call__(self, *args, **kwargs):
-        logger.info('Call')
-        handlers = (
-            (partial(MessageHandler, Filters.text & (~Filters.command)), self.reply),
-        )
-        self._make_handlers(handlers)
-        self._updater.start_polling(allowed_updates=Update.ALL_TYPES)
-        self._loop.run_in_executor(None, self._updater.idle)
+        await self._make_handlers()
+        try:
+            await self._dispatcher.start_polling()
+        finally:
+            await self._bot.close()

@@ -29,6 +29,7 @@ import torch
 from torch.nn.utils.rnn import pad_sequence
 from torch.utils.data import DataLoader, Dataset, RandomSampler, SequentialSampler
 from torch.utils.data.distributed import DistributedSampler
+from torch.utils.tensorboard import SummaryWriter
 from tqdm import tqdm, trange
 from transformers import (
     MODEL_WITH_LM_HEAD_MAPPING,
@@ -41,7 +42,6 @@ from transformers import (
     PreTrainedTokenizer,
     get_linear_schedule_with_warmup,
 )
-from torch.utils.tensorboard import SummaryWriter
 
 logger = logging.getLogger(__name__)
 
@@ -602,7 +602,7 @@ def main():
     if args.eval_data_file is None and args.do_eval:
         raise ValueError(
             "Cannot do evaluation without an evaluation data file. Either supply a file to --eval_data_file "
-            "or remove the --do_eval argument."
+            "or rem ove the --do_eval argument."
         )
     if args.should_continue:
         sorted_checkpoints = _sorted_checkpoints(args)
@@ -695,7 +695,7 @@ def main():
         args.block_size = tokenizer.max_len
         # Our input block size will be the max possible for the model
     else:
-        args.block_size = min(args.block_size, tokenizer.model_max_length) ##????
+        args.block_size = min(args.block_size, tokenizer.model_max_length)  ##????
 
     if args.model_name_or_path:
         model = AutoModelWithLMHead.from_pretrained(

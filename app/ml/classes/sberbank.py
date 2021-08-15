@@ -1,11 +1,13 @@
+import json
+
 from transformers import GPT2LMHeadModel, GPT2Tokenizer
 
 
 class SmallGPT3:
     def __init__(self, model_name: str, params: dict = None):
         self._model_name: str = model_name
-        self._tokinizer: GPT2Tokenizer = GPT2Tokenizer.from_pretrained(self._model_name)
         self._model: GPT2LMHeadModel = GPT2LMHeadModel.from_pretrained(self._model_name)
+        self._tokinizer: GPT2Tokenizer = GPT2Tokenizer.from_pretrained(self._model_name)
         self._memory = []
         self._params: dict = params or {
             'top_k': 5,
@@ -22,8 +24,18 @@ class SmallGPT3:
             'num_return_sequences': 3,
         }
 
-    def _tuning(self):
-        pass
+    def _create_dataset(self):
+        with open('result.json', 'r') as file:
+            data: dict = json.loads(file.read())['messages']
+        replies = tuple(x for x in data if
+                        x['type'] == 'message' and x['text'] != '' and x.get('reply_to_message_id') and isinstance(
+                            x['text'], str))
+        messages = tuple(x for x in data if x['type'] == 'message' and x['text'] != '' and isinstance(x['text'], str))
+        with open('train.txt', 'w') as train:
+            train.write('\n'.join([x['text'] for x in messages]))
+
+        with open('valid.txt', 'w') as valid:
+            valid.write('\n'.join([x['text'] for x in replies]))
 
     def _generate(self, text: str) -> str:
         input_ids = self._tokinizer.encode(text, return_tensors="pt")
@@ -40,6 +52,6 @@ class SmallGPT3:
         return text
 
     def __call__(self, *args, **kwargs):
-        message: str = kwargs.get('message', 'test')
+        message: str = args[0]
         output: str = self._text_post_processing(message, self._generate(message))
         return output

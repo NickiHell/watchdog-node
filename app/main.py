@@ -19,18 +19,21 @@ def start():
 
     load_dotenv()
     token_choir = os.getenv('TOKEN_SCARLET_CHOIR')
-    token_citadel = os.getenv('TOKEN_CITADEL')
+    # token_citadel = os.getenv('TOKEN_CITADEL')
 
-    citadel_model = SmallGPT3('Nicki/citadel')
+    # citadel_model = SmallGPT3('Nicki/citadel')
     scarlet_choir_model = SmallGPT3('Nicki/scarlet-choir')
 
-    citadel_bot = DumdBot(token_citadel, citadel_model)
+    # md = GPT2LMHeadModel.from_pretrained('scarlet-choir')
+    # md.push_to_hub('Nicki/scarlet-choir')
+
+    # citadel_bot = DumdBot(token_citadel, citadel_model)
     scarlet_choir_bot = DumdBot(token_choir, scarlet_choir_model)
 
     loop = asyncio.get_event_loop()
 
     loop.create_task(scarlet_choir_bot())
-    loop.create_task(citadel_bot())
+    # loop.create_task(citadel_bot())
 
     init(app)
     return app
