@@ -19,9 +19,11 @@ class DumdBot:
 
     async def _post_cat_pic(self, message: types.Message):
         random.seed(datetime.now().timestamp())
+        text = await self._loop.run_in_executor(None, self._model, 'Однаждый философ сказал')
+        url = f'http://theoldreader.com/kittens/{random.randint(200, 600)}/{random.randint(200, 600)}'
+        await types.ChatActions.upload_photo(2)
         media = types.MediaGroup()
-        media.attach_photo(f'http://theoldreader.com/kittens/{random.randint(200, 600)}/{random.randint(200, 600)}',
-                           'Random cat.')
+        media.attach_photo(url, f'Однаждый философ сказал: {text}')
         await message.reply_media_group(media=media)
 
     async def ping_pong(self, message: types.Message):
@@ -57,8 +59,8 @@ class DumdBot:
         self._dispatcher.register_message_handler(self.reply_supergroup, chat_type=[ChatType.SUPERGROUP])
 
     async def __call__(self, *args, **kwargs):
-        await self._morning()
         await self._make_handlers()
+        self._loop.create_task(self._morning())
         try:
             await self._dispatcher.start_polling()
         finally:

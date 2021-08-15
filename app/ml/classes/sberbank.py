@@ -1,4 +1,5 @@
 import json
+import random
 
 from transformers import GPT2LMHeadModel, GPT2Tokenizer
 
@@ -13,15 +14,15 @@ class SmallGPT3:
             'top_k': 5,
             'top_p': 0.95,
             'temperature': 0.85,
-            'repetition_penalty': 5.0,
-            'max_length': 512,
+            'repetition_penalty': 3.0,
+            'max_length': 128,
             'num_beams': 3,
             'do_sample': True,
             'no_repeat_ngram_size': 3,
             'bos_token_id': self._tokinizer.encode('Я')[0],
             'eos_token_id': self._tokinizer.encode('.')[0],
             'length_penalty': 0.95,
-            'num_return_sequences': 3,
+            'num_return_sequences': random.randint(1, 5),
         }
 
     def _create_dataset(self):
