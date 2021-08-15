@@ -9,18 +9,13 @@ from loguru import logger
 from telegram import Update
 from telegram.ext import Filters, MessageHandler, Updater
 
-from app.ml.classes.sberbank import SberbankSmallGPT3
+from app.ml.classes.sberbank import SmallGPT3
 
 
 class DumdBot:
-    def __init__(self, token: str, model: SberbankSmallGPT3 = None):
-        """Инициализация
-        :param token: Токен для BotApi
-        :param model_name: Название модели из HuggingFace
-        :param model_wrapper: Функция которая принимает аргументы и запускает модель ???
-        """
+    def __init__(self, token: str, model: SmallGPT3 = None):
         self._token: str = token
-        self._model: SberbankSmallGPT3 = model
+        self._model: SmallGPT3 = model
         self._updater: Updater = Updater(self._token)
         self._dispatcher = self._updater.dispatcher
         self._loop = asyncio.get_event_loop()
@@ -34,9 +29,8 @@ class DumdBot:
             message: str = message if private_chat else message.replace(f'@{update.message.bot["username"]}',
                                                                         '').strip()
             answer: str = self._model(message=message, max_length=random.randint(64, 128))
-            update.message.reply_text(answer.replace(message, ''))
+            update.message.reply_text(answer)
             logger.info(f'{update.message.bot["username"]} - {update.effective_chat.full_name}: {message}  -> {answer}')
-            # QuestionsAnswers.create(message=message, reply=answer) # TODO: Waiting for asyncio
 
     def _make_handlers(self, handlers_and_func: Tuple[Tuple[Handler, callable]] = None):
         for handler, func in handlers_and_func:

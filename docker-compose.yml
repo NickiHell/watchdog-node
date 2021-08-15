@@ -55,7 +55,6 @@ services:
     networks:
       - watchdog_internal_net
 
-
 volumes:
   redis-data:
   postgres-data:

@@ -7,7 +7,7 @@ from fastapi import FastAPI
 from app.bots.classes.bots import DumdBot
 from app.config import openapi_config
 from app.initializer import init
-from app.ml.classes.sberbank import SberbankSmallGPT3
+from app.ml.classes.sberbank import SmallGPT3
 
 
 def start():
@@ -21,8 +21,8 @@ def start():
     token_choir = os.getenv('TOKEN_SCARLET_CHOIR')
     token_citadel = os.getenv('TOKEN_CITADEL')
 
-    citadel_model = SberbankSmallGPT3('Nicki/citadel')
-    scarlet_choir_model = SberbankSmallGPT3('Nicki/scarlet-choir')
+    citadel_model = SmallGPT3('Nicki/citadel')
+    scarlet_choir_model = SmallGPT3('Nicki/scarlet-choir')
 
     citadel_bot = DumdBot(token_citadel, citadel_model)
     scarlet_choir_bot = DumdBot(token_choir, scarlet_choir_model)
