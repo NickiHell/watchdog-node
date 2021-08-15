@@ -37,7 +37,7 @@ class DumdBot:
         logger.info('wedfwe')
         bot_info = await self._bot.get_me()
         pinged: bool = bot_info['username'] in message.text
-        if any((pinged, random.randint(0, 40) == 5, message.reply_to_message)):
+        if any((pinged, random.randint(0, 100) == 5, message.reply_to_message)):
             await types.ChatActions.typing(3)
             answer: str = await self._loop.run_in_executor(None, self._model, message.text)
             answer: str = answer.replace(f'@{bot_info["username"]}', '') if pinged else answer
