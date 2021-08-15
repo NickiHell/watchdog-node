@@ -21,6 +21,7 @@ tensorboard = "*"
 python-multipart = "*"
 aiogram = "*"
 aiohttp = "^3.7.4"
+aiofiles = "^0.7.0"
 
 [tool.poetry.dev-dependencies]
 ipython = "*"

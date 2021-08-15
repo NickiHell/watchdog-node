@@ -1,5 +1,6 @@
 import asyncio
 import random
+from datetime import datetime
 
 from aiogram import Bot, Dispatcher, types
 from aiogram.dispatcher.filters import Text
@@ -15,6 +16,13 @@ class DumdBot:
         self._loop = asyncio.get_event_loop()
         self._bot = Bot(token=self._token)
         self._dispatcher = Dispatcher(self._bot)
+
+    async def _post_cat_pic(self, message: types.Message):
+        random.seed(datetime.now().timestamp())
+        media = types.MediaGroup()
+        media.attach_photo(f'http://theoldreader.com/kittens/{random.randint(200, 600)}/{random.randint(200, 600)}',
+                           'Random cat.')
+        await message.reply_media_group(media=media)
 
     async def ping_pong(self, message: types.Message):
         await types.ChatActions.typing(3)
@@ -34,6 +42,7 @@ class DumdBot:
             await message.answer(answer)
 
     async def _make_handlers(self):
+        self._dispatcher.register_message_handler(self._post_cat_pic, Text(equals='cat', ignore_case=True))
         self._dispatcher.register_message_handler(self.ping_pong, Text(equals='ping', ignore_case=True))
         self._dispatcher.register_message_handler(self.reply_private, chat_type=[ChatType.PRIVATE])
         self._dispatcher.register_message_handler(self.reply_supergroup, chat_type=[ChatType.SUPERGROUP])
