@@ -46,7 +46,7 @@ class DumdBot:
         while True:
             await asyncio.sleep(1)
             morning = datetime.now().replace(hour=9)
-            if morning - datetime.now() < timedelta(minutes=1):
+            if (morning - datetime.now()) < timedelta(minutes=1):
                 logger.info(f'Good morning {morning - datetime.now()}')
                 chat_id: int = -1001304348662
                 text: str = await self._loop.run_in_executor(None, self._model, 'Доброе утро!')
