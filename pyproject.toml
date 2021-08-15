@@ -20,9 +20,8 @@ hvac = "*"
 tensorboard = "*"
 python-multipart = "*"
 aiogram = "*"
-aiohttp = "^3.7.4"
-aiofiles = "^0.7.0"
-aiojobs = "^0.3.0"
+aiohttp = "*"
+aiofiles = "*"
 
 [tool.poetry.dev-dependencies]
 ipython = "*"

@@ -37,7 +37,13 @@ class DumdBot:
     async def reply_supergroup(self, message: types.Message):
         bot_info = await self._bot.get_me()
         pinged: bool = bot_info['username'] in message.text
-        if any((pinged, message.reply_to_message)):
+        replied = message.reply_to_message
+        conditions: bool = any((
+            pinged,
+            replied and replied.from_user.id == bot_info.id,
+            random.randint(1, 35) == 5
+        ))
+        if conditions:
             await types.ChatActions.typing(3)
             answer: str = await self._loop.run_in_executor(None, self._model, message.text)
             answer: str = answer.replace(f'@{bot_info["username"]}', '') if pinged else answer
@@ -46,7 +52,7 @@ class DumdBot:
     async def _morning(self):
         while True:
             await asyncio.sleep(45)
-            morning = datetime.now().replace(hour=9)
+            morning = datetime.now().replace(hour=9, minute=0, second=0)
             if abs(datetime.now() - morning) < timedelta(minutes=1):
                 chat_id: int = -1001304348662
                 text: str = await self._loop.run_in_executor(None, self._model, 'Доброе утро!')

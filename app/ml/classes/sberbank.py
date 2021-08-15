@@ -48,7 +48,7 @@ class SmallGPT3:
 
     @staticmethod
     def _text_post_processing(message: str, text: str) -> str:
-        text: str = text.replace(message, '')
+        # text: str = text.replace(message, '')
         text: str = ' '.join(text.split()).strip().capitalize()
         return text
 
