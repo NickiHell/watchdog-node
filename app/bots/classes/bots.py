@@ -5,6 +5,7 @@ from datetime import datetime
 from aiogram import Bot, Dispatcher, types
 from aiogram.dispatcher.filters import Text
 from aiogram.types import ChatType
+from loguru import logger
 
 from app.ml.classes.sberbank import SmallGPT3
 
@@ -34,6 +35,7 @@ class DumdBot:
 
     async def reply_supergroup(self, message: types.Message):
         await types.ChatActions.typing(3)
+        logger.info('wedfwe')
         bot_info = await self._bot.get_me()
         pinged: bool = bot_info['username'] in message.text
         if any((pinged, random.randint(0, 40) == 5, message.reply_to_message)):
@@ -42,8 +44,8 @@ class DumdBot:
             await message.answer(answer)
 
     async def _make_handlers(self):
-        self._dispatcher.register_message_handler(self._post_cat_pic, Text(equals='cat', ignore_case=True))
-        self._dispatcher.register_message_handler(self.ping_pong, Text(equals='ping', ignore_case=True))
+        self._dispatcher.register_message_handler(self._post_cat_pic, Text(contains='cat', ignore_case=True))
+        self._dispatcher.register_message_handler(self.ping_pong, Text(contains='ping', ignore_case=True))
         self._dispatcher.register_message_handler(self.reply_private, chat_type=[ChatType.PRIVATE])
         self._dispatcher.register_message_handler(self.reply_supergroup, chat_type=[ChatType.SUPERGROUP])
 
