@@ -1,7 +1,9 @@
 import asyncio
+import json
 import random
 from datetime import datetime, timedelta
 
+import aiohttp
 from aiogram import Bot, Dispatcher, types
 from aiogram.dispatcher.filters import Text
 from aiogram.types import ChatType
@@ -29,6 +31,22 @@ class DumdBot:
     async def ping_pong(self, message: types.Message):
         await types.ChatActions.typing(3)
         await message.answer('pong')
+
+    async def _get_khv_weather(self, message: types.Message):
+        api_key = 'cccef59c25b3f18570a7d8347005c413'
+        url = "http://api.openweathermap.org/data/2.5/weather?" + "appid=" + api_key + "&q=" + 'Khabarovsk'
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url) as response:
+                data = await response.text()
+                data = json.loads(data)
+                await message.answer(
+                    f'Погода в Хабаровске: \n'
+                    f'Температура: {(data["main"]["temp"] - 273, 15)[0]:.1f}C \n'
+                    f'Влажность: {data["main"]["humidity"]}% \n'
+                    f'Давление: {data["main"]["pressure"]} мм рт. ст. \n'
+                    f'Скорость ветра: {data["wind"]["speed"]} м/с \n',
+                    reply=True
+                )
 
     async def reply_private(self, message: types.Message):
         await types.ChatActions.typing(3)
@@ -60,6 +78,7 @@ class DumdBot:
                 await self._bot.send_message(chat_id, f'Доброе утро {text}')
 
     async def _make_handlers(self):
+        self._dispatcher.register_message_handler(self._get_khv_weather, Text(contains='погода', ignore_case=True))
         self._dispatcher.register_message_handler(self._post_cat_pic, Text(contains='cat', ignore_case=True))
         self._dispatcher.register_message_handler(self.ping_pong, Text(contains='ping', ignore_case=True))
         self._dispatcher.register_message_handler(self.reply_private, chat_type=[ChatType.PRIVATE])
