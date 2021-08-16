@@ -35,13 +35,14 @@ class DumdBot:
         await message.answer(await self._loop.run_in_executor(None, self._model, message.text))
 
     async def reply_supergroup(self, message: types.Message):
+        random.seed(datetime.now().timestamp())
         bot_info = await self._bot.get_me()
         pinged: bool = bot_info['username'] in message.text
         replied = message.reply_to_message
         conditions: bool = any((
             pinged,
             replied and replied.from_user.id == bot_info.id,
-            random.randint(1, 35) == 5
+            random.randint(1, 45) == 5
         ))
         if conditions:
             await types.ChatActions.typing(3)
