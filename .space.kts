@@ -4,10 +4,8 @@ job("QA and Linters") {
         	interpreter = "/bin/bash"
             content = """
                 curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
-                apt update
-                apt install tree
-                cd /
-                tree -a -L 3
+                /root/.poetry/bin/poetry shell
+                task isort
             """
         }
 	}
