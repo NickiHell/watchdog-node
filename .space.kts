@@ -1,4 +1,10 @@
 job("QA and Linters") {
+    startOn {
+        gitPush {
+            branchFilter {
+                +"refs/heads/dev"
+            }
+        }
     parallel {
         container(displayName = "Tests", image = "python:3.9.6-bullseye") {		
             shellScript {
