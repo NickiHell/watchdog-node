@@ -1,10 +1,38 @@
-job("Tests") {
-    container(displayName = "Python Cotainer", image = "python:3.9.6-bullseye") {
+job("QA") {
+    container(displayName = "Isort", image = "python:3.9.6-bullseye") {
     shellScript {
             content = """
                 curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
-                $HOME/.poetry/bin/poetry shell
-                task tests
+                .poetry/bin/poetry shell
+                task isort
             """
         }
-}}
+	}
+    container(displayName = "Tests", image = "python:3.9.6-bullseye") {
+    shellScript {
+            content = """
+                curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+                .poetry/bin/poetry shell
+                task pytest
+            """
+        }
+	}
+    container(displayName = "Mypy", image = "python:3.9.6-bullseye") {
+    shellScript {
+            content = """
+                curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+                .poetry/bin/poetry shell
+                task mypy
+            """
+        }
+	}
+    container(displayName = "FlakeHell", image = "python:3.9.6-bullseye") {
+    shellScript {
+            content = """
+                curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+                .poetry/bin/poetry shell
+                task flakehell
+            """
+        }
+	}
+}
