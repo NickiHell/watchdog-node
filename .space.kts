@@ -21,7 +21,7 @@ job("QA and Linters") {
     shellScript {
             content = """
                 curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
-                source $HOME/.poetry/env
+                `source $HOME/.poetry/env`
                 task mypy
             """
         }
