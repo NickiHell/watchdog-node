@@ -6,7 +6,7 @@ job("QA and Linters") {
                 curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
                 apt update
                 apt install tree
-                cd ../../
+                cd /
                 tree
             """
         }
