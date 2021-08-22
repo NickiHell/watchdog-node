@@ -4,8 +4,8 @@ job("QA and Linters") {
         	interpreter = "/bin/bash"
             content = """
                 curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
-                /root/.poetry/bin/poetry shell
-                task isort
+                /root/.poetry/bin/poetry install
+                /root/.poetry/bin/poetry run task isort
             """
         }
 	}
