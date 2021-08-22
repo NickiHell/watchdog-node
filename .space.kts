@@ -7,7 +7,7 @@ job("QA and Linters") {
                 apt update
                 apt install tree
                 cd /
-                tree
+                tree -a -L 3
             """
         }
 	}
