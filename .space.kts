@@ -1,12 +1,10 @@
-/**
-* JetBrains Space Automation
-* This Kotlin-script file lets you automate build activities
-* For more info, see https://www.jetbrains.com/help/space/automation.html
-*/
-job("Hello World!") {
-    container(displayName = "Say Hello", image = "hello-world")
-}
-
-job("Hello World!2") {
-    container(displayName = "Say Hello", image = "hello-world")
+job("Tests") {
+    container(displayName = "Python Cotainer", image = "3.9.6-bullseye")
+    shellScript {
+            content = """
+                ls
+                apt update
+                apt install tree
+            """
+        }
 }
