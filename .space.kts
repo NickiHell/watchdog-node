@@ -1,5 +1,5 @@
 job("Tests") {
-    container(displayName = "Python Cotainer", image = "ubuntu") {
+    container(displayName = "Python Cotainer", image = "3.9.6-bullseye") {
     shellScript {
             content = """
                 ls
