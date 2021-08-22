@@ -22,7 +22,8 @@ job("QA and Linters") {
         	interpreter = "/bin/bash"
             content = """
                 curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
-                source $HOME/.poetry/env
+                source .poetry/env
+                bash poetry/bin/poetry shell
                 task mypy
             """
         }
