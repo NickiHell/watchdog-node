@@ -19,9 +19,10 @@ job("QA and Linters") {
 	}
     container(displayName = "Mypy", image = "python:3.9.6-bullseye") {
     shellScript {
+        	interpreter = "/bin/bash"
             content = """
                 curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
-                `source $HOME/.poetry/env`
+                source $HOME/.poetry/env
                 task mypy
             """
         }
