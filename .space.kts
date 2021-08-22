@@ -9,12 +9,11 @@ job("QA and Linters") {
         }
 	}
     container(displayName = "Tests", image = "python:3.9.6-bullseye") {
-        var HOME = "$HOME"
     			
     shellScript {
             content = """
                 curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
-                source "$HOME/.poetry/env"
+                source pwd/.poetry/env
                 task pytest
             """
         }
