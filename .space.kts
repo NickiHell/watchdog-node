@@ -7,6 +7,6 @@ job("Hello World!") {
     container(displayName = "Say Hello", image = "hello-world")
 }
 
-job("Hello World!") {
+job("Hello World!2") {
     container(displayName = "Say Hello", image = "hello-world")
 }
