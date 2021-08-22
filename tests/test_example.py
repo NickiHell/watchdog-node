@@ -13,3 +13,6 @@ class TestClass:
 
     def test_five(self):
         assert True
+
+    def test_hhh(self):
+        assert True
