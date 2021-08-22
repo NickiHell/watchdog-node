@@ -7,4 +7,4 @@ job("Tests") {
                 apt install tree
             """
         }
-}
+}}
