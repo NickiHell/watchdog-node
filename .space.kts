@@ -1,4 +1,4 @@
-job("QA") {
+job("QA and Linters") {
     container(displayName = "Isort", image = "python:3.9.6-bullseye") {
     shellScript {
             content = """
