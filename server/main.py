@@ -4,10 +4,10 @@ import os
 from dotenv import load_dotenv
 from fastapi import FastAPI
 
-from app.bots.classes.bots import DumdBot
-from app.config import openapi_config
-from app.initializer import init
-from app.ml.classes.sberbank import SmallGPT3
+from server.apps.bots.classes.bots import DumdBot
+from server.apps.ml.classes.sberbank import SmallGPT3
+from server.config import openapi_config
+from server.initializer import init
 
 
 def start():

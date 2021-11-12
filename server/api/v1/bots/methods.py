@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from starlette.responses import JSONResponse
 
-from app.bots.models.tortoise.bots import Bot
+from server.apps.bots.models.tortoise.bots import Bot
 
 router = APIRouter()
 
