@@ -1,4 +1,3 @@
-import json
 import random
 
 from transformers import GPT2LMHeadModel, GPT2Tokenizer
@@ -24,19 +23,6 @@ class SmallGPT3:
             'length_penalty': 0.95,
             'num_return_sequences': random.randint(1, 5),
         }
-
-    def _create_dataset(self):
-        with open('result.json', 'r') as file:
-            data: dict = json.loads(file.read())['messages']
-        replies = tuple(x for x in data if
-                        x['type'] == 'message' and x['text'] != '' and x.get('reply_to_message_id') and isinstance(
-                            x['text'], str))
-        messages = tuple(x for x in data if x['type'] == 'message' and x['text'] != '' and isinstance(x['text'], str))
-        with open('train.txt', 'w') as train:
-            train.write('\n'.join([x['text'] for x in messages]))
-
-        with open('valid.txt', 'w') as valid:
-            valid.write('\n'.join([x['text'] for x in replies]))
 
     def _generate(self, text: str) -> str:
         input_ids = self._tokinizer.encode(text, return_tensors="pt")
