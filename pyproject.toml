@@ -16,9 +16,9 @@ authors = [""]
 
 
 [tool.poetry.dependencies]
-python = "3.9"
+python = "^3.10"
 
-django = "^3.2"
+django = "^4.0"
 django-split-settings = "^1.1"
 django-axes = "^5.27"
 django-csp = "^3.7"
@@ -60,11 +60,6 @@ hypothesis = "^6.27"
 
 mypy = "^0.910"
 django-stubs = "^1.9"
-
-sphinx = "^4.3"
-sphinx-autodoc-typehints = "^1.12"
-tomlkit = "^0.7"
-doc8 = "^0.10"
 
 yamllint = "^1.26"
 safety = "^1.10"
