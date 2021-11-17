@@ -22,6 +22,7 @@ python-multipart = "*"
 aiogram = "*"
 aiohttp = "*"
 aiofiles = "*"
+celery = "*"
 
 [tool.poetry.dev-dependencies]
 ipython = "*"

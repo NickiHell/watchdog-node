@@ -1,9 +1,8 @@
 from multiprocessing import Process
 from typing import Tuple, Dict
 
-from loguru import logger
-
 from app.bots.classes.base import AbstractProcessManager
+from loguru import logger
 
 
 class BotProcessManager(AbstractProcessManager):

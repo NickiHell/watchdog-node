@@ -1,5 +1,5 @@
 """OpenAPI-schema"""
-from app.config.base import BaseSettings
+from server.config.base import BaseSettings
 
 OPENAPI_API_NAME = "WatchDog API"
 OPENAPI_API_VERSION = "0.1"

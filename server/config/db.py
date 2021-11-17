@@ -1,12 +1,12 @@
 """Config of DB"""
 from pydantic import Field
 
-from app.config.base import BaseSettings
-from app.config.cfg import IS_TEST
+from server.config.base import BaseSettings
+from server.config.cfg import IS_TEST
 
 DB_MODELS = [
-    'app.bots.models.tortoise.bots',
-    'app.ml.models.tortoise.ml',
+    # 'server.apps.bots.models.tortoise.bots',
+    # 'server.apps.ml.models.tortoise.ml',
 ]
 
 POSTGRES_DB_URL = "postgres://{postgres_user}:{postgres_password}@{postgres_host}:{postgres_port}/{postgres_db}"

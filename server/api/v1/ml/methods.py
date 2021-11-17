@@ -3,7 +3,7 @@ import json
 from fastapi import APIRouter, File
 from starlette.responses import JSONResponse
 
-from app.ml.models.tortoise.ml import Dataset
+from server.apps.ml.models.tortoise.ml import Dataset
 
 router = APIRouter()
 
