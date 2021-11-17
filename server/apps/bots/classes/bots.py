@@ -8,7 +8,7 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.dispatcher.filters import Text
 from aiogram.types import ChatType
 
-from server.apps.ml.classes.sberbank import SmallGPT3
+from server.apps.ml.classes.gpt import SmallGPT3
 
 
 class DumdBot:

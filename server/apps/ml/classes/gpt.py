@@ -18,8 +18,7 @@ class SmallGPT3:
             'num_beams': 3,
             'do_sample': True,
             'no_repeat_ngram_size': 3,
-            'bos_token_id': self._tokinizer.encode('Я')[0],
-            'eos_token_id': self._tokinizer.encode('.')[0],
+            'pad_token_id': self._tokinizer.encode('.')[0],
             'length_penalty': 0.95,
             'num_return_sequences': random.randint(1, 5),
         }

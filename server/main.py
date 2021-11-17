@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 
 from server.apps.bots.classes.bots import DumdBot
-from server.apps.ml.classes.sberbank import SmallGPT3
+from server.apps.ml.classes.gpt import SmallGPT3
 from server.config import openapi_config
 from server.initializer import init
 
