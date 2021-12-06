@@ -16,7 +16,7 @@ authors = [""]
 
 
 [tool.poetry.dependencies]
-python = "3.9.9"
+python = "3.9"
 
 django = "^3.2"
 django-split-settings = "^1.1"
