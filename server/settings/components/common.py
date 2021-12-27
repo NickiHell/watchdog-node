@@ -8,8 +8,9 @@ For the full list of settings and their config, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
-from django.utils.translation import gettext_lazy as _
 from typing import Dict, List, Tuple, Union
+
+from django.utils.translation import gettext_lazy as _
 
 from server.settings.components import BASE_DIR, config
 
@@ -18,11 +19,14 @@ from server.settings.components import BASE_DIR, config
 
 SECRET_KEY = config('DJANGO_SECRET_KEY')
 
+AUTH_USER_MODEL = 'users.User'
+
 # Application definition:
 
 INSTALLED_APPS: Tuple[str, ...] = (
     # Your apps go here:
-    'server.apps.main',
+    'server.apps.core',
+    'server.apps.users',
 
     # Default django apps:
     'django.contrib.auth',
@@ -72,7 +76,7 @@ MIDDLEWARE: Tuple[str, ...] = (
 
 ROOT_URLCONF = 'server.urls'
 
-WSGI_APPLICATION = 'server.wsgi.application'
+ASGI_APPLICATION = 'server.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
