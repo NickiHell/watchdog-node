@@ -9,14 +9,11 @@ services:
       - "5432:5432"
     env_file: ./config/.env
 
-  web:
+  app:
     image: "web:dev"
     build:
-      target: development_build
       context: .
-      dockerfile: ./docker/django/Dockerfile
-      args:
-        DJANGO_ENV: development
+      dockerfile: ./docker/app/Dockerfile
       cache_from:
         - "web:dev"
         - "web:latest"
@@ -50,4 +47,4 @@ services:
 
 volumes:
   pgdata:
-#  django-static:
+  django-static:
