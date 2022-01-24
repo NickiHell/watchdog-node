@@ -27,6 +27,11 @@ INSTALLED_APPS: Tuple[str, ...] = (
     # Your apps go here:
     'server.apps.core',
     'server.apps.users',
+    'server.apps.bots',
+    'server.apps.nets',
+    'server.apps.api',
+
+    'drf_spectacular',
 
     # Default django apps:
     'django.contrib.auth',
@@ -110,10 +115,6 @@ LANGUAGES = (
     ('ru', _('Russian')),
 )
 
-LOCALE_PATHS = (
-    'locale/',
-)
-
 USE_TZ = True
 TIME_ZONE = 'UTC'
 
@@ -121,6 +122,12 @@ TIME_ZONE = 'UTC'
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+_COLLECTSTATIC_DRYRUN = config(
+    'DJANGO_COLLECTSTATIC_DRYRUN', cast=bool, default=False,
+)
+
+STATIC_ROOT = 'static' if _COLLECTSTATIC_DRYRUN else '/var/www/django/static'
 
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
@@ -199,3 +206,14 @@ EMAIL_TIMEOUT = 5
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
+# DRF-SPECTACULAR
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Your Project API',
+    'DESCRIPTION': 'Your project description',
+    'VERSION': '1.0.0',
+}

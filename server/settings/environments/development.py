@@ -7,7 +7,7 @@ SECURITY WARNING: don't run with debug turned on in production!
 import logging
 from typing import List
 
-from server.settings.components import config
+from server.settings.components import config, BASE_DIR
 from server.settings.components.common import (
     DATABASES,
     INSTALLED_APPS,
@@ -52,7 +52,9 @@ INSTALLED_APPS += (
 # Static files:
 # https://docs.djangoproject.com/en/3.2/ref/settings/#std:setting-STATICFILES_DIRS
 
-STATICFILES_DIRS: List[str] = []
+STATICFILES_DIRS: List[str] = [
+    BASE_DIR / 'static',
+]
 
 # Django debug toolbar:
 # https://django-debug-toolbar.readthedocs.io

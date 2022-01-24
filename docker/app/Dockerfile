@@ -1,7 +1,7 @@
 # This Dockerfile uses multi-stage build to customize DEV and PROD images:
 # https://docs.docker.com/develop/develop-images/multistage-build/
 
-FROM python:3.9.9-slim-buster AS development_build
+FROM python:3.10
 
 LABEL maintainer="sobolevn@wemake.services"
 LABEL vendor="wemake.services"
@@ -92,9 +92,3 @@ USER web
 
 # We customize how our app is loaded with the custom entrypoint:
 ENTRYPOINT ["tini", "--", "/docker-entrypoint.sh"]
-
-
-# The following stage is only for Prod:
-# https://wemake-django-template.readthedocs.io/en/latest/pages/template/production.html
-FROM development_build AS production_build
-COPY --chown=web:web . /code
