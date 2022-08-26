@@ -30,23 +30,18 @@ INSTALLED_APPS: Tuple[str, ...] = (
     'server.apps.bots',
     'server.apps.nets',
     'server.apps.api',
-
     'drf_spectacular',
-
     # Default django apps:
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     # django-admin:
     'django.contrib.admin',
     'django.contrib.admindocs',
-
     # Security:
     'axes',
-
     # Health checks:
     # You may want to enable other checks as well,
     # see: https://github.com/KristianOellegaard/django-health-check
@@ -59,7 +54,6 @@ INSTALLED_APPS: Tuple[str, ...] = (
 MIDDLEWARE: Tuple[str, ...] = (
     # Content Security Policy:
     'csp.middleware.CSPMiddleware',
-
     # Django:
     'django.middleware.security.SecurityMiddleware',
     # django-permissions-policy
@@ -71,10 +65,8 @@ MIDDLEWARE: Tuple[str, ...] = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
     # Axes:
     'axes.middleware.AxesMiddleware',
-
     # Django HTTP Referrer Policy:
     'django_http_referrer_policy.middleware.ReferrerPolicyMiddleware',
 )
@@ -124,7 +116,9 @@ TIME_ZONE = 'UTC'
 STATIC_URL = '/static/'
 
 _COLLECTSTATIC_DRYRUN = config(
-    'DJANGO_COLLECTSTATIC_DRYRUN', cast=bool, default=False,
+    'DJANGO_COLLECTSTATIC_DRYRUN',
+    cast=bool,
+    default=False,
 )
 
 STATIC_ROOT = 'static' if _COLLECTSTATIC_DRYRUN else '/var/www/django/static'
@@ -137,25 +131,27 @@ STATICFILES_FINDERS = (
 # Templates
 # https://docs.djangoproject.com/en/3.2/ref/templates/api
 
-TEMPLATES = [{
-    'APP_DIRS': True,
-    'BACKEND': 'django.template.backends.django.DjangoTemplates',
-    'DIRS': [
-        # Contains plain text templates, like `robots.txt`:
-        BASE_DIR.joinpath('server', 'templates'),
-    ],
-    'OPTIONS': {
-        'context_processors': [
-            # Default template context processors:
-            'django.contrib.auth.context_processors.auth',
-            'django.template.context_processors.debug',
-            'django.template.context_processors.i18n',
-            'django.template.context_processors.media',
-            'django.contrib.messages.context_processors.messages',
-            'django.template.context_processors.request',
+TEMPLATES = [
+    {
+        'APP_DIRS': True,
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            # Contains plain text templates, like `robots.txt`:
+            BASE_DIR.joinpath('server', 'templates'),
         ],
-    },
-}]
+        'OPTIONS': {
+            'context_processors': [
+                # Default template context processors:
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
+            ],
+        },
+    }
+]
 
 # Media files
 # Media root dir is commonly changed in production

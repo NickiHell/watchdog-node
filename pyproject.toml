@@ -38,7 +38,9 @@ structlog = "*"
 uvicorn = "*"
 
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
+isort = "*"
+black = "*"
 django-debug-toolbar = "*"
 django-querycount = "*"
 django-migration-linter = "*"
@@ -73,19 +75,19 @@ dennis = "*"
 dump-env = "*"
 ipython = "*"
 taskipy = "*"
+flakeheaven = "*"
 
-
-[tool.flakehell]
-#baseline = ".flakehell_baseline"
+[tool.flakeheaven]
+base = "https://raw.githubusercontent.com/flakeheaven/flakeheaven/main/pyproject.toml"
 extended_default_ignore = []
 format = "grouped"
 max_complexity = 10
-max_function_length = 24
-max_line_length = 120
+max_function_length = 30
+max_line_length = 90
 show_source = true
 statistics = true
 
-[tool.flakehell.plugins]
+[tool.flakeheaven.plugins]
 flake8 = ["+*"]
 flake8-functions = ["+*"]
 flake8-eradicate = ["+*"]
