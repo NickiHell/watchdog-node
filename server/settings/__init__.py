@@ -9,8 +9,9 @@ To change settings file:
 `DJANGO_ENV=production python manage.py runserver`
 """
 
-import django_stubs_ext
 from os import environ
+
+import django_stubs_ext
 from split_settings.tools import include, optional
 
 # Monkeypatching Django, so stubs will work for all generics,
@@ -26,10 +27,8 @@ _base_settings = (
     'components/logging.py',
     'components/csp.py',
     'components/caches.py',
-
     # Select the right env:
     'environments/{0}.py'.format(_ENV),
-
     # Optionally override some settings:
     optional('environments/local.py'),
 )

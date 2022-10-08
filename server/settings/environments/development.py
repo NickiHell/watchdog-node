@@ -5,9 +5,10 @@ SECURITY WARNING: don't run with debug turned on in production!
 """
 
 import logging
+from pathlib import Path
 from typing import List
 
-from server.settings.components import config, BASE_DIR
+from server.settings.components import BASE_DIR, config
 from server.settings.components.common import (
     DATABASES,
     INSTALLED_APPS,
@@ -32,10 +33,8 @@ INSTALLED_APPS += (
     # Better debug:
     'debug_toolbar',
     'nplusone.ext.django',
-
     # Linting migrations:
     'django_migration_linter',
-
     # django-test-migrations:
     'django_test_migrations.contrib.django_checks.AutoNames',
     # This check might be useful in production as well,
@@ -44,7 +43,6 @@ INSTALLED_APPS += (
     # This will check that your database is configured properly,
     # when you run `python manage.py check` before deploy.
     'django_test_migrations.contrib.django_checks.DatabaseConfiguration',
-
     # django-extra-checks:
     'extra_checks',
 )
@@ -52,7 +50,7 @@ INSTALLED_APPS += (
 # Static files:
 # https://docs.djangoproject.com/en/3.2/ref/settings/#std:setting-STATICFILES_DIRS
 
-STATICFILES_DIRS: List[str] = [
+STATICFILES_DIRS: List[Path] = [
     BASE_DIR / 'static',
 ]
 
@@ -61,7 +59,6 @@ STATICFILES_DIRS: List[str] = [
 
 MIDDLEWARE += (
     'debug_toolbar.middleware.DebugToolbarMiddleware',
-
     # https://github.com/bradmontgomery/django-querycount
     # Prints how many queries were executed, useful for the APIs.
     'querycount.middleware.QueryCountMiddleware',
@@ -74,8 +71,7 @@ def _custom_show_toolbar(request):
 
 
 DEBUG_TOOLBAR_CONFIG = {
-    'SHOW_TOOLBAR_CALLBACK':
-        'server.settings.environments.development._custom_show_toolbar',
+    'SHOW_TOOLBAR_CALLBACK': 'server.settings.environments.development._custom_show_toolbar',
 }
 
 # This will make debug toolbar to work with django-csp,
@@ -88,9 +84,7 @@ CSP_CONNECT_SRC = ("'self'",)
 # https://github.com/jmcarp/nplusone
 
 # Should be the first in line:
-MIDDLEWARE = (  # noqa: WPS440
-                 'nplusone.ext.django.NPlusOneMiddleware',
-             ) + MIDDLEWARE
+MIDDLEWARE = ('nplusone.ext.django.NPlusOneMiddleware',) + MIDDLEWARE  # noqa: WPS440
 
 # Logging N+1 requests:
 NPLUSONE_RAISE = True  # comment out if you want to allow N+1 requests
@@ -104,9 +98,7 @@ NPLUSONE_WHITELIST = [
 # https://github.com/wemake-services/django-test-migrations
 
 # Set of badly named migrations to ignore:
-DTM_IGNORED_MIGRATIONS = frozenset((
-    ('axes', '*'),
-))
+DTM_IGNORED_MIGRATIONS = frozenset((('axes', '*'),))
 
 # django-extra-checks
 # https://github.com/kalekseev/django-extra-checks

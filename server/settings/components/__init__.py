@@ -1,5 +1,6 @@
-from decouple import AutoConfig
 from pathlib import Path
+
+from decouple import AutoConfig
 
 # Build paths inside the project like this: BASE_DIR.joinpath('some')
 # `pathlib` is better than writing: dirname(dirname(dirname(__file__)))
