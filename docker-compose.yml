@@ -1,50 +1,10 @@
-version: "3.8"
-services:
-  db:
-    image: "postgres:latest"
-    restart: unless-stopped
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-    env_file: ./config/.env
+version: '3.4'
 
-  app:
-    image: "web:dev"
+services:
+  watchdogbackend:
+    image: watchdogbackend
     build:
       context: .
-      dockerfile: ./docker/app/Dockerfile
-      cache_from:
-        - "web:dev"
-        - "web:latest"
-
-    volumes:
-      - django-static:/opt/watchdog/static
-    depends_on:
-      - db
-    env_file: ./config/.env
-
-    command: python -Wd manage.py runserver 0.0.0.0:8000
-    healthcheck:
-      test: |
-        /usr/bin/test $$(
-          /usr/bin/curl --fail http://localhost:8000/health/?format=json
-          --write-out "%{http_code}" --silent --output /dev/null
-        ) -eq 200
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
-
-# This task is an example of how to extend existing ones:
-#   some_worker:
-#     <<: *web
-#     command: python manage.py worker_process
-#
-#networks:
-#  # Network for your internals, use it by default:
-#  webnet:
-
-volumes:
-  pgdata:
-  django-static:
+      dockerfile: ./Dockerfile
+    ports:
+      - 8000:8000

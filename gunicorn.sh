@@ -28,7 +28,7 @@ python /code/manage.py compilemessages
 # Docs: http://docs.gunicorn.org/en/stable/settings.html
 # Concerning `workers` setting see:
 # https://github.com/wemake-services/wemake-django-template/issues/1022
-/usr/local/bin/gunicorn server.wsgi \
+/usr/local/bin/gunicorn server.asgi \
   --workers=4 `# Sync worker settings` \
   --max-requests=2000 \
   --max-requests-jitter=400 \

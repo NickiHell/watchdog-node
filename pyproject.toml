@@ -36,6 +36,7 @@ bcrypt = "*"
 structlog = "*"
 
 uvicorn = "*"
+aiogram = "*"
 
 
 [tool.poetry.group.dev.dependencies]
