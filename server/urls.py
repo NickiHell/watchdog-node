@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
-from django.views.generic import TemplateView
 from drf_spectacular.views import SpectacularSwaggerView
 from health_check import urls as health_urls
 
@@ -17,21 +16,6 @@ urlpatterns = [
         'api/swagger-ui/',
         SpectacularSwaggerView.as_view(url_name='schema'),
         name='swagger-ui',
-    ),
-    # Text and xml static files:
-    path(
-        'robots.txt',
-        TemplateView.as_view(
-            template_name='txt/robots.txt',
-            content_type='text/plain',
-        ),
-    ),
-    path(
-        'humans.txt',
-        TemplateView.as_view(
-            template_name='txt/humans.txt',
-            content_type='text/plain',
-        ),
     ),
 ]
 

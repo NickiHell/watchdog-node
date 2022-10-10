@@ -37,6 +37,7 @@ structlog = "*"
 
 uvicorn = "*"
 aiogram = "*"
+aiojobs = "*"
 
 
 [tool.poetry.group.dev.dependencies]

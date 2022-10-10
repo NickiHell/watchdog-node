@@ -1,10 +1,7 @@
-# This Dockerfile uses multi-stage build to customize DEV and PROD images:
-# https://docs.docker.com/develop/develop-images/multistage-build/
-
 FROM python:3.10
 
-LABEL maintainer="sobolevn@wemake.services"
-LABEL vendor="wemake.services"
+LABEL maintainer="nickihell@ya.ru"
+LABEL vendor="LifeBlackBox"
 
 ARG DJANGO_ENV
 
@@ -62,20 +59,21 @@ RUN apt-get update && apt-get upgrade -y \
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /code
+WORKDIR /app
 
 # This is a special case. We need to run this script as an entry point:
-COPY ./docker/app/entrypoint.sh /docker-entrypoint.sh
+COPY ./entrypoint.sh /docker-entrypoint.sh
+COPY ./manage.py /manage.py
 
 # Setting up proper permissions:
 RUN chmod +x '/docker-entrypoint.sh' \
-  && groupadd -r web && useradd -d /code -r -g web web \
-  && chown web:web -R /code \
+  && groupadd -r web && useradd -d /app -r -g web web \
+  && chown web:web -R /app \
   && mkdir -p /var/www/django/static /var/www/django/media \
   && chown web:web /var/www/django/static /var/www/django/media
 
 # Copy only requirements, to cache them in docker layer
-COPY --chown=web:web ./poetry.lock ./pyproject.toml /code/
+COPY --chown=web:web ./poetry.lock ./pyproject.toml /app/
 
 # Project initialization:
 RUN echo "$DJANGO_ENV" && poetry version \

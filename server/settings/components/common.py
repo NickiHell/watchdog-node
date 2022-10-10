@@ -1,21 +1,8 @@
-"""
-Django settings for server project.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/3.2/topics/settings/
-
-For the full list of settings and their config, see
-https://docs.djangoproject.com/en/3.2/ref/settings/
-"""
-
 from typing import Dict, List, Tuple, Union
 
 from django.utils.translation import gettext_lazy as _
 
 from server.settings.components import BASE_DIR, config
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 SECRET_KEY = config('DJANGO_SECRET_KEY')
 

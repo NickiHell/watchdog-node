@@ -20,9 +20,9 @@ export DJANGO_ENV
 # Run python specific scripts:
 # Running migrations in startup script might not be the best option, see:
 # docs/pages/template/production-checklist.rst
-python /code/manage.py migrate --noinput
-python /code/manage.py collectstatic --noinput
-python /code/manage.py compilemessages
+python /app/manage.py migrate --noinput
+python /app/manage.py collectstatic --noinput
+python /app/manage.py compilemessages
 
 # Start gunicorn:
 # Docs: http://docs.gunicorn.org/en/stable/settings.html
@@ -33,6 +33,6 @@ python /code/manage.py compilemessages
   --max-requests=2000 \
   --max-requests-jitter=400 \
   --bind='0.0.0.0:8000' `# Run Django on 8000 port` \
-  --chdir='/code'       `# Locations` \
+  --chdir='/app'       `# Locations` \
   --log-file=- \
   --worker-tmp-dir='/dev/shm'
