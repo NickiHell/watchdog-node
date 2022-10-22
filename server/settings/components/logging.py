@@ -1,10 +1,3 @@
-# Logging
-# https://docs.djangoproject.com/en/3.2/topics/logging/
-
-# See also:
-# 'Do not log' by Nikita Sobolev (@sobolevn)
-# https://sobolevn.me/2020/03/do-not-log
-
 from typing import TYPE_CHECKING, Callable
 
 import structlog

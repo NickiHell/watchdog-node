@@ -5,14 +5,6 @@ import sys
 
 
 def main() -> None:
-    """
-    Main function.
-
-    It does several things:
-    1. Sets default settings module, if it is not set
-    2. Warns if Django is not installed
-    3. Executes any given command
-    """
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'server.settings')
 
     try:

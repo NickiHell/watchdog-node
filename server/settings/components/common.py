@@ -48,7 +48,6 @@ MIDDLEWARE: Tuple[str, ...] = (
 
     # Django:
     'django.middleware.security.SecurityMiddleware',
-    # django-permissions-policy
     'django_permissions_policy.PermissionsPolicyMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
@@ -126,7 +125,7 @@ TEMPLATES = [{
     'BACKEND': 'django.template.backends.django.DjangoTemplates',
     'DIRS': [
         # Contains plain text templates, like `robots.txt`:
-        BASE_DIR.joinpath('server', 'templates'),
+        BASE_DIR.joinpath('templates'),
     ],
     'OPTIONS': {
         'context_processors': [

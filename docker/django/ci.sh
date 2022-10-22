@@ -5,10 +5,10 @@ set -o nounset
 set -o pipefail
 
 # Initializing global variables and functions:
-: "${DJANGO_ENV:=development}"
+: "${DJANGO_ENV:=dev}"
 
 # Fail CI if `DJANGO_ENV` is not set to `development`:
-if [ "$DJANGO_ENV" != 'development' ]; then
+if [ "$DJANGO_ENV" != 'dev' ]; then
   echo 'DJANGO_ENV is not set to development. Running tests is not safe.'
   exit 1
 fi
@@ -61,7 +61,7 @@ run_ci () {
   python manage.py lintmigrations --exclude-apps=axes --warnings-as-errors
 
   # Check production settings for gunicorn:
-  gunicorn --check-config --config python:docker.django.gunicorn_config server.asgi
+  gunicorn --check-config --config python:docker.django.gunicorn_config server.asgi.app
 
   # Checking if all the dependencies are secure and do not have any
   # known vulnerabilities:

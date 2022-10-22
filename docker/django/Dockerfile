@@ -90,8 +90,5 @@ RUN chmod +x '/app/docker-entrypoint.sh'
 # We customize how our app is loaded with the custom entrypoint:
 ENTRYPOINT ["tini", "--", "/app/docker-entrypoint.sh"]
 
-
-# The following stage is only for production:
-# https://wemake-django-template.readthedocs.io/en/latest/pages/template/production.html
 FROM dev_build AS prod_build
 COPY . /app

@@ -23,10 +23,9 @@ services:
 
   web:
     <<: &web
-      # Image for production:
       image: "registry.gitlab.com/LifeBlackBox/watchdog-backend:latest"
       build:
-        target: production_build
+        target: prod_build
         args:
           DJANGO_ENV: prod
 
