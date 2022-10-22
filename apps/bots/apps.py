@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class NetsConfig(AppConfig):
+class BotsConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "server.apps.nets"
+    name = "apps.bots"

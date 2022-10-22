@@ -1,21 +1,8 @@
-"""
-Django settings for server project.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/3.2/topics/settings/
-
-For the full list of settings and their config, see
-https://docs.djangoproject.com/en/3.2/ref/settings/
-"""
-
 from typing import Dict, List, Tuple, Union
 
 from django.utils.translation import gettext_lazy as _
 
 from server.settings.components import BASE_DIR, config
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 SECRET_KEY = config('DJANGO_SECRET_KEY')
 
@@ -23,11 +10,11 @@ SECRET_KEY = config('DJANGO_SECRET_KEY')
 
 INSTALLED_APPS: Tuple[str, ...] = (
     # Your apps go here:
-    'server.apps.users',
-    'server.apps.core',
-    'server.apps.linux',
-    'server.apps.bots',
-    'server.apps.nets',
+    'apps.users',
+    'apps.core',
+    'apps.linux',
+    'apps.bots',
+    'apps.nets',
 
     # Default django apps:
     'django.contrib.auth',
@@ -80,14 +67,14 @@ MIDDLEWARE: Tuple[str, ...] = (
 
 ROOT_URLCONF = 'server.urls'
 
-WSGI_APPLICATION = 'server.asgi.application'
+ASGI_APPLICATION = 'server.asgi.app'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.',
+        'ENGINE': 'django.db.backends.postgresql_psycopg',
         'NAME': config('POSTGRES_DB'),
         'USER': config('POSTGRES_USER'),
         'PASSWORD': config('POSTGRES_PASSWORD'),

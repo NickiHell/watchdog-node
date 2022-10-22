@@ -8,10 +8,7 @@ LABEL maintainer="nickihell.online"
 LABEL vendor="nickihell.online"
 
 # `DJANGO_ENV` arg is used to make prod / dev builds:
-ARG DJANGO_ENV \
-  # Needed for fixing permissions of files created by Docker:
-  UID=1000 \
-  GID=1000
+ARG DJANGO_ENV
 
 ENV DJANGO_ENV=${DJANGO_ENV} \
   # python:
@@ -88,14 +85,14 @@ RUN --mount=type=cache,target="$POETRY_CACHE_DIR" \
     --no-interaction --no-ansi
 
 # This is a special case. We need to run this script as an entry point:
-COPY ./docker/django/entrypoint.sh /docker-entrypoint.sh
+COPY ./docker/django/entrypoint.sh /app/docker-entrypoint.sh
 COPY ./manage.py /app/manage.py
 
 # Setting up proper permissions:
-RUN chmod +x '/docker-entrypoint.sh'
+RUN chmod +x '/app/docker-entrypoint.sh'
 
 # We customize how our app is loaded with the custom entrypoint:
-ENTRYPOINT ["tini", "--", "/docker-entrypoint.sh"]
+ENTRYPOINT ["tini", "--", "/app/docker-entrypoint.sh"]
 
 
 # The following stage is only for production:

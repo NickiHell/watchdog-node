@@ -1,6 +1,6 @@
 from django.db import models
 
-from server.apps.core.fields import CreatedField, ModifiedField
+from apps.core.fields import CreatedField, ModifiedField
 
 
 class BaseModel(models.Model):

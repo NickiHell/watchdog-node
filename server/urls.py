@@ -16,7 +16,7 @@ from django.urls import include, path
 from django.views.generic import TemplateView
 from health_check import urls as health_urls
 
-from server.apps.core.views import index
+from apps.core import index
 
 admin.autodiscover()
 

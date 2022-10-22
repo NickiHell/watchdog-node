@@ -35,6 +35,4 @@ find /var/www/django/static -type f \
 # Start gunicorn:
 # Docs: http://docs.gunicorn.org/en/stable/settings.html
 # Make sure it is in sync with `django/ci.sh` check:
-/usr/local/bin/gunicorn \
-  --config python:docker.django.gunicorn_config \
-  server.asgi
+/usr/local/bin/gunicorn --config python:docker.django.gunicorn_config server.asgi.app
