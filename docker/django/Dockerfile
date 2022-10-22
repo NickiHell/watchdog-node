@@ -93,6 +93,7 @@ RUN --mount=type=cache,target="$POETRY_CACHE_DIR" \
 
 # This is a special case. We need to run this script as an entry point:
 COPY ./docker/django/entrypoint.sh /docker-entrypoint.sh
+COPY ./manage.py /app/manage.py
 
 # Setting up proper permissions:
 RUN chmod +x '/docker-entrypoint.sh'

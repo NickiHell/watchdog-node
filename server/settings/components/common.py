@@ -23,7 +23,11 @@ SECRET_KEY = config('DJANGO_SECRET_KEY')
 
 INSTALLED_APPS: Tuple[str, ...] = (
     # Your apps go here:
+    'server.apps.users',
     'server.apps.core',
+    'server.apps.linux',
+    'server.apps.bots',
+    'server.apps.nets',
 
     # Default django apps:
     'django.contrib.auth',
@@ -130,25 +134,25 @@ STATICFILES_FINDERS = (
 # Templates
 # https://docs.djangoproject.com/en/3.2/ref/templates/api
 
-TEMPLATES = [{
-    'APP_DIRS': True,
-    'BACKEND': 'django.template.backends.django.DjangoTemplates',
-    'DIRS': [
-        # Contains plain text templates, like `robots.txt`:
-        BASE_DIR.joinpath('server', 'templates'),
-    ],
-    'OPTIONS': {
-        'context_processors': [
-            # Default template context processors:
-            'django.contrib.auth.context_processors.auth',
-            'django.template.context_processors.debug',
-            'django.template.context_processors.i18n',
-            'django.template.context_processors.media',
-            'django.contrib.messages.context_processors.messages',
-            'django.template.context_processors.request',
-        ],
-    },
-}]
+# TEMPLATES = [{
+#     'APP_DIRS': True,
+#     'BACKEND': 'django.template.backends.django.DjangoTemplates',
+#     'DIRS': [
+#         # Contains plain text templates, like `robots.txt`:
+#         BASE_DIR.joinpath('server', 'templates'),
+#     ],
+#     'OPTIONS': {
+#         'context_processors': [
+#             # Default template context processors:
+#             'django.contrib.auth.context_processors.auth',
+#             'django.template.context_processors.debug',
+#             'django.template.context_processors.i18n',
+#             'django.template.context_processors.media',
+#             'django.contrib.messages.context_processors.messages',
+#             'django.template.context_processors.request',
+#         ],
+#     },
+# }]
 
 # Media files
 # Media root dir is commonly changed in production

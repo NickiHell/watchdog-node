@@ -22,6 +22,7 @@ services:
     <<: &web
       # Image name is changed in production:
       image: "watchdog-backend:dev"
+      restart: unless-stopped
       build:
         target: development_build
         context: .

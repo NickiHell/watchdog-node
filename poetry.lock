@@ -659,6 +659,14 @@ optional = false
 python-versions = ">=3.6,<4.0"
 
 [[package]]
+name = "entrypoints"
+version = "0.4"
+description = "Discover and load entry points from installed packages."
+category = "dev"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
 name = "eradicate"
 version = "2.1.0"
 description = "Removes commented-out code."
@@ -900,6 +908,25 @@ python-versions = "*"
 
 [package.dependencies]
 flake8 = "*"
+
+[[package]]
+name = "flakeheaven"
+version = "3.0.0"
+description = "FlakeHeaven is a [Flake8](https://gitlab.com/pycqa/flake8) wrapper to make it cool."
+category = "dev"
+optional = false
+python-versions = ">=3.7,<4.0"
+
+[package.dependencies]
+colorama = "*"
+entrypoints = "*"
+flake8 = ">=4.0.1,<5.0.0"
+pygments = "*"
+toml = "*"
+urllib3 = "*"
+
+[package.extras]
+docs = ["alabaster", "myst-parser (>=0.18.0,<0.19.0)", "pygments-github-lexers", "sphinx"]
 
 [[package]]
 name = "flatten-dict"
@@ -2120,8 +2147,8 @@ multidict = ">=4.0"
 
 [metadata]
 lock-version = "1.1"
-python-versions = "^3.10"
-content-hash = "d16f0d070ad3b41c5c7eb76667c72a63e8ee974f8408c42d2a5c9aacc6e69462"
+python-versions = "^3.10.8"
+content-hash = "6cbd12ac0ac2caedd1f4726486c98d2080f356e6d56ace82715c8e5c5f44455c"
 
 [metadata.files]
 aiofiles = [
@@ -2563,6 +2590,10 @@ dump-env = [
   { file = "dump-env-1.3.0.tar.gz", hash = "sha256:6c2874c7f30c7cea945f3438e37e67e081644bd6c5383189613e5fc31c277837" },
   { file = "dump_env-1.3.0-py3-none-any.whl", hash = "sha256:c2f3bdda16f0dbb79fca0b22f8df763cff4009d311342c73ce36bcd1ad8b007c" },
 ]
+entrypoints = [
+  { file = "entrypoints-0.4-py3-none-any.whl", hash = "sha256:f174b5ff827504fd3cd97cc3f8649f3693f51538c7e4bdf3ef002c8429d42f9f" },
+  { file = "entrypoints-0.4.tar.gz", hash = "sha256:b706eddaa9218a19ebcd67b56818f05bb27589b1ca9e8d797b74affad4ccacd4" },
+]
 eradicate = [
   { file = "eradicate-2.1.0-py3-none-any.whl", hash = "sha256:8bfaca181db9227dc88bdbce4d051a9627604c2243e7d85324f6d6ce0fd08bb2" },
   { file = "eradicate-2.1.0.tar.gz", hash = "sha256:aac7384ab25b1bf21c4c012de9b4bf8398945a14c98c911545b2ea50ab558014" },
@@ -2644,6 +2675,10 @@ flake8-rst-docstrings = [
 flake8-string-format = [
   { file = "flake8-string-format-0.3.0.tar.gz", hash = "sha256:65f3da786a1461ef77fca3780b314edb2853c377f2e35069723348c8917deaa2" },
   { file = "flake8_string_format-0.3.0-py2.py3-none-any.whl", hash = "sha256:812ff431f10576a74c89be4e85b8e075a705be39bc40c4b4278b5b13e2afa9af" },
+]
+flakeheaven = [
+  { file = "flakeheaven-3.0.0-py3-none-any.whl", hash = "sha256:c3e8acbbb3ca29402132cc160857c4f9ed6051a37f9d4d4f424ea6d14616ea33" },
+  { file = "flakeheaven-3.0.0.tar.gz", hash = "sha256:81771740b2de3151d9cf6a38b63bc0f30b1070a15ddd2acf1c1706271d9dc0dd" },
 ]
 flatten-dict = [
   { file = "flatten-dict-0.4.2.tar.gz", hash = "sha256:506a96b6e6f805b81ae46a0f9f31290beb5fa79ded9d80dbe1b7fa236ab43076" },
