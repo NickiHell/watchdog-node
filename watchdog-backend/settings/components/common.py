@@ -1,7 +1,6 @@
 from typing import Dict, List, Tuple, Union
 
 from django.utils.translation import gettext_lazy as _
-
 from server.settings.components import BASE_DIR, config
 
 SECRET_KEY = config('DJANGO_SECRET_KEY')
@@ -12,11 +11,11 @@ AUTH_USER_MODEL = 'users.User'
 
 INSTALLED_APPS: Tuple[str, ...] = (
     # Your apps go here:
-    'server.apps.core',
-    'server.apps.users',
-    'server.apps.bots',
-    'server.apps.nets',
-    'server.apps.api',
+    'watchdog-backend.apps.core',
+    'watchdog-backend.apps.users',
+    'watchdog-backend.apps.bots',
+    'watchdog-backend.apps.nets',
+    'watchdog-backend.apps.api',
     'drf_spectacular',
     # Default django apps:
     'django.contrib.auth',
@@ -58,9 +57,9 @@ MIDDLEWARE: Tuple[str, ...] = (
     'django_http_referrer_policy.middleware.ReferrerPolicyMiddleware',
 )
 
-ROOT_URLCONF = 'server.urls'
+ROOT_URLCONF = 'watchdog-backend.urls'
 
-ASGI_APPLICATION = 'server.asgi.application'
+ASGI_APPLICATION = 'watchdog-backend.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -124,7 +123,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             # Contains plain text templates, like `robots.txt`:
-            BASE_DIR.joinpath('server', 'templates'),
+            BASE_DIR.joinpath('watchdog-backend', 'templates'),
         ],
         'OPTIONS': {
             'context_processors': [
@@ -148,7 +147,7 @@ TEMPLATES = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR.joinpath('media')
 
-# Django authentication system
+# Django authentication linux
 # https://docs.djangoproject.com/en/3.2/topics/auth/
 
 AUTHENTICATION_BACKENDS = (

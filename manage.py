@@ -13,7 +13,7 @@ def main() -> None:
     2. Warns if Django is not installed
     3. Executes any given command
     """
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'server.settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'watchdog-backend.settings')
 
     try:
         from django.core import management  # noqa: WPS433
