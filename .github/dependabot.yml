@@ -10,25 +10,20 @@ updates:
     directory: "/"
     schedule:
       # Check for updates to GitHub Actions every weekday
-      interval: "daily"
+      interval: "week"
 
   - package-ecosystem: "composer"
     directory: "/"
     schedule:
       # Check for updates managed by Composer once a week
-      interval: "daily"
+      interval: "week"
 
   - package-ecosystem: "composer"
     directory: "/"
     schedule:
-      interval: "dayly"
-      
-  - package-ecosystem: "pip"
-    directory: "/"
-    schedule:
       interval: "daily"
       
-  - package-ecosystem: "poetry"
+  - package-ecosystem: "pip"
     directory: "/"
     schedule:
       interval: "daily"
