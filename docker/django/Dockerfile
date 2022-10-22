@@ -2,7 +2,7 @@
 # This Dockerfile uses multi-stage build to customize DEV and PROD images:
 # https://docs.docker.com/develop/develop-images/multistage-build/
 
-FROM python:3.11-rc AS development_build
+FROM python:3.10.8 AS development_build
 
 LABEL maintainer="nickihell.online"
 LABEL vendor="nickihell.online"
@@ -28,7 +28,6 @@ ENV DJANGO_ENV=${DJANGO_ENV} \
   # tini:
   TINI_VERSION=v0.19.0 \
   # poetry:
-  POETRY_VERSION=1.2.2 \
   POETRY_NO_INTERACTION=1 \
   POETRY_VIRTUALENVS_CREATE=false \
   POETRY_CACHE_DIR='/var/cache/pypoetry' \
@@ -62,7 +61,7 @@ RUN apt-get update && apt-get upgrade -y \
   && chmod +x /usr/local/bin/tini && tini --version \
   # Installing `poetry` package manager:
   # https://github.com/python-poetry/poetry
-  && curl -sSL 'https://install.python-poetry.org' | python - \
+  && curl -sSL https://install.python-poetry.org | python3 - \
   && poetry --version \
   # Cleaning cache:
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
@@ -70,15 +69,12 @@ RUN apt-get update && apt-get upgrade -y \
 
 WORKDIR /app
 
-RUN groupadd -g "${GID}" -r web \
-  && useradd -d '/app' -g web -l -r -u "${UID}" web \
-  && chown web:web -R '/app' \
-  # Static and media files:
-  && mkdir -p '/var/www/django/static' '/var/www/django/media' \
-  && chown web:web '/var/www/django/static' '/var/www/django/media'
+# Static and media files:
+RUN mkdir -p '/var/www/django/static' '/var/www/django/media'
+RUN chown root:root '/var/www/django/static' '/var/www/django/media'
 
 # Copy only requirements, to cache them in docker layer
-COPY --chown=web:web ./poetry.lock ./pyproject.toml /app/
+COPY ./poetry.lock ./pyproject.toml /app/
 
 # Project initialization:
 # hadolint ignore=SC2046
@@ -98,9 +94,6 @@ COPY ./manage.py /app/manage.py
 # Setting up proper permissions:
 RUN chmod +x '/docker-entrypoint.sh'
 
-# Running as non-root user:
-USER web
-
 # We customize how our app is loaded with the custom entrypoint:
 ENTRYPOINT ["tini", "--", "/docker-entrypoint.sh"]
 
@@ -108,4 +101,4 @@ ENTRYPOINT ["tini", "--", "/docker-entrypoint.sh"]
 # The following stage is only for production:
 # https://wemake-django-template.readthedocs.io/en/latest/pages/template/production.html
 FROM development_build AS production_build
-COPY --chown=web:web . /app
+COPY . /app

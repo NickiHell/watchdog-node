@@ -11,7 +11,7 @@ version: "3.8"
 services:
   db:
     image: "postgres:latest"
-    restart: unless-stopped
+    restart: always
     volumes:
       - pgdata:/var/lib/postgresql/data
     networks:
@@ -22,7 +22,7 @@ services:
     <<: &web
       # Image name is changed in production:
       image: "watchdog-backend:dev"
-      restart: unless-stopped
+      restart: always
       build:
         target: development_build
         context: .
