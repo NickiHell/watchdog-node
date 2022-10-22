@@ -4,13 +4,13 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "week"
+      interval: "weekly"
 
   - package-ecosystem: "composer"
     directory: "/"
     schedule:
-      interval: "week"
-      
+      interval: "weekly"
+
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
