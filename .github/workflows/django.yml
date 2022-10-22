@@ -28,7 +28,7 @@ jobs:
 
       - name: black
         run: |
-          poetry run black -l 90 S .
+          poetry run black -l 90 -S .
 
       - name: Isort
         run: |
