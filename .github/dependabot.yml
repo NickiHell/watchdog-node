@@ -26,9 +26,9 @@ updates:
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
-      interval: "dayly"
+      interval: "daily"
       
   - package-ecosystem: "poetry"
     directory: "/"
     schedule:
-      interval: "dayly"
+      interval: "daily"
