@@ -28,12 +28,12 @@ jobs:
 
       - name: black
         run: |
-          python -m black -l 90 S .
+          poetry run black -l 90 S .
 
       - name: Isort
         run: |
-          python -m isort .
+          poetry run isort .
 
       - name: FlakeHeaven
         run: |
-          python -m flakeheaven lint
+          poetry run flakeheaven lint
