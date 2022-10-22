@@ -35,6 +35,7 @@ INSTALLED_APPS: Tuple[str, ...] = (
     'health_check.db',
     'health_check.cache',
     'health_check.storage',
+    'django_loguru',
 )
 
 MIDDLEWARE: Tuple[str, ...] = (
@@ -55,6 +56,7 @@ MIDDLEWARE: Tuple[str, ...] = (
     'axes.middleware.AxesMiddleware',
     # Django HTTP Referrer Policy:
     'django_http_referrer_policy.middleware.ReferrerPolicyMiddleware',
+    'django_loguru.middleware.DjangoLoguruMiddleware',
 )
 
 ROOT_URLCONF = 'watchdog-backend.urls'

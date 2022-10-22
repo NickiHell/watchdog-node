@@ -462,6 +462,18 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
 
 [[package]]
+name = "django-loguru"
+version = "1.0.3"
+description = "A middleware to log the requests and responses using loguru."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+django = ">=3.1"
+loguru = "*"
+
+[[package]]
 name = "django-migration-linter"
 version = "4.1.0"
 description = "Detect backward incompatible migrations for your django project"
@@ -1022,6 +1034,26 @@ redis = ["redis (>=3.0.0)"]
 zoneinfo = ["backports.zoneinfo (>=0.2.1)", "tzdata (>=2022.5)"]
 
 [[package]]
+name = "i3pyblocks"
+version = "2020.10.3"
+description = "A replacement for i3status, written in Python using asyncio."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.extras]
+blocks-dbus = ["dbus-next (>=0.1.1)"]
+blocks-http = ["aiohttp (>=3.4.0)"]
+blocks-i3ipc = ["i3ipc (>=2.0.1)"]
+blocks-inotify = ["aionotify (>=0.2.0)"]
+blocks-ps = ["psutil (>=5.4.8)"]
+blocks-pulse = ["pulsectl (>=18.10.5)"]
+blocks-x11 = ["python-xlib (>=0.2.8)"]
+dev = ["black", "flake8", "flake8-bugbear", "isort", "mypy", "pip-tools"]
+docs = ["sphinx", "sphinx-autoapi", "sphinx-rtd-theme"]
+test = ["asynctest", "pytest", "pytest-aiohttp", "pytest-asyncio", "pytest-cov"]
+
+[[package]]
 name = "identify"
 version = "2.5.6"
 description = "File identification library for Python"
@@ -1148,7 +1180,7 @@ format-nongpl = ["fqdn", "idna", "isoduration", "jsonpointer (>1.13)", "rfc3339-
 name = "loguru"
 version = "0.6.0"
 description = "Python logging made (stupidly) simple"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.5"
 
@@ -1945,6 +1977,17 @@ optional = false
 python-versions = ">=3.6,<4.0"
 
 [[package]]
+name = "torch"
+version = "1.12.1"
+description = "Tensors and Dynamic neural networks in Python with strong GPU acceleration"
+category = "main"
+optional = false
+python-versions = ">=3.7.0"
+
+[package.dependencies]
+typing-extensions = "*"
+
+[[package]]
 name = "traitlets"
 version = "5.5.0"
 description = ""
@@ -2076,7 +2119,7 @@ typing_extensions = ">=4.0,<5.0"
 name = "win32-setctime"
 version = "1.1.0"
 description = "A small Python utility to set file creation time on Windows"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.5"
 
@@ -2111,7 +2154,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "96fa7efa63e7e5047576fe920884ca9715a42f5b2322864589311e58561941f5"
+content-hash = "e79232b15f06381d6a680b5e07434ea9c7d27196659c7358fc7ca5840afabe08"
 
 [metadata.files]
 aiogram = [
@@ -2438,8 +2481,11 @@ django-http-referrer-policy = [
     {file = "django_http_referrer_policy-1.1.1-py2.py3-none-any.whl", hash = "sha256:7617d1256f1ab80c1a12bffdd8c8d24b94093eb1e21d035e2aa6d7d3c5ac999e"},
 ]
 django-ipware = [
-    {file = "django-ipware-4.0.2.tar.gz", hash = "sha256:602a58325a4808bd19197fef2676a0b2da2df40d0ecf21be414b2ff48c72ad05"},
-    {file = "django_ipware-4.0.2-py2.py3-none-any.whl", hash = "sha256:878dbb06a87e25550798e9ef3204ed70a200dd8b15e47dcef848cf08244f04c9"},
+  { file = "django-ipware-4.0.2.tar.gz", hash = "sha256:602a58325a4808bd19197fef2676a0b2da2df40d0ecf21be414b2ff48c72ad05" },
+  { file = "django_ipware-4.0.2-py2.py3-none-any.whl", hash = "sha256:878dbb06a87e25550798e9ef3204ed70a200dd8b15e47dcef848cf08244f04c9" },
+]
+django-loguru = [
+  { file = "django_loguru-1.0.3-py3-none-any.whl", hash = "sha256:31e0dcbff4c044a007956953ddd2d9b0aeb5ce6565a321120435730a3e35ab30" },
 ]
 django-migration-linter = [
   { file = "django-migration-linter-4.1.0.tar.gz", hash = "sha256:418f5ecee833576b79da213e4fc11f56f36e65ea190b7e62a3d8217c487b7635" },
@@ -2677,6 +2723,10 @@ h11 = [
 hypothesis = [
   { file = "hypothesis-6.56.3-py3-none-any.whl", hash = "sha256:802d236d03dbd54e0e1c55c0daa2ec41aeaadc87a4dcbb41421b78bf3f7a7789" },
   { file = "hypothesis-6.56.3.tar.gz", hash = "sha256:15dae5d993339aefa57e00f5cb5a5817ff300eeb661d96d1c9d094eb62b04c9a" },
+]
+i3pyblocks = [
+  { file = "i3pyblocks-2020.10.3-py3-none-any.whl", hash = "sha256:66623ee02ada5c2d5be8555123eb919bc00d4684161c852955c6ef2f70b0c42c" },
+  { file = "i3pyblocks-2020.10.3.tar.gz", hash = "sha256:b1b70436f26f05635771e0353bfd82fe6b04e1e01e58bd23e5b5b3e305ce5b2e" },
 ]
 identify = [
   { file = "identify-2.5.6-py2.py3-none-any.whl", hash = "sha256:b276db7ec52d7e89f5bc4653380e33054ddc803d25875952ad90b0f012cbcdaa" },
@@ -3244,6 +3294,28 @@ tomli = [
 tomlkit = [
   { file = "tomlkit-0.11.5-py3-none-any.whl", hash = "sha256:f2ef9da9cef846ee027947dc99a45d6b68a63b0ebc21944649505bf2e8bc5fe7" },
   { file = "tomlkit-0.11.5.tar.gz", hash = "sha256:571854ebbb5eac89abcb4a2e47d7ea27b89bf29e09c35395da6f03dd4ae23d1c" },
+]
+torch = [
+  { file = "torch-1.12.1-cp310-cp310-manylinux1_x86_64.whl", hash = "sha256:9c038662db894a23e49e385df13d47b2a777ffd56d9bcd5b832593fab0a7e286" },
+  { file = "torch-1.12.1-cp310-cp310-manylinux2014_aarch64.whl", hash = "sha256:4e1b9c14cf13fd2ab8d769529050629a0e68a6fc5cb8e84b4a3cc1dd8c4fe541" },
+  { file = "torch-1.12.1-cp310-cp310-win_amd64.whl", hash = "sha256:e9c8f4a311ac29fc7e8e955cfb7733deb5dbe1bdaabf5d4af2765695824b7e0d" },
+  { file = "torch-1.12.1-cp310-none-macosx_10_9_x86_64.whl", hash = "sha256:976c3f997cea38ee91a0dd3c3a42322785414748d1761ef926b789dfa97c6134" },
+  { file = "torch-1.12.1-cp310-none-macosx_11_0_arm64.whl", hash = "sha256:68104e4715a55c4bb29a85c6a8d57d820e0757da363be1ba680fa8cc5be17b52" },
+  { file = "torch-1.12.1-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:743784ccea0dc8f2a3fe6a536bec8c4763bd82c1352f314937cb4008d4805de1" },
+  { file = "torch-1.12.1-cp37-cp37m-manylinux2014_aarch64.whl", hash = "sha256:b5dbcca369800ce99ba7ae6dee3466607a66958afca3b740690d88168752abcf" },
+  { file = "torch-1.12.1-cp37-cp37m-win_amd64.whl", hash = "sha256:f3b52a634e62821e747e872084ab32fbcb01b7fa7dbb7471b6218279f02a178a" },
+  { file = "torch-1.12.1-cp37-none-macosx_10_9_x86_64.whl", hash = "sha256:8a34a2fbbaa07c921e1b203f59d3d6e00ed379f2b384445773bd14e328a5b6c8" },
+  { file = "torch-1.12.1-cp37-none-macosx_11_0_arm64.whl", hash = "sha256:42f639501928caabb9d1d55ddd17f07cd694de146686c24489ab8c615c2871f2" },
+  { file = "torch-1.12.1-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:0b44601ec56f7dd44ad8afc00846051162ef9c26a8579dda0a02194327f2d55e" },
+  { file = "torch-1.12.1-cp38-cp38-manylinux2014_aarch64.whl", hash = "sha256:cd26d8c5640c3a28c526d41ccdca14cf1cbca0d0f2e14e8263a7ac17194ab1d2" },
+  { file = "torch-1.12.1-cp38-cp38-win_amd64.whl", hash = "sha256:42e115dab26f60c29e298559dbec88444175528b729ae994ec4c65d56fe267dd" },
+  { file = "torch-1.12.1-cp38-none-macosx_10_9_x86_64.whl", hash = "sha256:a8320ba9ad87e80ca5a6a016e46ada4d1ba0c54626e135d99b2129a4541c509d" },
+  { file = "torch-1.12.1-cp38-none-macosx_11_0_arm64.whl", hash = "sha256:03e31c37711db2cd201e02de5826de875529e45a55631d317aadce2f1ed45aa8" },
+  { file = "torch-1.12.1-cp39-cp39-manylinux1_x86_64.whl", hash = "sha256:9b356aea223772cd754edb4d9ecf2a025909b8615a7668ac7d5130f86e7ec421" },
+  { file = "torch-1.12.1-cp39-cp39-manylinux2014_aarch64.whl", hash = "sha256:6cf6f54b43c0c30335428195589bd00e764a6d27f3b9ba637aaa8c11aaf93073" },
+  { file = "torch-1.12.1-cp39-cp39-win_amd64.whl", hash = "sha256:f00c721f489089dc6364a01fd84906348fe02243d0af737f944fddb36003400d" },
+  { file = "torch-1.12.1-cp39-none-macosx_10_9_x86_64.whl", hash = "sha256:bfec2843daa654f04fda23ba823af03e7b6f7650a873cdb726752d0e3718dada" },
+  { file = "torch-1.12.1-cp39-none-macosx_11_0_arm64.whl", hash = "sha256:69fe2cae7c39ccadd65a123793d30e0db881f1c1927945519c5c17323131437e" },
 ]
 traitlets = [
   { file = "traitlets-5.5.0-py3-none-any.whl", hash = "sha256:1201b2c9f76097195989cdf7f65db9897593b0dfd69e4ac96016661bb6f0d30f" },

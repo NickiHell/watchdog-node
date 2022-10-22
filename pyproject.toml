@@ -38,6 +38,9 @@ structlog = "*"
 uvicorn = "*"
 aiogram = "*"
 aiojobs = "*"
+i3pyblocks = "*"
+torch = "*"
+django-loguru = ""
 
 
 [tool.poetry.group.dev.dependencies]
