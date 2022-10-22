@@ -48,10 +48,10 @@ run_ci () {
   python manage.py check --fail-level WARNING
 
   # Run checks to be sure settings are correct (production flag is required):
-  DJANGO_ENV=production python manage.py check --deploy --fail-level WARNING
+  DJANGO_ENV=prod python manage.py check --deploy --fail-level WARNING
 
   # Check that staticfiles app is working fine:
-  DJANGO_ENV=production DJANGO_COLLECTSTATIC_DRYRUN=1 \
+  DJANGO_ENV=prod DJANGO_COLLECTSTATIC_DRYRUN=1 \
     python manage.py collectstatic --no-input --dry-run
 
   # Check that all migrations worked fine:

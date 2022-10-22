@@ -14,11 +14,11 @@ services:
       image: "watchdog-backend:dev"
       restart: always
       build:
-        target: development_build
+        target: dev
         context: .
         dockerfile: ./docker/django/Dockerfile
         args:
-          DJANGO_ENV: development
+          DJANGO_ENV: dev
         cache_from:
           - "watchdog-backend:dev"
           - "watchdog-backend:latest"

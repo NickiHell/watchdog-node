@@ -28,7 +28,7 @@ services:
       build:
         target: production_build
         args:
-          DJANGO_ENV: production
+          DJANGO_ENV: prod
 
       restart: unless-stopped
       volumes:

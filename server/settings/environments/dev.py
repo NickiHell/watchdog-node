@@ -85,7 +85,7 @@ def _custom_show_toolbar(request):
 
 DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK':
-        'server.settings.environments.development._custom_show_toolbar',
+        'server.settings.environments.dev._custom_show_toolbar',
 }
 
 # This will make debug toolbar to work with django-csp,

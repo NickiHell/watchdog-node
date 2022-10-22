@@ -10,7 +10,7 @@ set -o pipefail
 # Check that $DJANGO_ENV is set to "production",
 # fail otherwise, since it may break things:
 echo "DJANGO_ENV is $DJANGO_ENV"
-if [ "$DJANGO_ENV" != 'production' ]; then
+if [ "$DJANGO_ENV" != 'prod' ]; then
   echo 'Error: DJANGO_ENV is not set to "production".'
   echo 'Application will not start.'
   exit 1
@@ -35,4 +35,4 @@ find /var/www/django/static -type f \
 # Start gunicorn:
 # Docs: http://docs.gunicorn.org/en/stable/settings.html
 # Make sure it is in sync with `django/ci.sh` check:
-/usr/local/bin/gunicorn --config python:docker.django.gunicorn_config server.asgi.app
+gunicorn --config python:docker.django.gunicorn_config server.asgi.app

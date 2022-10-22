@@ -1,8 +1,4 @@
-# syntax = docker/dockerfile:1
-# This Dockerfile uses multi-stage build to customize DEV and PROD images:
-# https://docs.docker.com/develop/develop-images/multistage-build/
-
-FROM python:3.10.8 AS development_build
+FROM python:3.10.8 AS dev_build
 
 LABEL maintainer="nickihell.online"
 LABEL vendor="nickihell.online"
@@ -81,7 +77,7 @@ RUN --mount=type=cache,target="$POETRY_CACHE_DIR" \
   # Install deps:
   && poetry run pip install -U pip \
   && poetry install \
-    $(if [ "$DJANGO_ENV" = 'production' ]; then echo '--only core'; fi) \
+    $(if [ "$DJANGO_ENV" = 'prod' ]; then echo '--only core'; fi) \
     --no-interaction --no-ansi
 
 # This is a special case. We need to run this script as an entry point:
@@ -97,5 +93,5 @@ ENTRYPOINT ["tini", "--", "/app/docker-entrypoint.sh"]
 
 # The following stage is only for production:
 # https://wemake-django-template.readthedocs.io/en/latest/pages/template/production.html
-FROM development_build AS production_build
+FROM dev_build AS prod_build
 COPY . /app

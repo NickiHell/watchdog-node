@@ -1,7 +1,7 @@
 """
 This file contains all the settings used in production.
 
-This file is required and if development.py is present these
+This file is required and if dev.py is present these
 values are overridden.
 """
 

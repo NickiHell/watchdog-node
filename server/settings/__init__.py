@@ -19,7 +19,7 @@ from split_settings.tools import include, optional
 django_stubs_ext.monkeypatch()
 
 # Managing environment via `DJANGO_ENV` variable:
-environ.setdefault('DJANGO_ENV', 'development')
+environ.setdefault('DJANGO_ENV', 'dev')
 _ENV = environ['DJANGO_ENV']
 
 _base_settings = (
@@ -32,7 +32,7 @@ _base_settings = (
     'environments/{0}.py'.format(_ENV),
 
     # Optionally override some settings:
-    optional('environments/local.py'),
+    optional('environments/test.py'),
 )
 
 # Include settings:
