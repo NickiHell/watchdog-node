@@ -27,6 +27,7 @@ aiohttp = "^3.8.3"
 aiojobs = "^1.1.0"
 aiofiles = "^22.1.0"
 djangorestframework = "^3.14.0"
+aiogram = "^2.22.2"
 
 
 [tool.poetry.group.test.dependencies]
