@@ -1,7 +1,7 @@
 import pytest
 from django_test_migrations.migrator import Migrator
 
-from server.apps.main.urls import app_name
+from server.apps.core.urls import app_name
 
 
 def test_initial0001(migrator: Migrator) -> None:

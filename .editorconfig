@@ -1,5 +1,5 @@
 # Check http://editorconfig.org for more information
-# This is the main config file for this project:
+# This is the core config file for this project:
 root = true
 
 [*]
@@ -18,7 +18,7 @@ indent_size = 4
 indent_style = space
 indent_size = 4
 
-[Makefile]
+[{Makefile,Caddyfile}]
 indent_style = tab
 
 [*.md]

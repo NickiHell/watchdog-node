@@ -244,5 +244,3 @@ artifacts/
 
 # ipython:
 .ipython/
-
-.vscode/

@@ -1,115 +1,106 @@
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
-
-
-[tool.nitpick]
-style = "https://raw.githubusercontent.com/wemake-services/wemake-python-styleguide/master/styles/nitpick-style-wemake.toml"
-
-
 [tool.poetry]
-name = "WatchDog"
-description = ""
+name = "watchdog-backend"
+description = "WatchDog Backend"
 version = "0.1.0"
 readme = "README.md"
-authors = [""]
+authors = ["nickihell.online"]
 
 
 [tool.poetry.dependencies]
 python = "^3.10"
 
-django = "*"
-django-split-settings = "*"
-django-axes = "*"
-django-csp = "*"
-django-health-check = "*"
-django-http-referrer-policy = "*"
-django-permissions-policy = "*"
-django-stubs-ext = "*"
-djangorestframework = "*"
-drf-spectacular = "*"
+django = { version = "^3.2", extras = ["argon2"] }
+django-split-settings = "^1.2"
+django-axes = "^5.39"
+django-csp = "^3.7"
+django-health-check = "^3.16"
+django-http-referrer-policy = "^1.1"
+django-permissions-policy = "^4.13"
+django-stubs-ext = "^0.5"
 
-psycopg2-binary = "*"
-gunicorn = "*"
-python-decouple = "*"
-bcrypt = "*"
-structlog = "*"
-
-uvicorn = "*"
-aiogram = "*"
-aiojobs = "*"
-i3pyblocks = "*"
-torch = "*"
-django-loguru = ""
+psycopg2-binary = "^2.9"
+gunicorn = "^20.0"
+python-decouple = "^3.6"
+structlog = "^22.1"
+django-loguru = "^1.0.3"
+aiohttp = "^3.8.3"
+aiojobs = "^1.1.0"
+aiofiles = "^22.1.0"
+djangorestframework = "^3.14.0"
 
 
-[tool.poetry.group.dev.dependencies]
-isort = "*"
-black = "*"
-django-debug-toolbar = "*"
-django-querycount = "*"
-django-migration-linter = "*"
-django-extra-checks = "*"
-django-coverage-plugin = "*"
-nplusone = "*"
+[tool.poetry.group.test.dependencies]
+django-debug-toolbar = "^3.6"
+django-querycount = "^0.7"
+django-migration-linter = "^4.1"
+django-extra-checks = "^0.12"
+django-coverage-plugin = "^2.0"
+nplusone = "^1.0"
 
-wemake-python-styleguide = "*"
-flake8-pytest-style = "*"
-flake8-django = "*"
-flake8-logging-format = "*"
-nitpick = "*"
+wemake-python-styleguide = "^0.16"
+flake8-pytest-style = "^1.6"
+flake8-django = "^1.1"
+flake8-logging-format = "^0.7"
+nitpick = "^0.32"
+doc8 = "^1.0"
 
-pytest = "*"
-pytest-django = "*"
-pytest-cov = "*"
-pytest-randomly = "*"
-pytest-deadfixtures = "*"
-pytest-testmon = "*"
-pytest-timeout = "*"
-django-test-migrations = "*"
-hypothesis = "*"
+pytest = "^7.1"
+pytest-django = "^4.5"
+pytest-cov = "^3.0"
+pytest-randomly = "^3.12"
+pytest-deadfixtures = "^2.2"
+pytest-timeout = "^2.1"
+django-test-migrations = "^1.2"
+hypothesis = "^6.54"
 
-mypy = "*"
-django-stubs = "*"
+mypy = "^0.971"
+django-stubs = "^1.12"
 
-yamllint = "*"
-safety = "*"
-dotenv-linter = "*"
-polint = "*"
-dennis = "*"
-dump-env = "*"
-ipython = "*"
-taskipy = "*"
-flakeheaven = "*"
+yamllint = "^1.27"
+safety = "^2.1"
+dotenv-linter = "^0.4"
+polint = "^0.4"
+dennis = "^1.1"
+dump-env = "^1.3"
+ipython = "^8.4"
+
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.group.docs.dependencies]
+sphinx = "^5.1"
+sphinx-autodoc-typehints = "^1.19"
+tomli = "^2.0"
 
 [tool.flakeheaven]
+# optionally inherit from remote config (or local if you want)
 base = "https://raw.githubusercontent.com/flakeheaven/flakeheaven/main/pyproject.toml"
-extended_default_ignore = []
+# specify any flake8 options. For example, exclude "example.py":
+exclude = ["example.py"]
+# make output nice
 format = "grouped"
-max_complexity = 10
-max_function_length = 30
+# 80 chars aren't enough in 21 century
 max_line_length = 90
+# show line of source code in output
 show_source = true
-statistics = true
 
+# list of plugins and rules for them
 [tool.flakeheaven.plugins]
-flake8 = ["+*"]
-flake8-functions = ["+*"]
-flake8-eradicate = ["+*"]
-flake8-bugbear = ["+*"]
-flake8-comprehensions = ["+*"]
-flake8-commas = ["+*"]
-flake8-quotes = ["+*"]
-mccabe = ["+*"]
-pep8-naming = ["+*"]
-pycodestyle = ["+*", "-E501"]
-wemake-python-styleguide = ["+*", "-WPS305"]
+# include everything in pyflakes except F401
+pyflakes = ["+*", "-F401"]
+# enable only codes from S100 to S199
+flake8-bandit = ["-*", "+S1??"]
+# enable everything that starts from `flake8-`
+"flake8-*" = ["+*"]
+# explicitly disable plugin
+flake8-docstrings = ["-*"]
 
-[tool.pytest.ini_options]
-DJANGO_SETTINGS_MODULE = "server.settings.testing"
-addopts = ["--reuse-db"]
 
-[tool.taskipy.tasks]
-flakehell = "flakehell lint --jobs 4"
-pytest = "pytest tests --disable-pytest-warnings"
-mypy = "mypy server"
+
+[build-system]
+requires = ["poetry-core>=1.2.0"]
+build-backend = "poetry.core.masonry.api"
+
+
+[tool.nitpick]
+style = "https://raw.githubusercontent.com/wemake-services/wemake-python-styleguide/0.16.1/styles/nitpick-style-wemake.toml"
