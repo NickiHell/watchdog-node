@@ -1,9 +1,3 @@
-"""
-This file contains all the settings that defines the development server.
-
-SECURITY WARNING: don't run with debug turned on in production!
-"""
-
 import logging
 import socket
 from typing import List
@@ -14,8 +8,6 @@ from server.settings.components.common import (
     INSTALLED_APPS,
     MIDDLEWARE,
 )
-
-# Setting the development status:
 
 DEBUG = True
 
@@ -61,9 +53,6 @@ STATICFILES_DIRS: List[str] = []
 
 MIDDLEWARE += (
     'debug_toolbar.middleware.DebugToolbarMiddleware',
-
-    # https://github.com/bradmontgomery/django-querycount
-    # Prints how many queries were executed, useful for the APIs.
     'querycount.middleware.QueryCountMiddleware',
 )
 

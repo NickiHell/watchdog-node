@@ -6,6 +6,8 @@ from server.settings.components import BASE_DIR, config
 
 SECRET_KEY = config('DJANGO_SECRET_KEY')
 
+AUTH_USER_MODEL = 'users.User'
+
 # Application definition:
 
 INSTALLED_APPS: Tuple[str, ...] = (
@@ -73,7 +75,7 @@ ASGI_APPLICATION = 'server.asgi.app'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': config('POSTGRES_DB'),
         'USER': config('POSTGRES_USER'),
         'PASSWORD': config('POSTGRES_PASSWORD'),

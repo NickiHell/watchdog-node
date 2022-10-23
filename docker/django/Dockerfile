@@ -1,4 +1,4 @@
-FROM python:3.10.8 AS dev_build
+FROM python:3.10.8-slim-bullseye AS dev_build
 
 LABEL maintainer="nickihell.online"
 LABEL vendor="nickihell.online"
@@ -60,6 +60,8 @@ RUN apt-get update && apt-get upgrade -y \
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
+RUN cd /
+RUN mkdir app
 WORKDIR /app
 
 # Static and media files:
@@ -90,5 +92,5 @@ RUN chmod +x '/app/docker-entrypoint.sh'
 # We customize how our app is loaded with the custom entrypoint:
 ENTRYPOINT ["tini", "--", "/app/docker-entrypoint.sh"]
 
-FROM dev_build AS prod_build
-COPY . /app
+#FROM dev_build AS prod_build
+#COPY . /app

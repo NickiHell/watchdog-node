@@ -38,7 +38,7 @@ www.{$DOMAIN_NAME} {
 
 	# Serve Django app
 	handle {
-		reverse_proxy web:8000
+		reverse_proxy django:8000
 	}
 
 	# Dynamically compress response with gzip when it makes sense.

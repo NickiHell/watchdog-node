@@ -6,7 +6,7 @@ set -o pipefail
 
 readonly cmd="$*"
 
-: "${DJANGO_DATABASE_HOST:=db}"
+: "${DJANGO_DATABASE_HOST:=postgres}"
 : "${DJANGO_DATABASE_PORT:=5432}"
 
 # We need this line to make sure that this container is started

@@ -1,59 +1,68 @@
 version: "3.8"
+
+
 services:
-  db:
+  watchdog:
+    image: "watchdog-backend:dev"
+    restart: always
+    build:
+      target: dev_build
+      context: .
+      dockerfile: ./docker/django/Dockerfile
+      args:
+        DJANGO_ENV: dev
+    ports:
+      - "80:8000"
+    volumes:
+      - django-static:/var/www/django/static
+      - .:/app
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - watchdog-network
+    env_file: config/.env
+    environment:
+      DJANGO_DATABASE_HOST: postgres
+
+    command: python -Wd manage.py runserver 0.0.0.0:8000
+    healthcheck:
+      test: |
+        /usr/bin/test $$(
+          /usr/bin/curl --fail http://localhost:8000/health/?format=json
+          --write-out "%{http_code}" --silent --output /dev/null
+        ) -eq 200
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  postgres:
     image: "postgres:latest"
     restart: always
     volumes:
       - pgdata:/var/lib/postgresql/data
-    env_file: ./config/.env
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
     networks:
-      - watchdog
+      - watchdog-network
 
-  web:
-    <<: &web
-      image: "watchdog-backend:dev"
-      restart: always
-      build:
-        target: dev_build
-        context: .
-        dockerfile: ./docker/django/Dockerfile
-        args:
-          DJANGO_ENV: dev
-        cache_from:
-          - "watchdog-backend:dev"
-          - "watchdog-backend:latest"
-          - "*"
-      ports:
-        - "80:8000"
-      volumes:
-        - django-static:/var/www/django/static
-      depends_on:
-        - db
-      networks:
-        - watchdog
-      env_file: ./config/.env
-      environment:
-        DJANGO_DATABASE_HOST: db
+  redis:
+    restart: always
+    image: "redis:latest"
+    env_file: ./config/.env
+    ports:
+      - "6379:6379"
+    networks:
+      - watchdog-network
 
-      command: python -Wd manage.py runserver 0.0.0.0:8000
-      healthcheck:
-        test: |
-          /usr/bin/test $$(
-            /usr/bin/curl --fail http://localhost:8000/health/?format=json
-            --write-out "%{http_code}" --silent --output /dev/null
-          ) -eq 200
-        interval: 10s
-        timeout: 5s
-        retries: 5
-        start_period: 30s
-
-# This task is an example of how to extend existing ones:
-#   some_worker:
-#     <<: *web
-#     command: python manage.py worker_process
 
 networks:
-  watchdog:
+  watchdog-network:
 
 volumes:
   pgdata:
