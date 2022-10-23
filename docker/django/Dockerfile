@@ -1,4 +1,4 @@
-FROM python:3.10.8-slim-bullseye AS dev_build
+FROM python:3.10.8-buster AS dev_build
 
 LABEL maintainer="nickihell.online"
 LABEL vendor="nickihell.online"
@@ -60,16 +60,14 @@ RUN apt-get update && apt-get upgrade -y \
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
   && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
-RUN cd /
-RUN mkdir app
+ADD . /app
 WORKDIR /app
 
 # Static and media files:
 RUN mkdir -p '/var/www/django/static' '/var/www/django/media'
 RUN chown root:root '/var/www/django/static' '/var/www/django/media'
 
-# Copy only requirements, to cache them in docker layer
-COPY ./poetry.lock ./pyproject.toml /app/
+USER root
 
 # Project initialization:
 # hadolint ignore=SC2046
@@ -82,15 +80,9 @@ RUN --mount=type=cache,target="$POETRY_CACHE_DIR" \
     $(if [ "$DJANGO_ENV" = 'prod' ]; then echo '--only core'; fi) \
     --no-interaction --no-ansi
 
-# This is a special case. We need to run this script as an entry point:
-COPY ./docker/django/entrypoint.sh /app/docker-entrypoint.sh
-COPY ./manage.py /app/manage.py
-
 # Setting up proper permissions:
-RUN chmod +x '/app/docker-entrypoint.sh'
+RUN chmod +x '/app/docker/django/entrypoint.sh'
+RUN chown root:root '/app/docker/django/entrypoint.sh'
 
 # We customize how our app is loaded with the custom entrypoint:
-ENTRYPOINT ["tini", "--", "/app/docker-entrypoint.sh"]
-
-#FROM dev_build AS prod_build
-#COPY . /app
+ENTRYPOINT ["tini", "--", "/app/docker/django/entrypoint.sh"]
