@@ -9,15 +9,9 @@ readonly cmd="$*"
 : "${DJANGO_DATABASE_HOST:=postgres}"
 : "${DJANGO_DATABASE_PORT:=5432}"
 
-# We need this line to make sure that this container is started
-# after the one with postgres:
-dockerize \
-  -wait "tcp://${DJANGO_DATABASE_HOST}:${DJANGO_DATABASE_PORT}" \
-  -timeout 90s
 
-# It is also possible to wait for other services as well: redis, elastic, mongo
+dockerize -wait "tcp://${DJANGO_DATABASE_HOST}:${DJANGO_DATABASE_PORT}" -timeout 120s
 >&2 echo 'Postgres is up - continuing...'
 
-# Evaluating passed command (do not touch):
-# shellcheck disable=SC2086
+
 exec $cmd

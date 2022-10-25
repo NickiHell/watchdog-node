@@ -4,7 +4,8 @@ version: "3.8"
 services:
   watchdog:
     image: "watchdog-backend:dev"
-    restart: always
+    container_name: "WatchDog"
+    restart: unless-stopped
     build:
       target: dev_build
       context: .
@@ -23,7 +24,7 @@ services:
       - watchdog-network
     env_file: config/.env
     environment:
-      DJANGO_DATABASE_HOST: postgres
+      - config/.env
 
     command: python -Wd manage.py runserver 0.0.0.0:8000
     healthcheck:
@@ -39,7 +40,8 @@ services:
 
   postgres:
     image: "postgres:latest"
-    restart: always
+    restart: unless-stopped
+
     volumes:
       - pgdata:/var/lib/postgresql/data
     ports:
@@ -52,9 +54,10 @@ services:
       - watchdog-network
 
   redis:
-    restart: always
+    restart: unless-stopped
     image: "redis:latest"
-    env_file: ./config/.env
+    environment:
+      - config/.env
     ports:
       - "6379:6379"
     networks:
