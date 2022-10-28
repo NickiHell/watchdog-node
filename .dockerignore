@@ -59,7 +59,7 @@ docs/_build/
 target/
 
 # Docker
-Dockerfile
+docker/django/Dockerfile
 docker-compose.yml
 docker-compose.override.yml
 docker/docker-compose.prod.yml

@@ -5,10 +5,10 @@ set -o nounset
 set -o pipefail
 
 # Initializing global variables and functions:
-: "${DJANGO_ENV:=dev}"
+: "${DJANGO_ENV:=development}"
 
 # Fail CI if `DJANGO_ENV` is not set to `development`:
-if [ "$DJANGO_ENV" != 'dev' ]; then
+if [ "$DJANGO_ENV" != 'development' ]; then
   echo 'DJANGO_ENV is not set to development. Running tests is not safe.'
   exit 1
 fi

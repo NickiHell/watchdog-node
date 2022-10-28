@@ -9,11 +9,11 @@ services:
     build:
       target: dev_build
       context: .
-      dockerfile: ./docker/django/Dockerfile
+      dockerfile: docker/django/Dockerfile
       args:
-        DJANGO_ENV: dev
+        DJANGO_ENV: production
     ports:
-      - "80:8000"
+      - "8000:8000"
     volumes:
       - django-static:/var/www/django/static
       - .:/app
@@ -23,7 +23,6 @@ services:
     networks:
       - watchdog-network
     env_file: config/.env
-
     command: python -Wd manage.py runserver 0.0.0.0:8000
     healthcheck:
       test: |
@@ -37,9 +36,11 @@ services:
       start_period: 30s
 
   postgres:
+    container_name: "PostgresDB"
     image: "postgres:latest"
     restart: unless-stopped
-    env_file: config/.env
+    environment:
+      - POSTGRES_PASSWORD=postgres
     volumes:
       - pgdata:/var/lib/postgresql/data
     ports:
@@ -48,10 +49,9 @@ services:
       - watchdog-network
 
   redis:
-    restart: unless-stopped
+    container_name: "RedisDB"
     image: "redis:latest"
-    environment:
-      - config/.env
+    restart: unless-stopped
     ports:
       - "6379:6379"
     networks:
