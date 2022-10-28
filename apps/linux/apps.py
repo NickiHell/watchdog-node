@@ -1,5 +1,3 @@
-import os
-
 from django.apps import AppConfig
 
 
@@ -8,4 +6,8 @@ class LinuxConfig(AppConfig):
     name = "apps.linux"
 
     def ready(self) -> None:
-        print(os.system("waybar"))
+        ...
+
+# А что если распалаллелить вычислениям на всех в сети???? Создать анонимную сеть
+
+# который люди будут пробовать алгоритмы своих ботов а все на блюдатьза тем что происходит

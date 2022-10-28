@@ -3125,6 +3125,10 @@ i3ipc = [
   { file = "i3ipc-2.2.1-py3-none-any.whl", hash = "sha256:c0b898223d50d42c90c818deb5033d1304c582755547dee7d15df3e3781bc690" },
   { file = "i3ipc-2.2.1.tar.gz", hash = "sha256:e880d7d7147959ead5cb34764f08b97b41385b36eb8256e8af1ce163dbcccce8" },
 ]
+i3ipc = [
+  { file = "i3ipc-2.2.1-py3-none-any.whl", hash = "sha256:c0b898223d50d42c90c818deb5033d1304c582755547dee7d15df3e3781bc690" },
+  { file = "i3ipc-2.2.1.tar.gz", hash = "sha256:e880d7d7147959ead5cb34764f08b97b41385b36eb8256e8af1ce163dbcccce8" },
+]
 i3pyblocks = [
   { file = "i3pyblocks-2020.10.3-py3-none-any.whl", hash = "sha256:66623ee02ada5c2d5be8555123eb919bc00d4684161c852955c6ef2f70b0c42c" },
   { file = "i3pyblocks-2020.10.3.tar.gz", hash = "sha256:b1b70436f26f05635771e0353bfd82fe6b04e1e01e58bd23e5b5b3e305ce5b2e" },
