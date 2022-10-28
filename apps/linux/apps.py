@@ -1,3 +1,5 @@
+import os
+
 from django.apps import AppConfig
 
 
@@ -6,4 +8,4 @@ class LinuxConfig(AppConfig):
     name = "apps.linux"
 
     def ready(self) -> None:
-        print("ready")
+        print(os.system("waybar"))

@@ -1,11 +1,9 @@
-import signal
-
 import psutil
 from i3pyblocks import Runner, types, utils
-from i3pyblocks.blocks import datetime, dbus, i3ipc, inotify, ps, pulse
+from i3pyblocks.blocks import datetime, dbus, i3ipc, inotify, ps
 from loguru import logger
 
-logger.add(".logs/logs.txt", rotation="100 MB")
+logger.add("../../../logs.txt", rotation="100 MB")
 
 
 # def update_wall(update_speed: float = 1.0/25) -> None:
@@ -198,13 +196,13 @@ async def main():
     # In this case, we can force update the module when the volume changes,
     # for example, by running:
     # $ pactl set-sink-volume @DEFAULT_SINK@ +5% && pkill -SIGUSR1 example.py
-    await runner.register_block(
-        pulse.PulseAudioBlock(
-            format=" {volume:.0f}%",
-            format_mute=" mute",
-        ),
-        signals=(signal.SIGUSR1, signal.SIGUSR2),
-    )
+    # await runner.register_block(
+    #     pulse.PulseAudioBlock(
+    #         format=" {volume:.0f}%",
+    #         format_mute=" mute",
+    #     ),
+    #     signals=(signal.SIGUSR1, signal.SIGUSR2),
+    # )
 
     # RequestsBlock do a HTTP request to an url. We are using it here to show
     # the current weather for location, using
@@ -237,7 +235,3 @@ async def main():
 
     # Start the Runner instance
     await runner.start()
-
-
-if __name__ == "__main__":
-    utils.asyncio_run(main())

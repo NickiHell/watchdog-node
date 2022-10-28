@@ -1,40 +1,31 @@
-FROM archlinux:base-devel AS dev_build
+
+FROM archlinux:latest AS dev_build
+
+ARG ENV=dev
+
+ENV YOUR_ENV=${ENV} \
+  PYTHONFAULTHANDLER=1 \
+  PYTHONUNBUFFERED=1 \
+  PYTHONHASHSEED=random \
+  PIP_NO_CACHE_DIR=off \
+  PIP_DISABLE_PIP_VERSION_CHECK=on \
+  PIP_DEFAULT_TIMEOUT=100
 
 
-# Arrange
-LABEL maintainer="NickiHell"
-LABEL vendor="nickihell.online"
-
-ARG user=netrider
-ARG dev=false
+# Initial deps
+RUN pacman -Syyu python-poetry python-psycopg2 gcc --noconfirm --needed
 
 
-# Arrange
-ADD . /app/
-COPY ./docker/django/entrypoint.sh /app/entrypoint.sh
+# Copy only requirements to cache them in docker layer
+WORKDIR /app
 COPY poetry.lock pyproject.toml /app/
-RUN pacman -Syyu --needed --noconfirm git rsync python reflector
-RUN useradd --system --create-home $user
-RUN echo "$user ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers.d/$user
-USER $user
-WORKDIR /app/
-RUN sudo chown $user:$user /app -R
 
 
-# Act
-RUN git clone https://aur.archlinux.org/yay.git \
-  && cd yay \
-  && makepkg -sri --needed --noconfirm \
-  && cd /app \
-  && rm -rf .cache yay
+# Project initialization:
+RUN poetry config virtualenvs.create false \
+  && poetry install $(test "ENV" == production && echo "--no-dev") --no-interaction --no-ansi
 
 
-# Install deps
-RUN sudo reflector --latest 25  --sort rate --country Russia --save /etc/pacman.d/mirrorlist
-RUN yay -S base-devel git htop vim zsh tmux python tree yay dockerize python-psycopg python-pip --noconfirm
-RUN yay -S make python-poetry bash brotli curl gettext python-setuptools python-psycopg2 --noconfirm
-RUN pip install poetry
-RUN if [ "${dev}" = "true" ] ;then poetry install ;else poetry install --no-dev ;fi
-
-RUN python ./manage.py compilemessages
-CMD ["sh "]
+# Creating folders, and files for a project:
+COPY . /app
+CMD ["sh", "entrypoint.sh"]

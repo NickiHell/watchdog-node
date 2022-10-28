@@ -23,8 +23,6 @@ services:
     networks:
       - watchdog-network
     env_file: config/.env
-    environment:
-      - config/.env
 
     command: python -Wd manage.py runserver 0.0.0.0:8000
     healthcheck:
@@ -41,15 +39,11 @@ services:
   postgres:
     image: "postgres:latest"
     restart: unless-stopped
-
+    env_file: config/.env
     volumes:
       - pgdata:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-    environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
     networks:
       - watchdog-network
 
