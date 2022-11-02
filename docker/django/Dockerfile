@@ -1,9 +1,9 @@
-
 FROM archlinux:latest AS dev_build
 
-ARG DJANGO_ENV=development
 
-ENV YOUR_ENV=${ENV}
+# ENVS
+ARG DJANGO_ENV=dev
+
 ENV PYTHONFAULTHANDLER=1
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONHASHSEED=random
@@ -11,17 +11,17 @@ ENV PIP_NO_CACHE_DIR=off
 ENV PIP_DISABLE_PIP_VERSION_CHECK=on
 ENV PIP_DEFAULT_TIMEOUT=100
 
-
-RUN pacman -Syyu base-devel git python python-poetry python-psycopg2 postgresql gcc --noconfirm
+# Dependencies
+RUN pacman -Syyu base-devel git python python-poetry zsh gcc --noconfirm
 # RUN git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si
 
-
+# Directories
 WORKDIR /app
 ADD . /app
 
+# Project dependencies
+RUN poetry config virtualenvs.create false
+RUN poetry install $(test "DJANGO_ENV" == prod && echo " --without group.suka.dev") --no-interaction --no-ansi
 
-RUN poetry config virtualenvs.create false \
-  && poetry install $(test "DJANGO_ENV" == production && echo "--no-dev") --no-interaction --no-ansi
 
-
-CMD ["sh", "./docker/django/entrypoint.sh"]
+CMD ["/bin/zsh -c ", "docker/django/entrypoint.sh"]

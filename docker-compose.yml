@@ -1,29 +1,41 @@
-version: "3.8"
+version: "3.9"
 
 
 services:
+  caddy:
+    image: "caddy:2.6.2-alpine"
+    restart: unless-stopped
+    networks:
+      - watchdog_network
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - $PWD/docker/caddy/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+
   watchdog:
     image: "watchdog-backend:dev"
-    container_name: "WatchDog"
     restart: unless-stopped
     build:
       target: dev_build
       context: .
       dockerfile: docker/django/Dockerfile
       args:
-        DJANGO_ENV: production
+        DJANGO_ENV: prod
     ports:
       - "8000:8000"
     volumes:
       - django-static:/var/www/django/static
       - .:/app
     depends_on:
-      - postgres
+      - db
       - redis
     networks:
-      - watchdog-network
+      - watchdog_network
     env_file: config/.env
-    command: python -Wd manage.py runserver 0.0.0.0:8000
+    #    command: python -Wd manage.py runserver 0.0.0.0:8000
     healthcheck:
       test: |
         /usr/bin/test $$(
@@ -35,32 +47,37 @@ services:
       retries: 5
       start_period: 30s
 
-  postgres:
-    container_name: "PostgresDB"
+  db:
     image: "postgres:latest"
     restart: unless-stopped
     environment:
+      - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-    volumes:
-      - pgdata:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "5442:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
     networks:
-      - watchdog-network
+      - watchdog_network
 
   redis:
-    container_name: "RedisDB"
     image: "redis:latest"
     restart: unless-stopped
     ports:
-      - "6379:6379"
+      - "6389:6379"
     networks:
-      - watchdog-network
+      - watchdog_network
 
 
 networks:
-  watchdog-network:
+  watchdog_network:
+    ipam:
+      driver: default
+      config:
+        - subnet: 162.28.0.0/16
 
 volumes:
-  pgdata:
+  db_data:
   django-static:
+  caddy_data:
+  caddy_config:
