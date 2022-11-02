@@ -1674,14 +1674,6 @@ optional = false
 python-versions = ">=3.7"
 
 [[package]]
-name = "psycopg2"
-version = "2.9.5"
-description = "psycopg2 - Python-PostgreSQL Database Adapter"
-category = "main"
-optional = false
-python-versions = ">=3.6"
-
-[[package]]
 name = "psycopg2-binary"
 version = "2.9.5"
 description = "psycopg2 - Python-PostgreSQL Database Adapter"
@@ -2461,7 +2453,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10.8"
-content-hash = "8deb391dd953b9a867030bdb0bd36ebdd62008f53f4874b0df0a4bd3718105bd"
+content-hash = "3c7dc659457bc38c9c56415fe6ae90c7d18508934c8123fbdb5b55e4cd4a165d"
 
 [metadata.files]
 aiofiles = [
@@ -3125,10 +3117,6 @@ i3ipc = [
   { file = "i3ipc-2.2.1-py3-none-any.whl", hash = "sha256:c0b898223d50d42c90c818deb5033d1304c582755547dee7d15df3e3781bc690" },
   { file = "i3ipc-2.2.1.tar.gz", hash = "sha256:e880d7d7147959ead5cb34764f08b97b41385b36eb8256e8af1ce163dbcccce8" },
 ]
-i3ipc = [
-  { file = "i3ipc-2.2.1-py3-none-any.whl", hash = "sha256:c0b898223d50d42c90c818deb5033d1304c582755547dee7d15df3e3781bc690" },
-  { file = "i3ipc-2.2.1.tar.gz", hash = "sha256:e880d7d7147959ead5cb34764f08b97b41385b36eb8256e8af1ce163dbcccce8" },
-]
 i3pyblocks = [
   { file = "i3pyblocks-2020.10.3-py3-none-any.whl", hash = "sha256:66623ee02ada5c2d5be8555123eb919bc00d4684161c852955c6ef2f70b0c42c" },
   { file = "i3pyblocks-2020.10.3.tar.gz", hash = "sha256:b1b70436f26f05635771e0353bfd82fe6b04e1e01e58bd23e5b5b3e305ce5b2e" },
@@ -3505,19 +3493,6 @@ psycopg-binary = [
   { file = "psycopg_binary-3.1.4-cp39-cp39-musllinux_1_1_ppc64le.whl", hash = "sha256:9a716ee67f11922d3a6f6eee9c3f4e26853cf1fd2da0808c84f1eeb2b2783e69" },
   { file = "psycopg_binary-3.1.4-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:61d51110153230c6c4cfd45facde82ffa5f3a83bf72564b06d761bd66a3e31d6" },
   { file = "psycopg_binary-3.1.4-cp39-cp39-win_amd64.whl", hash = "sha256:86bf10ed317523a88f361a8d9543bf4459ed93d5af7acc7b534b5c37f1ea1929" },
-]
-psycopg2 = [
-  { file = "psycopg2-2.9.5-cp310-cp310-win32.whl", hash = "sha256:d3ef67e630b0de0779c42912fe2cbae3805ebaba30cda27fea2a3de650a9414f" },
-  { file = "psycopg2-2.9.5-cp310-cp310-win_amd64.whl", hash = "sha256:4cb9936316d88bfab614666eb9e32995e794ed0f8f6b3b718666c22819c1d7ee" },
-  { file = "psycopg2-2.9.5-cp36-cp36m-win32.whl", hash = "sha256:b9ac1b0d8ecc49e05e4e182694f418d27f3aedcfca854ebd6c05bb1cffa10d6d" },
-  { file = "psycopg2-2.9.5-cp36-cp36m-win_amd64.whl", hash = "sha256:fc04dd5189b90d825509caa510f20d1d504761e78b8dfb95a0ede180f71d50e5" },
-  { file = "psycopg2-2.9.5-cp37-cp37m-win32.whl", hash = "sha256:922cc5f0b98a5f2b1ff481f5551b95cd04580fd6f0c72d9b22e6c0145a4840e0" },
-  { file = "psycopg2-2.9.5-cp37-cp37m-win_amd64.whl", hash = "sha256:1e5a38aa85bd660c53947bd28aeaafb6a97d70423606f1ccb044a03a1203fe4a" },
-  { file = "psycopg2-2.9.5-cp38-cp38-win32.whl", hash = "sha256:f5b6320dbc3cf6cfb9f25308286f9f7ab464e65cfb105b64cc9c52831748ced2" },
-  { file = "psycopg2-2.9.5-cp38-cp38-win_amd64.whl", hash = "sha256:1a5c7d7d577e0eabfcf15eb87d1e19314c8c4f0e722a301f98e0e3a65e238b4e" },
-  { file = "psycopg2-2.9.5-cp39-cp39-win32.whl", hash = "sha256:322fd5fca0b1113677089d4ebd5222c964b1760e361f151cbb2706c4912112c5" },
-  { file = "psycopg2-2.9.5-cp39-cp39-win_amd64.whl", hash = "sha256:190d51e8c1b25a47484e52a79638a8182451d6f6dff99f26ad9bd81e5359a0fa" },
-  { file = "psycopg2-2.9.5.tar.gz", hash = "sha256:a5246d2e683a972e2187a8714b5c2cf8156c064629f9a9b1a873c1730d9e245a" },
 ]
 psycopg2-binary = [
   { file = "psycopg2-binary-2.9.5.tar.gz", hash = "sha256:33e632d0885b95a8b97165899006c40e9ecdc634a529dca7b991eb7de4ece41c" },
