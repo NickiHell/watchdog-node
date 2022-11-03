@@ -2,21 +2,16 @@ version: "3.9"
 
 
 services:
-  caddy:
-    image: "caddy:2.6.2-alpine"
-    restart: unless-stopped
-    networks:
-      - watchdog_network
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - $PWD/docker/caddy/Caddyfile:/etc/caddy/Caddyfile
-      - caddy_data:/data
-      - caddy_config:/config
+#  caddy:
+  #    image: "caddy:2.6.2-alpine"
+  #    restart: unless-stopped
+  #    networks:
+  #      - watchdog_network
+  #    ports:
+  #      - "
 
-  watchdog:
-    image: "watchdog-backend:dev"
+  web:
+    #    image: "watchdog-backend:dev"
     restart: unless-stopped
     build:
       target: dev_build
@@ -26,16 +21,15 @@ services:
         DJANGO_ENV: prod
     ports:
       - "8000:8000"
+    depends_on:
+      - postgres_db
     volumes:
       - django-static:/var/www/django/static
       - .:/app
-    depends_on:
-      - db
-      - redis
     networks:
       - watchdog_network
     env_file: config/.env
-    #    command: python -Wd manage.py runserver 0.0.0.0:8000
+    command: python -Wd manage.py runserver 0.0.0.0:8000
     healthcheck:
       test: |
         /usr/bin/test $$(
@@ -47,7 +41,7 @@ services:
       retries: 5
       start_period: 30s
 
-  db:
+  postgres_db:
     image: "postgres:latest"
     restart: unless-stopped
     environment:
@@ -57,10 +51,11 @@ services:
       - "5442:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
     networks:
       - watchdog_network
 
-  redis:
+  redis_db:
     image: "redis:latest"
     restart: unless-stopped
     ports:
@@ -71,10 +66,6 @@ services:
 
 networks:
   watchdog_network:
-    ipam:
-      driver: default
-      config:
-        - subnet: 162.28.0.0/16
 
 volumes:
   db_data:

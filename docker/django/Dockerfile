@@ -12,8 +12,7 @@ ENV PIP_DISABLE_PIP_VERSION_CHECK=on
 ENV PIP_DEFAULT_TIMEOUT=100
 
 # Dependencies
-RUN pacman -Syyu base-devel git python python-poetry zsh gcc --noconfirm
-# RUN git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si
+RUN pacman -Syyu base base-devel sudo git python python-poetry busybox wget zsh gcc --noconfirm
 
 # Directories
 WORKDIR /app
@@ -21,7 +20,7 @@ ADD . /app
 
 # Project dependencies
 RUN poetry config virtualenvs.create false
-RUN poetry install $(test "DJANGO_ENV" == prod && echo " --without group.suka.dev") --no-interaction --no-ansi
+RUN poetry install $(test "DJANGO_ENV" == prod && echo " --without group.dev") --no-interaction --no-ansi
 
 
-CMD ["/bin/zsh -c ", "docker/django/entrypoint.sh"]
+CMD ["./docker/django/entrypoint.sh"]
