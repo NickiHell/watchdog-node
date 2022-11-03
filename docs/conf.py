@@ -14,11 +14,14 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 
+# built-in
 import os
 import sys
 
+# external
 import django
 import tomli
+
 
 # We need `server` to be importable from here:
 sys.path.insert(0, os.path.abspath('..'))
@@ -29,6 +32,7 @@ django.setup()
 
 
 # -- Project information -----------------------------------------------------
+
 
 def _get_project_meta():
     with open('../pyproject.toml', mode='rb') as pyproject:
@@ -61,7 +65,6 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
     'sphinx.ext.napoleon',
-
     # 3rd party, order matters:
     # https://github.com/wemake-services/wemake-django-template/issues/159
     'sphinx_autodoc_typehints',

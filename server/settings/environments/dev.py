@@ -1,13 +1,12 @@
+# built-in
 import logging
 import socket
 from typing import List
 
+# project
 from server.settings.components import config
-from server.settings.components.common import (
-    DATABASES,
-    INSTALLED_APPS,
-    MIDDLEWARE,
-)
+from server.settings.components.common import DATABASES, INSTALLED_APPS, MIDDLEWARE
+
 
 DEBUG = True
 
@@ -26,10 +25,8 @@ INSTALLED_APPS += (
     # Better debug:
     'debug_toolbar',
     'nplusone.ext.django',
-
     # Linting migrations:
     'django_migration_linter',
-
     # django-test-migrations:
     'django_test_migrations.contrib.django_checks.AutoNames',
     # This check might be useful in production as well,
@@ -38,7 +35,6 @@ INSTALLED_APPS += (
     # This will check that your database is configured properly,
     # when you run `python manage.py check` before deploy.
     'django_test_migrations.contrib.django_checks.DatabaseConfiguration',
-
     # django-extra-checks:
     'extra_checks',
 )
@@ -59,7 +55,7 @@ MIDDLEWARE += (
 # https://django-debug-toolbar.readthedocs.io/en/stable/installation.html#configure-internal-ips
 try:  # This might fail on some OS
     INTERNAL_IPS = [
-        '{0}.1'.format(ip[:ip.rfind('.')])
+        '{0}.1'.format(ip[: ip.rfind('.')])
         for ip in socket.gethostbyname_ex(socket.gethostname())[2]
     ]
 except socket.error:  # pragma: no cover
@@ -73,8 +69,7 @@ def _custom_show_toolbar(request):
 
 
 DEBUG_TOOLBAR_CONFIG = {
-    'SHOW_TOOLBAR_CALLBACK':
-        'server.settings.environments.dev._custom_show_toolbar',
+    'SHOW_TOOLBAR_CALLBACK': 'server.settings.environments.dev._custom_show_toolbar',
 }
 
 # This will make debug toolbar to work with django-csp,
@@ -87,9 +82,7 @@ CSP_CONNECT_SRC = ("'self'",)
 # https://github.com/jmcarp/nplusone
 
 # Should be the first in line:
-MIDDLEWARE = (  # noqa: WPS440
-                 'nplusone.ext.django.NPlusOneMiddleware',
-             ) + MIDDLEWARE
+MIDDLEWARE = ('nplusone.ext.django.NPlusOneMiddleware',) + MIDDLEWARE  # noqa: WPS440
 
 # Logging N+1 requests:
 NPLUSONE_RAISE = True  # comment out if you want to allow N+1 requests
@@ -103,9 +96,7 @@ NPLUSONE_WHITELIST = [
 # https://github.com/wemake-services/django-test-migrations
 
 # Set of badly named migrations to ignore:
-DTM_IGNORED_MIGRATIONS = frozenset((
-    ('axes', '*'),
-))
+DTM_IGNORED_MIGRATIONS = frozenset((('axes', '*'),))
 
 # django-extra-checks
 # https://github.com/kalekseev/django-extra-checks

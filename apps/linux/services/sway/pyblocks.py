@@ -1,7 +1,9 @@
+# external
 import psutil
 from i3pyblocks import Runner, types, utils
 from i3pyblocks.blocks import datetime, dbus, i3ipc, inotify, ps
 from loguru import logger
+
 
 logger.add("../../../logs.txt", rotation="100 MB")
 
@@ -38,9 +40,7 @@ async def main():
     # Show the current i3 focused window title
     # Using `.format()` (https://pyformat.info/) to limit the number of
     # characters to 41
-    await runner.register_block(
-        i3ipc.WindowTitleBlock(format=" {window_title:.41s}")
-    )
+    await runner.register_block(i3ipc.WindowTitleBlock(format=" {window_title:.41s}"))
 
     # Show the current network speed for either en* (ethernet) or wl* devices
     # Limiting the interface name to only 2 characters since it can get quite
@@ -64,9 +64,7 @@ async def main():
             )
         )
 
-    await runner.register_block(
-        ps.VirtualMemoryBlock(format=" {available:.1f}GiB")
-    )
+    await runner.register_block(ps.VirtualMemoryBlock(format=" {available:.1f}GiB"))
 
     # Using custom icons to show the temperature visually
     # So when the temperature is above 75,  is shown, when it is above 50,

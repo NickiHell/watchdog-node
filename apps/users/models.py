@@ -1,5 +1,7 @@
+# external
 from django.contrib.auth.models import AbstractUser
 
+# project
 from apps.core.models import BaseModel
 
 

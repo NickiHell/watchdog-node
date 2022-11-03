@@ -1,8 +1,12 @@
+# built-in
 from typing import Dict, List, Tuple, Union
 
+# external
 from django.utils.translation import gettext_lazy as _
 
+# project
 from server.settings.components import BASE_DIR, config
+
 
 SECRET_KEY = config('DJANGO_SECRET_KEY')
 
@@ -17,21 +21,17 @@ INSTALLED_APPS: Tuple[str, ...] = (
     'apps.linux',
     'apps.bots',
     'apps.nets',
-
     # Default django apps:
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     # django-admin:
     'django.contrib.admin',
     'django.contrib.admindocs',
-
     # Security:
     'axes',
-
     # Health checks:
     # You may want to enable other checks as well,
     # see: https://github.com/KristianOellegaard/django-health-check
@@ -44,10 +44,8 @@ INSTALLED_APPS: Tuple[str, ...] = (
 MIDDLEWARE: Tuple[str, ...] = (
     # Logging:
     'server.settings.components.logging.LoggingContextVarsMiddleware',
-
     # Content Security Policy:
     'csp.middleware.CSPMiddleware',
-
     # Django:
     'django.middleware.security.SecurityMiddleware',
     'django_permissions_policy.PermissionsPolicyMiddleware',
@@ -58,10 +56,8 @@ MIDDLEWARE: Tuple[str, ...] = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
     # Axes:
     'axes.middleware.AxesMiddleware',
-
     # Django HTTP Referrer Policy:
     'django_http_referrer_policy.middleware.ReferrerPolicyMiddleware',
 )
@@ -99,9 +95,7 @@ LANGUAGES = (
     ('ru', _('Russian')),
 )
 
-LOCALE_PATHS = (
-    'locale/',
-)
+LOCALE_PATHS = ('locale/',)
 
 USE_TZ = True
 TIME_ZONE = 'UTC'
@@ -119,25 +113,27 @@ STATICFILES_FINDERS = (
 # Templates
 # https://docs.djangoproject.com/en/3.2/ref/templates/api
 
-TEMPLATES = [{
-    'APP_DIRS': True,
-    'BACKEND': 'django.template.backends.django.DjangoTemplates',
-    'DIRS': [
-        # Contains plain text templates, like `robots.txt`:
-        BASE_DIR.joinpath('templates'),
-    ],
-    'OPTIONS': {
-        'context_processors': [
-            # Default template context processors:
-            'django.contrib.auth.context_processors.auth',
-            'django.template.context_processors.debug',
-            'django.template.context_processors.i18n',
-            'django.template.context_processors.media',
-            'django.contrib.messages.context_processors.messages',
-            'django.template.context_processors.request',
+TEMPLATES = [
+    {
+        'APP_DIRS': True,
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            # Contains plain text templates, like `robots.txt`:
+            BASE_DIR.joinpath('templates'),
         ],
-    },
-}]
+        'OPTIONS': {
+            'context_processors': [
+                # Default template context processors:
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
+            ],
+        },
+    }
+]
 
 # Media files
 # Media root dir is commonly changed in production

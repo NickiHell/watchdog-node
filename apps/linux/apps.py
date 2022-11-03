@@ -1,3 +1,4 @@
+# external
 from django.apps import AppConfig
 
 
@@ -7,6 +8,7 @@ class LinuxConfig(AppConfig):
 
     def ready(self) -> None:
         ...
+
 
 # А что если распалаллелить вычислениям на всех в сети???? Создать анонимную сеть
 

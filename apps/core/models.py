@@ -1,5 +1,7 @@
+# external
 from django.db import models
 
+# project
 from apps.core.fields import CreatedField, ModifiedField
 
 
