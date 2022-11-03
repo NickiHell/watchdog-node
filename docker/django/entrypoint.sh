@@ -6,21 +6,11 @@ set -o errexit
 set -o nounset
 set -o pipefail
 
+. ./docker/django/prestart.sh
 readonly cmd="$*"
 
-: "${DJANGO_DATABASE_HOST:=postgres_db}"
-: "${DJANGO_DATABASE_PORT:=5432}"
 
-
-dockerize -wait "tcp://${DJANGO_DATABASE_HOST}:${DJANGO_DATABASE_PORT}" -timeout 120s
->&2 echo 'Postgres is up - continuing...'
-
-
-echo "!!!MIGRATING!!!"
-
-python /app/manage.py migrate --noinput
-python /app/manage.py collectstatic --noinput --clear
-python /app/manage.py compilemessages
-
+wait_db
+sync
 
 exec "$cmd"
