@@ -2,16 +2,16 @@ version: "3.9"
 
 
 services:
-#  caddy:
-  #    image: "caddy:2.6.2-alpine"
-  #    restart: unless-stopped
-  #    networks:
-  #      - watchdog_network
-  #    ports:
-  #      - "
+  caddy:
+      image: "caddy:2.6.2-alpine"
+      restart: unless-stopped
+      networks:
+        - watchdog_network
+      ports:
+        - "80:8000"
+        - "443:443"
 
   web:
-    #    image: "watchdog-backend:dev"
     restart: unless-stopped
     build:
       target: dev_build
