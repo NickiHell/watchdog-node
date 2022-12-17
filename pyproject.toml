@@ -21,12 +21,13 @@ django-csp = "^3.7"
 django-health-check = "^3.16"
 django-http-referrer-policy = "^1.1"
 django-permissions-policy = "^4.14"
-django-stubs-ext = "^0.7"
 
-gunicorn = "^20.0"
+uvicorn = "*"
 python-decouple = "^3.6"
-structlog = "^22.3"
 django-loguru = "^1.0.3"
+structlog = "*"
+
+
 aiohttp = "^3.8.3"
 aiojobs = "^1.1.0"
 aiofiles = "^22.1.0"
@@ -38,7 +39,6 @@ i3pyblocks = "^2020.10.3"
 psycopg-binary = "^3.1.5"
 psycopg2-binary = "^2.9.4"
 redis = "^4.4.0"
-djangorestframework-jsonapi = "^6.0.0"
 dbus-next = "^0.2.3"
 i3ipc = "^2.2.1"
 aionotify = "^0.2.0"
@@ -51,10 +51,12 @@ django-querycount = "^0.7"
 django-migration-linter = "^4.1"
 django-extra-checks = "^0.12"
 django-coverage-plugin = "^2.0"
+django-stubs = "^1.12"
+django-stubs-ext = "^0.7"
+
 nplusone = "^1.0"
 
 wemake-python-styleguide = "^0.16"
-doc8 = "^1.0"
 
 pytest = "^7.1"
 pytest-django = "^4.5"
@@ -66,26 +68,14 @@ django-test-migrations = "^1.2"
 hypothesis = "^6.54"
 
 mypy = "^0.971"
-django-stubs = "^1.12"
-
 yamllint = "^1.27"
 safety = "^2.1"
 dotenv-linter = "^0.4"
-polint = "^0.4"
-dennis = "^1.1"
 dump-env = "^1.3"
 ipython = "^8.4"
 black = "^22.10.0"
 isort = "^5.10.1"
 ruff = "*"
-
-[tool.poetry.group.docs]
-optional = true
-
-[tool.poetry.group.docs.dependencies]
-sphinx = "^5.1"
-sphinx-autodoc-typehints = "^1.19"
-tomli = "^2.0"
 
 [tool.ruff]
 line-length = 90
@@ -136,11 +126,3 @@ import_heading_stdlib = "built-in"
 import_heading_thirdparty = "external"
 import_heading_firstparty = "project"
 import_heading_localfolder = "app"
-
-
-[tool.commitizen]
-version = "3.0.0"
-annotated_tag = true
-update_changelog_on_bump = true
-bump_message = "bump: $current_version → $new_version"  # keep in sync with .github/workflows/bumpversion.yml!!!
-changelog_start_rev = "0.11.0"

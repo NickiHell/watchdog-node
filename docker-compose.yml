@@ -1,35 +1,32 @@
-version: "3.9"
-
-
 services:
-  caddy:
-      image: "caddy:2.6.2-alpine"
-      restart: unless-stopped
-      networks:
-        - watchdog_network
-      ports:
-        - "80:8000"
-        - "443:443"
+  nginx:
+    image: "nginx:latest"
+    restart: unless-stopped
+    networks:
+      - watchdog_network
+    ports:
+      - "80:8000"
 
-  web:
+  app:
     restart: unless-stopped
     build:
-      target: dev_build
       context: .
       dockerfile: docker/django/Dockerfile
-      args:
-        DJANGO_ENV: prod
     ports:
       - "8000:8000"
     depends_on:
-      - postgres_db
+      - postgres
+      - redis
+      - nginx
     volumes:
       - django-static:/var/www/django/static
       - .:/app
     networks:
       - watchdog_network
     env_file: config/.env
-    command: python -Wd manage.py runserver 0.0.0.0:8000
+    command: |
+        python -m uvicorn server.asgi:app
+        --host 0.0.0.0 --port 8000 --reload
     healthcheck:
       test: |
         /usr/bin/test $$(
@@ -41,23 +38,25 @@ services:
       retries: 5
       start_period: 30s
 
-  postgres_db:
+  postgres:
     image: "postgres:latest"
     restart: unless-stopped
+    env_file: config/.env
     environment:
-      - POSTGRES_USER=postgres
+      - POSTGRES_USER=postgres # ENV!
       - POSTGRES_PASSWORD=postgres
     ports:
       - "5442:5432"
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql/data
       - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
     networks:
       - watchdog_network
 
-  redis_db:
+  redis:
     image: "redis:latest"
     restart: unless-stopped
+    env_file: config/.env
     ports:
       - "6389:6379"
     networks:
@@ -68,7 +67,5 @@ networks:
   watchdog_network:
 
 volumes:
-  db_data:
+  postgres-data:
   django-static:
-  caddy_data:
-  caddy_config:

@@ -1,14 +1,17 @@
 [run]
 omit =
-  apps/collector/migrations/*
-  apps/site_grabber/wiki*
-  apps/site_grabber/kinopoisk/*
-  apps/site_grabber/cf_kinopoisk/*
-  apps/site_grabber/utils.py
+  apps/bots/migrations/*
+  apps/core/migrations/*
+  apps/linux/migrations/*
+  apps/nets/migrations/*
+  apps/notify/migrations/*
+  apps/users/migrations/*
+
 [report]
 omit =
-  apps/collector/migrations/*
-  apps/site_grabber/wiki*
-  apps/site_grabber/kinopoisk/*
-  apps/site_grabber/cf_kinopoisk/*
-  apps/site_grabber/utils.py
+  apps/bots/migrations/*
+  apps/core/migrations/*
+  apps/linux/migrations/*
+  apps/nets/migrations/*
+  apps/notify/migrations/*
+  apps/users/migrations/*

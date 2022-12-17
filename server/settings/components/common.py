@@ -135,11 +135,6 @@ TEMPLATES = [
     }
 ]
 
-# Media files
-# Media root dir is commonly changed in production
-# (see dev.py and prod.py).
-# https://docs.djangoproject.com/en/3.2/topics/files/
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR.joinpath('media')
 

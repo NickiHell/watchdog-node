@@ -52,17 +52,12 @@ coverage.xml
 # Django stuff:
 *.log
 
-# Sphinx documentation
-docs/_build/
-
 # PyBuilder
 target/
 
 # Docker
-docker/django/Dockerfile
+docker/
 docker-compose.yml
-docker-compose.override.yml
-docker/docker-compose.prod.yml
 
 # JetBrains
 .idea/
