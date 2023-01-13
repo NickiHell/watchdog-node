@@ -23,7 +23,7 @@ django-http-referrer-policy = "^1.1"
 django-permissions-policy = "^4.14"
 
 uvicorn = "*"
-python-decouple = "^3.6"
+python-decouple = "^3.7"
 django-loguru = "^1.0.3"
 structlog = "*"
 
