@@ -68,7 +68,7 @@ django-test-migrations = "^1.2"
 hypothesis = "^6.63"
 
 mypy = "^0.971"
-yamllint = "^1.27"
+yamllint = "^1.29"
 safety = "^2.1"
 dotenv-linter = "^0.4"
 dump-env = "^1.3"
