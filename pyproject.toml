@@ -59,7 +59,7 @@ django-stubs-ext = "^0.7"
 
 nplusone = "^1.0"
 
-wemake-python-styleguide = "^0.16"
+wemake-python-styleguide = "^0.17"
 
 pytest = "^7.1"
 pytest-django = "^4.5"
