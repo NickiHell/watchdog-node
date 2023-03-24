@@ -63,7 +63,7 @@ wemake-python-styleguide = "^0.16"
 
 pytest = "^7.1"
 pytest-django = "^4.5"
-pytest-cov = "^3.0"
+pytest-cov = "^4.0"
 pytest-randomly = "^3.12"
 pytest-deadfixtures = "^2.2"
 pytest-timeout = "^2.1"
