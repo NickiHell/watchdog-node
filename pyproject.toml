@@ -14,7 +14,7 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.dependencies]
 python = "^3.10.9"
 
-django = { version = "^4.1", extras = ["argon2"] }
+django = { version = "^4.2", extras = ["argon2"] }
 django-ninja = "*"
 django-split-settings = "^1.2"
 django-axes = "^5.40"
