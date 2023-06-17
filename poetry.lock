@@ -963,12 +963,12 @@ Django = ">=3.2"
 
 [[package]]
 name = "django-querycount"
-version = "0.7.0"
+version = "0.8.3"
 description = "Middleware that Prints the number of DB queries to the runserver console."
 optional = false
 python-versions = "*"
 files = [
-    {file = "django-querycount-0.7.0.tar.gz", hash = "sha256:8f5123d78716ff0704f2373e746a7200b8d8417798ce4a99bf2de87e3768f9ce"},
+    {file = "django-querycount-0.8.3.tar.gz", hash = "sha256:0782484e8a1bd29498fa0195a67106e47cdcc98fafe80cebb1991964077cb694"},
 ]
 
 [[package]]
@@ -2741,6 +2741,9 @@ files = [
     {file = "redis-4.5.5.tar.gz", hash = "sha256:dc87a0bdef6c8bfe1ef1e1c40be7034390c2ae02d92dcd0c7ca1729443899880"},
 ]
 
+[package.dependencies]
+async-timeout = {version = ">=4.0.2", markers = "python_full_version <= \"3.11.2\""}
+
 [package.extras]
 hiredis = ["hiredis (>=1.0.0)"]
 ocsp = ["cryptography (>=36.0.1)", "pyopenssl (==20.0.1)", "requests (>=2.26.0)"]
@@ -3670,5 +3673,5 @@ multidict = ">=4.0"
 
 [metadata]
 lock-version = "2.0"
-python-versions = "^3.11.3"
-content-hash = "231b8e1c0bbde6c71fb93a5555c487357c7ac84fe84abf1f2a7e713943b47a8f"
+python-versions = "~3.11"
+content-hash = "206c626d269aead95389356d964994dacf0fdab54350a36433a4ccb6a2927510"
