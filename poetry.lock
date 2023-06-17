@@ -2397,13 +2397,13 @@ files = [
 
 [[package]]
 name = "pulsectl"
-version = "22.3.2"
+version = "23.5.2"
 description = "Python high-level interface and ctypes-based bindings for PulseAudio (libpulse)"
 optional = false
 python-versions = "*"
 files = [
-    {file = "pulsectl-22.3.2-py2.py3-none-any.whl", hash = "sha256:6fded96a8e6a9ac6c387ed3a9bdb1afb20d80256b0c9df4b98b58461d74ba0c4"},
-    {file = "pulsectl-22.3.2.tar.gz", hash = "sha256:cc174e1ceebd4e6222c5b78f4f415f12e80753c9ab75ab354159b4cb5950b084"},
+    {file = "pulsectl-23.5.2-py2.py3-none-any.whl", hash = "sha256:b77295cfbce5cb5b7b80ab5903aa0239b38bcbb84ac18ae1f42d43ed3dac9d86"},
+    {file = "pulsectl-23.5.2.tar.gz", hash = "sha256:e911d398eaf0539cf3c63b4217357b51a3d1b7e4a50607d1591cf2b49f5d2c6a"},
 ]
 
 [[package]]
@@ -2743,6 +2743,9 @@ files = [
     {file = "redis-4.5.5-py3-none-any.whl", hash = "sha256:77929bc7f5dab9adf3acba2d3bb7d7658f1e0c2f1cafe7eb36434e751c471119"},
     {file = "redis-4.5.5.tar.gz", hash = "sha256:dc87a0bdef6c8bfe1ef1e1c40be7034390c2ae02d92dcd0c7ca1729443899880"},
 ]
+
+[package.dependencies]
+async-timeout = {version = ">=4.0.2", markers = "python_full_version <= \"3.11.2\""}
 
 [package.extras]
 hiredis = ["hiredis (>=1.0.0)"]
@@ -3673,5 +3676,5 @@ multidict = ">=4.0"
 
 [metadata]
 lock-version = "2.0"
-python-versions = "^3.11.3"
-content-hash = "beddfb46f8527c0300d819e08d1d354ad5b6097e70148413ddf8e654ef60a5ef"
+python-versions = "~3.11"
+content-hash = "3ccea52da1bcd5f80f6e70e83a620a70cc066ff6c9f2633e9550c942c06b7250"
