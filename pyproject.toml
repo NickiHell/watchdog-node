@@ -12,7 +12,7 @@ build-backend = "poetry.core.masonry.api"
 
 
 [tool.poetry.dependencies]
-python = "^3.10.9"
+python = "^3.11.3"
 
 django = { version = "^4.2", extras = ["argon2"] }
 django-ninja = "*"
@@ -115,7 +115,7 @@ per-file-ignores = { }
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
 
 # Assume Python 3.10.
-target-version = "py310"
+target-version = "py311"
 
 [tool.isort]
 line_length = 90
