@@ -17,7 +17,7 @@ python = "^3.11.3"
 django = { version = "^4.2", extras = ["argon2"] }
 django-ninja = "*"
 django-split-settings = "^1.2"
-django-axes = "^5.40"
+django-axes = "^6.0"
 django-csp = "^3.7"
 django-health-check = "^3.16"
 django-http-referrer-policy = "^1.1"
