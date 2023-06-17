@@ -55,7 +55,7 @@ django-migration-linter = "^4.1"
 django-extra-checks = "^0.13"
 django-coverage-plugin = "^2.0"
 django-stubs = "^1.12"
-django-stubs-ext = "^0.7"
+django-stubs-ext = "^4.2"
 
 nplusone = "^1.0"
 
