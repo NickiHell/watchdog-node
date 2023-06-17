@@ -52,14 +52,14 @@ pulsectl = "^22.3.2"
 django-debug-toolbar = "^3.6"
 django-querycount = "^0.7"
 django-migration-linter = "^4.1"
-django-extra-checks = "^0.12"
+django-extra-checks = "^0.13"
 django-coverage-plugin = "^2.0"
 django-stubs = "^1.12"
 django-stubs-ext = "^0.7"
 
 nplusone = "^1.0"
 
-wemake-python-styleguide = "^0.16"
+wemake-python-styleguide = "^0.18"
 
 pytest = "^7.1"
 pytest-django = "^4.5"
