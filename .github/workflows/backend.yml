@@ -28,8 +28,7 @@ jobs:
 
       - name: black
         run: |
-          poetry run black -l 90 -S .
+          poetry run black --check .
 
-      - name: Isort
-        run: |
-          poetry run isort .
+      - name: ruff
+        run: poetry run ruff check .
