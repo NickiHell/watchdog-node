@@ -2,7 +2,6 @@
 name = "watchdog-node"
 description = "WatchDog Main Node"
 version = "0.1.0"
-description = ""
 authors = ["NickiHell <nickihell@ya.ru>"]
 readme = "README.md"
 
