@@ -7,21 +7,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-
-django = { version = "^4.2", extras = ["argon2"] }
-django-ninja = "^1.0"
-django-split-settings = "^1.2"
-django-axes = "^6.0"
-django-csp = "^3.7"
-django-health-check = "^3.16"
-django-http-referrer-policy = "^1.1"
-django-permissions-policy = "^4.14"
-
-uvicorn = "^1.0"
-gunicorn = "^1.0"
-python-decouple = "^3.7"
-django-loguru = "^1.0.3"
-structlog = "^23.1.0"
+django-ninja = "^0.22.2"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -29,6 +15,7 @@ black = "^23.3.0"
 ruff = "^0.0.275"
 
 [tool.ruff]
+line-length = 120
 select = [
   "E", # pycodestyle errors
   "W", # pycodestyle warnings
@@ -94,9 +81,6 @@ unfixable = [
 
 extend-exclude = []
 
-line-length = 120
-target-version = "py311"
-
 [tool.ruff.mccabe]
 max-complexity = 10
 
@@ -113,5 +97,6 @@ target-version = ["py311"]
 skip-string-normalization = true
 
 [build-system]
+target-version = "py311"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
