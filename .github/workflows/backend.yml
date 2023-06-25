@@ -32,3 +32,6 @@ jobs:
 
       - name: ruff
         run: poetry run ruff check .
+
+#      - name: probe
+#        run: poetry run python main.py & exit
