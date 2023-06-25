@@ -31,7 +31,7 @@ _base_settings = (
     'components/csp.py',
     'components/caches.py',
     # Select the right env:
-    'environments/{0}.py'.format(_ENV),
+    f'environments/{_ENV}.py',
     # Optionally override some settings:
     optional('environments/test.py'),
 )

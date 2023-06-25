@@ -1,5 +1,4 @@
 # built-in
-from typing import Dict, List, Tuple, Union
 
 # external
 from django.utils.translation import gettext_lazy as _
@@ -14,7 +13,7 @@ AUTH_USER_MODEL = 'users.User'
 
 # Application definition:
 
-INSTALLED_APPS: Tuple[str, ...] = (
+INSTALLED_APPS: tuple[str, ...] = (
     # Your apps go here:
     'apps.users',
     'apps.core',
@@ -41,7 +40,7 @@ INSTALLED_APPS: Tuple[str, ...] = (
     'health_check.storage',
 )
 
-MIDDLEWARE: Tuple[str, ...] = (
+MIDDLEWARE: tuple[str, ...] = (
     # Logging:
     'server.settings.components.logging.LoggingContextVarsMiddleware',
     # Content Security Policy:
@@ -132,7 +131,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
             ],
         },
-    }
+    },
 ]
 
 MEDIA_URL = '/media/'
@@ -168,7 +167,7 @@ X_FRAME_OPTIONS = 'DENY'
 REFERRER_POLICY = 'same-origin'
 
 # https://github.com/adamchainz/django-permissions-policy#setting
-PERMISSIONS_POLICY: Dict[str, Union[str, List[str]]] = {}  # noqa: WPS234
+PERMISSIONS_POLICY: dict[str, str | list[str]] = {}
 
 # Timeouts
 # https://docs.djangoproject.com/en/3.2/ref/settings/#std:setting-EMAIL_TIMEOUT

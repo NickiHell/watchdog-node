@@ -1,27 +1,29 @@
-# external
 from django.conf import settings
 from django.contrib import admin
-from django.contrib.admindocs import urls as admindocs_urls
 from django.urls import include, path
 from health_check import urls as health_urls
+from ninja import NinjaAPI
+
+api = NinjaAPI()
+
+
+@api.get('/ping')
+def add(request):
+    return {'result': 'pong'}
 
 
 admin.autodiscover()
 
 urlpatterns = [
     # Apps:
-    # path('core/', include(main_urls, namespace='core')),
-    # Health checks:
-    path('health/', include(health_urls)),
-    # django-admin:
-    path('admin/doc/', include(admindocs_urls)),
-    path('admin/', admin.site.urls),
+    path('health/', include(health_urls, namespace='health')),
+    path('admin/', admin.site.urls, name='admin'),
 ]
 
 if settings.DEBUG:  # pragma: no cover
     # external
-    import debug_toolbar  # noqa: WPS433
-    from django.conf.urls.static import static  # noqa: WPS433
+    import debug_toolbar
+    from django.conf.urls.static import static
 
     urlpatterns = [
         # URLs specific only to django-debug-toolbar:

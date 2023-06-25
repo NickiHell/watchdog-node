@@ -5,7 +5,7 @@ from i3pyblocks.blocks import datetime, dbus, i3ipc, inotify, ps
 from loguru import logger
 
 
-logger.add("../../../logs.txt", rotation="100 MB")
+logger.add('../../../logs.txt', rotation='100 MB')
 
 
 # def update_wall(update_speed: float = 1.0/25) -> None:
@@ -26,9 +26,10 @@ logger.add("../../../logs.txt", rotation="100 MB")
 #         os.system('feh --bg-scale /home/nickihell/.bg.tmp.png')
 #
 
+
 # Helper to find partitions, filtering some that we don't want to show
 # Will be used later on the DiskUsageBlock
-def partitions(excludes=("/boot", "/nix/store")):
+def partitions(excludes=('/boot', '/nix/store')):
     partitions = psutil.disk_partitions()
     return [p for p in partitions if p.mountpoint not in excludes]
 
@@ -40,17 +41,17 @@ async def main():
     # Show the current i3 focused window title
     # Using `.format()` (https://pyformat.info/) to limit the number of
     # characters to 41
-    await runner.register_block(i3ipc.WindowTitleBlock(format=" {window_title:.41s}"))
+    await runner.register_block(i3ipc.WindowTitleBlock(format=' {window_title:.41s}'))
 
     # Show the current network speed for either en* (ethernet) or wl* devices
     # Limiting the interface name to only 2 characters since it can get quite
     # verbose
     await runner.register_block(
         ps.NetworkSpeedBlock(
-            format_up=" {interface:.2s}:  {upload}  {download}",
-            format_down="",
-            interface_regex="en*|wl*",
-        )
+            format_up=' {interface:.2s}:  {upload}  {download}',
+            format_down='',
+            interface_regex='en*|wl*',
+        ),
     )
 
     # For each partition found, add it to the Runner
@@ -59,12 +60,12 @@ async def main():
     for partition in partitions():
         await runner.register_block(
             ps.DiskUsageBlock(
-                format=" {short_path}: {free:.1f}GiB",
+                format=' {short_path}: {free:.1f}GiB',
                 path=partition.mountpoint,
-            )
+            ),
         )
 
-    await runner.register_block(ps.VirtualMemoryBlock(format=" {available:.1f}GiB"))
+    await runner.register_block(ps.VirtualMemoryBlock(format=' {available:.1f}GiB'))
 
     # Using custom icons to show the temperature visually
     # So when the temperature is above 75,  is shown, when it is above 50,
@@ -72,18 +73,18 @@ async def main():
     # Needs Font Awesome 5 installed
     await runner.register_block(
         ps.SensorsTemperaturesBlock(
-            format="{icon} {current:.0f}°C",
+            format='{icon} {current:.0f}°C',
             icons={
-                0: "",
-                25: "",
-                50: "",
-                75: "",
+                0: '',
+                25: '',
+                50: '',
+                75: '',
             },
-        )
+        ),
     )
 
     await runner.register_block(
-        ps.CpuPercentBlock(format=" {percent}%"),
+        ps.CpuPercentBlock(format=' {percent}%'),
     )
 
     # Load only makes sense depending of the number of CPUs installed in
@@ -92,7 +93,7 @@ async def main():
     cpu_count = psutil.cpu_count()
     await runner.register_block(
         ps.LoadAvgBlock(
-            format=" {load1}",
+            format=' {load1}',
             colors={
                 0: types.Color.NEUTRAL,
                 cpu_count / 2: types.Color.WARN,
@@ -103,17 +104,17 @@ async def main():
 
     await runner.register_block(
         ps.SensorsBatteryBlock(
-            format_plugged=" {percent:.0f}%",
-            format_unplugged="{icon} {percent:.0f}% {remaining_time}",
-            format_unknown="{icon} {percent:.0f}%",
+            format_plugged=' {percent:.0f}%',
+            format_unplugged='{icon} {percent:.0f}% {remaining_time}',
+            format_unknown='{icon} {percent:.0f}%',
             icons={
-                0: "",
-                10: "",
-                25: "",
-                50: "",
-                75: "",
+                0: '',
+                10: '',
+                25: '',
+                50: '',
+                75: '',
             },
-        )
+        ),
     )
 
     # ToggleBlock works by running the command specified in `command_state`,
@@ -151,12 +152,12 @@ async def main():
     # You could also use '!u' to UPPERCASE it instead
     await runner.register_block(
         dbus.KbddBlock(
-            format=" {full_layout!l:.2s}",
-        )
+            format=' {full_layout!l:.2s}',
+        ),
     )
 
     # MediaPlayerBlock listen for updates in your player (in this case Spotify)
-    await runner.register_block(dbus.MediaPlayerBlock(player="spotify"))
+    await runner.register_block(dbus.MediaPlayerBlock(player='spotify'))
 
     # In case of `kbdd` isn't available for you, here is a alternative using
     # ShellBlock and `xkblayout-state` program.  ShellBlock just show the output
@@ -180,13 +181,13 @@ async def main():
     # desktop), we hide this block
     await runner.register_block(
         inotify.BacklightBlock(
-            format=" {percent:.0f}%",
-            format_no_backlight="",
+            format=' {percent:.0f}%',
+            format_no_backlight='',
             command_on_click={
-                types.MouseButton.SCROLL_UP: "brightnessctl -A 5%",
-                types.MouseButton.SCROLL_DOWN: "brightnessctl -U 5",
+                types.MouseButton.SCROLL_UP: 'brightnessctl -A 5%',
+                types.MouseButton.SCROLL_DOWN: 'brightnessctl -U 5',
             },
-        )
+        ),
     )
 
     # `signals` allows us to send multiple signals that this block will
@@ -222,10 +223,10 @@ async def main():
     # https://developer.gnome.org/pango/stable/pango-Markup.html
     await runner.register_block(
         datetime.DateTimeBlock(
-            format_time=utils.pango_markup(" %T", font_weight="bold"),
-            format_date=utils.pango_markup(" %a, %d/%m", font_weight="light"),
-            default_state={"markup": types.MarkupText.PANGO},
-        )
+            format_time=utils.pango_markup(' %T', font_weight='bold'),
+            format_date=utils.pango_markup(' %a, %d/%m', font_weight='light'),
+            default_state={'markup': types.MarkupText.PANGO},
+        ),
     )
 
     # loop = asyncio.get_running_loop()

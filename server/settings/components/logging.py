@@ -1,5 +1,6 @@
 # built-in
-from typing import TYPE_CHECKING, Callable
+from collections.abc import Callable
+from typing import TYPE_CHECKING
 
 # external
 import structlog
@@ -12,7 +13,7 @@ if TYPE_CHECKING:
 LOGGING = None
 
 
-class LoggingContextVarsMiddleware(object):
+class LoggingContextVarsMiddleware:
     """Used to reset ContextVars in structlog on each request."""
 
     def __init__(

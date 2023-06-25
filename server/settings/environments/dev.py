@@ -1,7 +1,6 @@
 # built-in
 import logging
 import socket
-from typing import List
 
 # project
 from server.settings.components import config
@@ -13,7 +12,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     config('DOMAIN_NAME'),
     'localhost',
-    '0.0.0.0',  # noqa: S104
+    '0.0.0.0',
     '127.0.0.1',
     '[::1]',
 ]
@@ -42,7 +41,7 @@ INSTALLED_APPS += (
 # Static files:
 # https://docs.djangoproject.com/en/3.2/ref/settings/#std:setting-STATICFILES_DIRS
 
-STATICFILES_DIRS: List[str] = []
+STATICFILES_DIRS: list[str] = []
 
 # Django debug toolbar:
 # https://django-debug-toolbar.readthedocs.io
@@ -55,10 +54,10 @@ MIDDLEWARE += (
 # https://django-debug-toolbar.readthedocs.io/en/stable/installation.html#configure-internal-ips
 try:  # This might fail on some OS
     INTERNAL_IPS = [
-        '{0}.1'.format(ip[: ip.rfind('.')])
+        '{}.1'.format(ip[: ip.rfind('.')])
         for ip in socket.gethostbyname_ex(socket.gethostname())[2]
     ]
-except socket.error:  # pragma: no cover
+except OSError:  # pragma: no cover
     INTERNAL_IPS = []
 INTERNAL_IPS += ['127.0.0.1', '10.0.2.2']
 
@@ -82,7 +81,7 @@ CSP_CONNECT_SRC = ("'self'",)
 # https://github.com/jmcarp/nplusone
 
 # Should be the first in line:
-MIDDLEWARE = ('nplusone.ext.django.NPlusOneMiddleware',) + MIDDLEWARE  # noqa: WPS440
+MIDDLEWARE = ('nplusone.ext.django.NPlusOneMiddleware', *MIDDLEWARE)
 
 # Logging N+1 requests:
 NPLUSONE_RAISE = True  # comment out if you want to allow N+1 requests
