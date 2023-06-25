@@ -2,13 +2,13 @@
 
 [[package]]
 name = "aiofiles"
-version = "22.1.0"
+version = "23.1.0"
 description = "File support for asyncio."
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "aiofiles-22.1.0-py3-none-any.whl", hash = "sha256:1142fa8e80dbae46bb6339573ad4c8c0841358f79c6eb50a493dceca14621bad"},
-    {file = "aiofiles-22.1.0.tar.gz", hash = "sha256:9107f1ca0b2a5553987a94a3c9959fe5b491fdf731389aa5b7b1bd0733e32de6"},
+    {file = "aiofiles-23.1.0-py3-none-any.whl", hash = "sha256:9312414ae06472eb6f1d163f555e466a23aed1c8f60c30cccf7121dba2e53eb2"},
+    {file = "aiofiles-23.1.0.tar.gz", hash = "sha256:edd247df9a19e0db16534d4baaf536d6609a43e1de5401d7a4c1c148753a1635"},
 ]
 
 [[package]]
@@ -2732,6 +2732,9 @@ files = [
     {file = "redis-4.5.5.tar.gz", hash = "sha256:dc87a0bdef6c8bfe1ef1e1c40be7034390c2ae02d92dcd0c7ca1729443899880"},
 ]
 
+[package.dependencies]
+async-timeout = {version = ">=4.0.2", markers = "python_full_version <= \"3.11.2\""}
+
 [package.extras]
 hiredis = ["hiredis (>=1.0.0)"]
 ocsp = ["cryptography (>=36.0.1)", "pyopenssl (==20.0.1)", "requests (>=2.26.0)"]
@@ -3650,5 +3653,5 @@ multidict = ">=4.0"
 
 [metadata]
 lock-version = "2.0"
-python-versions = "^3.11.3"
-content-hash = "16fd56d3d33fdda05e144e84621367de0633b52d604ef725acfdd8e618887c04"
+python-versions = "~3.11"
+content-hash = "a199ff4f48c53452b930c6a1efbc875cb7ea2dd8e623d49f7bbd07f5ee7d1750"
