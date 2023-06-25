@@ -2,7 +2,7 @@
 
 variables:
   GROUP_NAME: "LifeBlackBox"
-  PROJECT_NAME: "watchdog-backend"
+  PROJECT_NAME: "watchdog-node"
   REGISTRY: "registry.gitlab.com"
   IMAGE_FULL_NAME: "${REGISTRY}/${GROUP_NAME}/${PROJECT_NAME}"
 
