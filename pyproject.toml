@@ -1,15 +1,10 @@
 [tool.poetry]
-name = "watchdog-backend"
-description = "WatchDog Backend"
+name = "watchdog-node"
+description = "WatchDog Main Node"
 version = "0.1.0"
+description = ""
+authors = ["NickiHell <nickihell@ya.ru>"]
 readme = "README.md"
-authors = ["nickihell.online"]
-
-[build-system]
-requires = ["poetry-core>=1.2.0"]
-build-backend = "poetry.core.masonry.api"
-
-
 
 [tool.poetry.dependencies]
 python = "^3.11.3"
@@ -128,3 +123,7 @@ import_heading_stdlib = "built-in"
 import_heading_thirdparty = "external"
 import_heading_firstparty = "project"
 import_heading_localfolder = "app"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
