@@ -792,18 +792,17 @@ ipware = ["django-ipware (>=3)"]
 
 [[package]]
 name = "django-coverage-plugin"
-version = "2.0.4"
+version = "3.0.0"
 description = "Django template coverage.py plugin"
 optional = false
 python-versions = "*"
 files = [
-    {file = "django_coverage_plugin-2.0.4-py3-none-any.whl", hash = "sha256:3b0aa1ed26b52c5844c88510995f4a4b60b4fb0679970d11f82654bb8a2bd16a"},
-    {file = "django_coverage_plugin-2.0.4.tar.gz", hash = "sha256:f662efe592bf98baf2e540312059c918daa8d8379244a2a6b6f984c4a1dda015"},
+    {file = "django_coverage_plugin-3.0.0-py3-none-any.whl", hash = "sha256:245ecd6e91e5be7a66e0f811fd57091c46b55c0eb85c7fe1a1e4aebca9842a5f"},
+    {file = "django_coverage_plugin-3.0.0.tar.gz", hash = "sha256:c063d8d49ba2da30fe95d91cf3f0f9f659b55c3f80d4a029d619b2b3144b1206"},
 ]
 
 [package.dependencies]
 coverage = "*"
-six = ">=1.4.0"
 
 [[package]]
 name = "django-csp"
@@ -3654,4 +3653,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11"
-content-hash = "16fd56d3d33fdda05e144e84621367de0633b52d604ef725acfdd8e618887c04"
+content-hash = "73278f71689488eecded72c104da66b7d65845dd37995e858aa8867b86567e56"
