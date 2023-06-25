@@ -4,6 +4,7 @@ from django.urls import include, path
 from health_check import urls as health_urls
 from ninja import NinjaAPI
 
+
 api = NinjaAPI()
 
 
