@@ -12,7 +12,7 @@ django-ninja = "^0.22.2"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.3.0"
-ruff = "^0.0.277"
+ruff = "^0.0.278"
 
 [tool.ruff]
 line-length = 120
