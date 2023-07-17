@@ -91,7 +91,6 @@ profile = "black"
 line_length = 120
 lines_after_imports = 2
 ensure_newline_before_comments = true
-known_third_party = ["image_service_client"]
 
 [tool.black]
 line-length = 120
