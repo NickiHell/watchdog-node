@@ -1,16 +1,18 @@
-[tool.poetry]
+[project]
 name = "watchdog-node"
-description = "WatchDog Main Node"
 version = "0.1.0"
-authors = ["NickiHell <nickihell@ya.ru>"]
+description = "WatchDog Main Node"
+authors = [
+    {name = "NickiHell", email = "nickihell@ya.ru"},
+]
+dependencies = [
+    "django-ninja<1.0.0,>=0.22.2",
+]
+requires-python = ">=3.11,<4.0"
 readme = "README.md"
+license = {text = "MIT"}
 
-[tool.poetry.dependencies]
-python = "^3.11"
-django-ninja = "^0.22.2"
-
-
-[tool.poetry.group.dev.dependencies]
+[project.group.dev.dependencies]
 black = "^23.7.0"
 ruff = "^0.0.278"
 
@@ -96,7 +98,8 @@ line-length = 120
 target-version = ["py311"]
 skip-string-normalization = true
 
+[tool.pdm.build]
+includes = []
 [build-system]
-target-version = "py311"
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"

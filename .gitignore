@@ -244,3 +244,4 @@ artifacts/
 
 # ipython:
 .ipython/
+.pdm-python
