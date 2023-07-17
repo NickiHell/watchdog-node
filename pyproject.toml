@@ -11,7 +11,7 @@ django-ninja = "^0.22.2"
 
 
 [tool.poetry.group.dev.dependencies]
-black = "^23.3.0"
+black = "^23.7.0"
 ruff = "^0.0.278"
 
 [tool.ruff]
