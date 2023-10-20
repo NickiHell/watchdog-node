@@ -10,9 +10,11 @@ RUN apt-get update && apt-get install -y \
     rm -rf /var/lib/apt/lists/*
 
 
-COPY pyproject.toml requirements.txt scripts/entrypoint.sh /app/
-COPY ./ros2_ws /app/ros2_ws
+COPY pyproject.toml requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
+
+COPY ./scripts/entrypoint.sh /app/
+COPY ./ros2_ws /app/ros2_ws
 
 ENTRYPOINT ["./entrypoint.sh"]
 CMD ["bash"]

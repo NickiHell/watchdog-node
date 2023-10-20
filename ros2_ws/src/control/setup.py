@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'core'
+package_name = 'control'
 
 setup(
     name=package_name,
@@ -20,7 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'watchdog_node_001 = core.watchdog_node_001:main'
+            'control = control.control:main'
         ],
     },
 )
