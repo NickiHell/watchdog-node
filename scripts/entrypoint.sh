@@ -1,11 +1,9 @@
 #!/bin/bash
+set -e
 
 source /opt/ros/iron/setup.bash
-cd /app/ros2_ws/src
+source /app/ros2_ws/install/setup.bash
+cd /app/ros2_ws/
 colcon build
-cd /app/ros2_ws
-source install/setup.bash
-colcon build
-
 
 exec "$@"
