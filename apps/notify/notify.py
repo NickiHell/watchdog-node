@@ -1,6 +1,0 @@
-class Notifier:
-    ...
-
-
-class Message:
-    ...

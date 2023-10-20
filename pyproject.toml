@@ -10,16 +10,6 @@ requires-python = ">=3.11,<4.0"
 readme = "README.md"
 license = {text = "MIT"}
 
-dependencies = [
-    "django-ninja<1.0.0,>=0.22.2",
-]
-
-[tool.pdm.dev-dependencies]
-dev = [
-    "ruff>=0.0.278",
-    "black>=23.7.0",
-]
-
 [tool.ruff]
 line-length = 120
 select = [
@@ -57,29 +47,6 @@ ignore = [
   "TRY003", # Avoid specifying long messages outside the exception class
 ]
 
-[tool.ruff.per-file-ignores]
-"apps/linux/services/sway/*" = [
-  "ERA001", # fix later
-]
-"*/settings/*" = [
-  "ERA001", # Found commented-out code
-  "PLW1508", # Invalid type for environment variable default
-  "FBT003", # Boolean positional value in function call
-]
-"tests/*" = [
-  "ARG001", # Unused function argument
-  "ARG002", # Unused method argument
-  "ERA001", # Found commented-out code
-  "PLR0913", # Too many arguments to function call
-  "PLR2004", # Magic value used in comparison
-  "INP001", # File is part of an implicit namespace package
-]
-"*/migrations/*" = [
-  "INP001", # Add an `__init__.py`
-  "ERA001", # Found commented-out code
-  "RUF012", # Mutable class attributes should be annotated with `typing.ClassVar`
-]
-
 unfixable = [
   "B", # Avoid trying to fix flake8-bugbear violations.
   "ERA", # Avoid deleting commented-out code
@@ -89,12 +56,6 @@ extend-exclude = []
 
 [tool.ruff.mccabe]
 max-complexity = 10
-
-[tool.isort]
-profile = "black"
-line_length = 120
-lines_after_imports = 2
-ensure_newline_before_comments = true
 
 [tool.black]
 line-length = 120

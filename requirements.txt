@@ -1,0 +1,9 @@
+# BASE
+rq==1.15.1
+redis==5.0.1
+pandas==2.1.1
+
+# DEV
+mypy==1.6.1
+ruff==0.1.1
+black==23.10.0
