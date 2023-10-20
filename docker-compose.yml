@@ -1,16 +1,18 @@
 version: '3.9'
 
 services:
-  rosnode:
-    build:
-      context: .
+  roscore:
+    build: .
+#    volumes:
+#      - .:/app
+#    command: ros2 run core watchdog-node-001
 
   redis:
     image: redis:latest
     restart: always
     ports:
       - '6379:6379'
-    command: redis-server --save 20 1 --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    command: redis-server
     volumes:
       - cache:/data
 

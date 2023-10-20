@@ -2,6 +2,7 @@
 rq==1.15.1
 redis==5.0.1
 pandas==2.1.1
+transformers==4.34.1
 
 # DEV
 mypy==1.6.1
