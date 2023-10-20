@@ -1,12 +1,16 @@
 version: '3.9'
 
 services:
-  rosnode:
+  ros_node:
     build:
       context: .
-#    volumes:
-#      - .:/app
-    command: ros2 run core watchdog_node_001
+    command: ros2 run node watchdog_node_001
+    restart: always
+
+  ros_robot:
+    build:
+      context: .
+    command: ros2 run robot watchdog_node_001
     restart: always
 
   redis:
@@ -17,7 +21,6 @@ services:
     command: redis-server
     volumes:
       - cache:/data
-
 
 volumes:
   cache:

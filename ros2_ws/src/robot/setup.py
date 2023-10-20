@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'core'
+package_name = 'robot'
 
 setup(
     name=package_name,
@@ -18,6 +18,6 @@ setup(
     license='TODO: License declaration',
     tests_require=['pytest'],
     entry_points={
-        'console_scripts': ['watchdog_node_001 = core.watchdog_node_001:main'],
+        'console_scripts': ['watchdog_node_001 = robot.watchdog_node_001:main'],
     },
 )
