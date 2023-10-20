@@ -1,11 +1,11 @@
 version: '3.9'
 
 services:
-  roscore:
+  rosnode:
     build: .
-#    volumes:
-#      - .:/app
-#    command: ros2 run core watchdog-node-001
+    volumes:
+      - .:/app
+    command: ros2 run core watchdog-node-001
 
   redis:
     image: redis:latest

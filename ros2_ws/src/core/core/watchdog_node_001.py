@@ -1,6 +1,9 @@
-def main():
-    print('Hi from core.')
+import asyncio
+
+
+async def main():
+    await asyncio.sleep(60 * 5)
 
 
 if __name__ == '__main__':
-    main()
+    asyncio.run(main())
