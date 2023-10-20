@@ -1,32 +1,35 @@
-import random
-
 import rclpy
 from rclpy.node import Node
 
 from std_msgs.msg import String
 
 
-class VelocityPublisher(Node):
-    def __init__(self):
-        super().__init__('velocity_publisher')
-        self.publisher = self.create_publisher(String, 'velocity', 10)
-        self.timer = self.create_timer(0.5, self.timer_callback)
+class MinimalSubscriber(Node):
 
-    def timer_callback(self):
-        msg = String()
-        msg.data = random.randint(1, 255)
-        self.publisher.publish(msg)
-        self.get_logger().info(msg.data)
+    def __init__(self):
+        super().__init__('minimal_subscriber')
+        self.subscription = self.create_subscription(
+            String,
+            'topic',
+            self.listener_callback,
+            10)
+        self.subscription  # prevent unused variable warning
+
+    def listener_callback(self, msg):
+        self.get_logger().info('I heard: "%s"' % msg.data)
 
 
 def main(args=None):
     rclpy.init(args=args)
 
-    velocity_pub = VelocityPublisher()
+    minimal_subscriber = MinimalSubscriber()
 
-    rclpy.spin(velocity_pub)
+    rclpy.spin(minimal_subscriber)
 
-    velocity_pub.destroy_node()
+    # Destroy the node explicitly
+    # (optional - otherwise it will be done automatically
+    # when the garbage collector destroys the node object)
+    minimal_subscriber.destroy_node()
     rclpy.shutdown()
 
 
