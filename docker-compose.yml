@@ -7,15 +7,27 @@ services:
     command: ros2 run core watchdog_node_001
     restart: always
 
-  redis:
-    image: redis:latest
+  ros_robot:
+    build:
+      context: .
+    command: ros2 run robot watchdog_node_001
     restart: always
-    ports:
-      - '6379:6379'
-    command: redis-server
-    volumes:
-      - cache:/data
 
-volumes:
-  cache:
-    driver: local
+  ros_cmd:
+    build:
+      context: .
+    command: ros2 run control interface
+    restart: always
+
+#  redis:
+#    image: redis:latest
+#    restart: always
+#    ports:
+#      - '6379:6379'
+#    command: redis-server
+#    volumes:
+#      - cache:/data
+#
+#volumes:
+#  cache:
+#    driver: local

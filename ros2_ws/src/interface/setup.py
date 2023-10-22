@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'control'
+package_name = 'interface'
 
 setup(
     name=package_name,
@@ -20,7 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'control = control.control:main'
+            'control = interface.control:main'
         ],
     },
 )
