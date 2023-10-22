@@ -2,12 +2,14 @@ version: '3.9'
 
 services:
   ros_core:
+    image: ghcr.io/the-dark-limit/watchdog-node:release
     build:
       context: .
     command: ros2 run core core
     restart: always
 
   ros_robot:
+    image: ghcr.io/the-dark-limit/watchdog-node:release
     build:
       context: .
     command: ros2 run robot node
