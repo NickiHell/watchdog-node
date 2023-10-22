@@ -20,7 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'watchdog_node_001 = core.watchdog_node_001:main'
+            'core = core.core:main'
         ],
     },
 )

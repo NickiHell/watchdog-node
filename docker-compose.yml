@@ -4,20 +4,20 @@ services:
   ros_core:
     build:
       context: .
-    command: ros2 run core watchdog_node_001
+    command: ros2 run core core
     restart: always
 
   ros_robot:
     build:
       context: .
-    command: ros2 run robot watchdog_node_001
+    command: ros2 run robot node
     restart: always
 
-  ros_cmd:
-    build:
-      context: .
-    command: ros2 run control interface
-    restart: always
+#  ros_cmd:
+#    build:
+#      context: .
+#    command: ros2 run control interface
+#    restart: always
 
 #  redis:
 #    image: redis:latest
