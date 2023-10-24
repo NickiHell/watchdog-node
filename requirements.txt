@@ -11,7 +11,7 @@ trio==0.22.2
 # DEV
 mypy==1.6.1
 ruff==0.1.1
-black==23.10.0
+black==23.10.1
 
 setuptools~=68.2.0
 pynput~=1.7.6
