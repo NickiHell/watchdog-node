@@ -1,38 +1,21 @@
-import random
-
+import asyncio
 import rclpy
-from rclpy.node import Node
 
-from std_msgs.msg import String
-
-
-class VelocityPublisher(Node):
-
-    def __init__(self):
-        super().__init__('velocity_publisher')
-        self.publisher = self.create_publisher(String, 'sensors', 10)
-        timer_period = 10.5  # seconds
-        self.timer = self.create_timer(timer_period, self.timer_callback)
-        self.i = 0
-
-    def timer_callback(self):
-        msg = String()
-        msg.data = str(random.randint(1, 255))
-        self.publisher.publish(msg)
-        self.get_logger().info('Publishing: "%s"' % msg.data)
-        self.i += 1
+from app.ros2_ws.src.core.core.dynamic import VelocityPublisher
+from app.ros2_ws.src.core.core.scheduler import Scheduler
 
 
-def main(args=None):
+async def main(args=None):
     rclpy.init(args=args)
+    topics = [
+        (VelocityPublisher, None, None)
+    ]
+    scheduler = Scheduler()
+    await scheduler.schedule(topics)
 
-    minimal_publisher = VelocityPublisher()
-
-    rclpy.spin(minimal_publisher)
-
-    minimal_publisher.destroy_node()
+    # minimal_publisher.destroy_node()
     rclpy.shutdown()
 
 
 if __name__ == '__main__':
-    main()
+    asyncio.run(main())

@@ -7,6 +7,7 @@ speakerpy==0.1.2
 pyside6==6.6
 outcome==1.3.0
 trio==0.22.2
+loguru==0.7.2
 
 # DEV
 mypy==1.6.1
