@@ -10,7 +10,7 @@ trio==0.23.1
 loguru==0.7.2
 
 # DEV
-mypy==1.6.1
+mypy==1.7.1
 ruff==0.1.5
 black==23.11.0
 
