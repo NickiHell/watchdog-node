@@ -1,6 +1,6 @@
 # BASE
 rq==1.15.1
-redis==5.0.1
+redis==5.0.7
 pandas==2.1.4
 transformers==4.36.1
 speakerpy==0.1.2
