@@ -11,7 +11,7 @@ loguru==0.7.2
 
 # DEV
 mypy==1.13.0
-ruff==0.7.3
+ruff==0.7.4
 black==24.10.0
 
 setuptools~=75.3.0
