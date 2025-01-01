@@ -1,5 +1,5 @@
 # BASE
-rq==2.0.0
+rq==2.1.0
 redis==5.2.1
 pandas==2.2.3
 transformers==4.47.1
