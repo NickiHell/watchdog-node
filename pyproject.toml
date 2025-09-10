@@ -1,69 +1,18 @@
 [project]
 name = "watchdog-node"
 version = "0.1.0"
-description = "WatchDog Main Node"
-authors = [
-    {name = "NickiHell", email = "nickihell@ya.ru"},
-]
-
-requires-python = ">=3.11,<4.0"
+description = "Add your description here"
 readme = "README.md"
-license = {text = "MIT"}
-
-[tool.ruff]
-line-length = 120
-select = [
-  "E", # pycodestyle errors
-  "W", # pycodestyle warnings
-  "F", # pyflakes
-  "B", # flake-bugbear
-  "Q", # flake8-quotes
-  "PT", # flake8-pytest-style
-  "RET", # flake8-return
-  "SIM", # flake8-simplify
-  "FBT", # flake8-boolean-trap
-  "C4", # flake8-comprehensions
-  "PIE", # flake8-pie
-  "TRY", # tryceratops
-  "RUF", # ruff
-  "PL", # pylint
-  "DTZ", # flake8-datetimez
-  "UP", # pyupgrade
-  "C90", # mccabe
-  "COM", # flake8-commas
-  "INP", # flake8-no-pep420
-  "TID", # flake8-tidy-imports
-  "PTH", # flake8-use-pathlib
-  "ERA", # eradicate
+requires-python = ">=3.13"
+dependencies = [
+    "loguru>=0.7.3",
+    "redis>=6.4.0",
+    "rq>=2.6.0",
 ]
 
-ignore = [
-  "Q000",
-  "E501", # Never enforce line length
-  "RET504", # Unnecessary variable assignment before `return` statement
-  "RUF001", # ruff unicode specific rules
-  "RUF002", # ruff unicode specific rules
-  "RUF003", # ruff unicode specific rules
-  "TRY003", # Avoid specifying long messages outside the exception class
+[dependency-groups]
+dev = [
+    "mypy>=1.17.1",
+    "pytest>=8.4.2",
+    "ruff>=0.13.0",
 ]
-
-unfixable = [
-  "B", # Avoid trying to fix flake8-bugbear violations.
-  "ERA", # Avoid deleting commented-out code
-]
-
-extend-exclude = []
-
-[tool.ruff.mccabe]
-max-complexity = 10
-
-[tool.black]
-line-length = 120
-target-version = ["py311"]
-skip-string-normalization = true
-
-[tool.pdm.build]
-includes = []
-[build-system]
-requires = ["pdm-backend"]
-build-backend = "pdm.backend"
