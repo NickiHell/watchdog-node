@@ -1,0 +1,32 @@
+# Конфигурация камеры
+
+camera:
+  # Тип камеры: usb, picamera, multi
+  type: "usb"
+  
+  # ID устройства (для usb) или список ID (для multi)
+  device_id: 0
+  device_ids: [0, 1]  # Для multi режима
+  
+  # Параметры изображения
+  width: 1920
+  height: 1080
+  fps: 30
+  
+  # ROS2 параметры
+  frame_id: "camera_frame"
+  topic: "/camera/image_raw"
+  
+  # Для multi камер
+  stitch_panorama: false  # Склеивать ли изображения в панораму
+  
+  # Обработка изображений (опционально)
+  processing:
+    enabled: false
+    brightness: 0.0  # Изменение яркости (-1.0 до 1.0)
+    contrast: 1.0  # Коэффициент контрастности (1.0 = без изменений)
+    resize:
+      enabled: false
+      width: 1280
+      height: 720
+

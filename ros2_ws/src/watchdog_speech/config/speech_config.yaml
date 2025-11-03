@@ -1,0 +1,32 @@
+# Конфигурация модуля обработки речи
+
+speech:
+  # Распознавание речи (STT)
+  recognition:
+    model: "vosk"  # vosk или whisper
+    model_path: ""  # Путь к модели (пусто = автопоиск)
+    language: "ru"  # ru, en
+    
+  # Верификация голоса
+  voice_verification:
+    enabled: true  # Включить проверку голоса
+    voice_sample_path: ""  # Путь к эталонному голосу (.wav или .pkl)
+    threshold: 0.7  # Порог совпадения (0.0-1.0, выше = строже)
+    
+  # Синтез речи (TTS)
+  synthesis:
+    model: "silero"  # silero или speakerpy
+    model_id: "ru_v3"  # ID модели (для speakerpy)
+    speaker: "aidar"  # Имя голоса (для Silero: aidar, baya, kseniya, xenia, eugene)
+    device: "cpu"  # cpu или cuda
+    
+  # Аудио захват
+  audio:
+    sample_rate: 16000  # Частота дискретизации (Hz)
+    listen_mode: "continuous"  # continuous (постоянное) или push_to_talk (по нажатию)
+    silence_threshold: 0.01  # Порог тишины для остановки записи (0.0-1.0)
+    
+  # Команды
+  commands:
+    timeout: 2.0  # Таймаут команды движения (секунды)
+

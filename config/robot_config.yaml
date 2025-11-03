@@ -1,0 +1,79 @@
+# Конфигурация робота WatchDog
+
+# Параметры лидара
+lidar:
+  device: "/dev/ttyUSB0"  # Порт USB-UART адаптера
+  baudrate: 115200
+  frame_id: "lidar_frame"
+  angle_min: -3.14159
+  angle_max: 3.14159
+  range_min: 0.05
+  range_max: 12.0
+
+# Параметры камеры
+camera:
+  device_id: 0  # ID камеры или путь к устройству
+  width: 1920
+  height: 1080
+  fps: 30
+  frame_id: "camera_frame"
+
+# Параметры распознавания лиц
+face_detection:
+  model: "haar_cascade"  # или "dlib", "opencv_dnn"
+  model_path: "/path/to/haarcascade_frontalface_default.xml"
+  min_face_size: 50
+  confidence_threshold: 0.5
+  tracking_enabled: true
+  max_tracked_faces: 5
+
+# Параметры речи
+speech:
+  language: "ru"
+  synthesis:
+    model: "selero"  # или "silero"
+    speaker: "kelthuzad"
+    device: "cpu"  # или "cuda"
+    sample_rate: 48000
+  recognition:
+    model: "vosk"  # или "whisper"
+    model_path: "/path/to/vosk-model-ru"
+    device: "cpu"
+
+# Параметры навигации
+navigation:
+  cmd_vel_topic: "/cmd_vel"
+  base_frame: "base_link"
+  odom_frame: "odom"
+  map_frame: "map"
+  max_linear_velocity: 0.5  # м/с
+  max_angular_velocity: 1.0  # рад/с
+  safety_distance: 0.3  # м
+
+
+# Параметры STM32
+stm32:
+  interface: "uart"  # или "i2c", "spi"
+  port: "/dev/ttyACM0"
+  baudrate: 115200
+  timeout: 0.1
+  motor_left:
+    pin_in1: 0
+    pin_in2: 1
+    pin_en: 2
+  motor_right:
+    pin_in1: 3
+    pin_in2: 4
+    pin_en: 5
+
+# Параметры контроллера
+controller:
+  state_topic: "/controller/state"
+  default_mode: "idle"  # или "navigation"
+  idle:
+    scan_interval: 2.0  # сек
+    movement_radius: 1.0  # м
+  navigation:
+    obstacle_threshold: 0.3  # м
+    goal_tolerance: 0.1  # м
+
