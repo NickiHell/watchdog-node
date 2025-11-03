@@ -35,6 +35,3 @@ dlib>=19.24.0
 
 # LiDAR
 pyserial>=3.5
-
-# Camera (opencv уже выше)
-# opencv-python>=4.8.0
