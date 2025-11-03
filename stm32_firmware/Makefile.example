@@ -1,0 +1,57 @@
+# Пример Makefile для компиляции прошивки (альтернатива STM32CubeIDE)
+
+# Путь к ARM GCC toolchain
+TOOLCHAIN_PREFIX = arm-none-eabi-
+
+# Компилятор и утилиты
+CC = $(TOOLCHAIN_PREFIX)gcc
+AS = $(TOOLCHAIN_PREFIX)as
+LD = $(TOOLCHAIN_PREFIX)ld
+OBJCOPY = $(TOOLCHAIN_PREFIX)objcopy
+SIZE = $(TOOLCHAIN_PREFIX)size
+
+# Флаги компиляции
+CFLAGS = -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
+CFLAGS += -O2 -Wall -fdata-sections -ffunction-sections
+CFLAGS += -DSTM32F407xx
+
+# Исходные файлы
+SOURCES = src/main.c \
+          src/motor_control.c \
+          src/encoder_reader.c \
+          src/communication.c \
+          # Добавьте сгенерированные STM32CubeMX файлы
+
+# Объектные файлы
+OBJECTS = $(SOURCES:.c=.o)
+
+# Финальный образ
+TARGET = watchdog_robot.elf
+HEX = watchdog_robot.hex
+BIN = watchdog_robot.bin
+
+# Правила сборки
+all: $(HEX) $(BIN)
+	$(SIZE) $(TARGET)
+
+%.hex: %.elf
+	$(OBJCOPY) -O ihex $< $@
+
+%.bin: %.elf
+	$(OBJCOPY) -O binary $< $@
+
+$(TARGET): $(OBJECTS)
+	$(CC) $(CFLAGS) -T linker_script.ld -o $@ $^ -lm
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	rm -f $(OBJECTS) $(TARGET) $(HEX) $(BIN)
+
+.PHONY: all clean
+
+# Примечание: Это упрощенный пример.
+# В реальном проекте используйте STM32CubeIDE или настройте полный Makefile
+# с правильными путями к HAL библиотекам и linker script
+

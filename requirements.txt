@@ -16,3 +16,25 @@ black==25.1.0
 
 setuptools~=80.0.0
 pynput~=1.8.1
+pyserial>=3.5
+
+# Speech processing
+vosk>=0.3.45
+speechbrain>=0.5.16
+silero>=0.0.1
+soundfile>=0.12.1
+pyaudio>=0.2.14
+numpy>=1.24.0
+torch>=2.0.0
+openai-whisper>=20231117
+
+# Face detection and recognition
+opencv-python>=4.8.0
+face-recognition>=1.3.0
+dlib>=19.24.0
+
+# LiDAR
+pyserial>=3.5
+
+# Camera (opencv уже выше)
+# opencv-python>=4.8.0
