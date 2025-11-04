@@ -33,8 +33,8 @@ def record_voice_sample(output_path: str, duration: float = 5.0, sample_rate: in
         audio_capture.start_recording()
 
         # Звуковой сигнал
-        print('\n🔊 ЗАПИСЬ НАЧАЛАСЬ (говорите)...')
-        print('⏱  ', end='', flush=True)
+        print('\nЗАПИСЬ НАЧАЛАСЬ (говорите)...')
+        print('', end='', flush=True)
 
         # Записываем заданное время
         import time
@@ -48,7 +48,7 @@ def record_voice_sample(output_path: str, duration: float = 5.0, sample_rate: in
             if chunk:
                 frames.append(chunk)
                 elapsed = time.time() - start_time
-                print(f'\r⏱  Записано: {elapsed:.1f}с / {duration:.1f}с', end='', flush=True)
+                print(f'\rЗаписано: {elapsed:.1f}с / {duration:.1f}с', end='', flush=True)
 
         audio_capture.stop_recording()
 
@@ -56,49 +56,49 @@ def record_voice_sample(output_path: str, duration: float = 5.0, sample_rate: in
         audio_data = b''.join(frames)
         total_time = time.time() - start_time
 
-        print(f'\r✅ Запись завершена ({total_time:.1f} секунд)')
+        print(f'\rЗапись завершена ({total_time:.1f} секунд)')
 
         # Сохраняем файл
         output_file = Path(output_path)
         output_file.parent.mkdir(parents=True, exist_ok=True)
 
         if audio_capture.save_to_file(audio_data, str(output_file)):
-            print(f'✅ Файл сохранен: {output_file}')
+            print(f'Файл сохранен: {output_file}')
             file_size = os.path.getsize(output_file)
-            print(f'📦 Размер файла: {file_size / 1024:.1f} KB')
+            print(f'Размер файла: {file_size / 1024:.1f} KB')
         else:
-            print('❌ Ошибка сохранения файла')
+            print('ОШИБКА: Ошибка сохранения файла')
             return False
 
         # Создаем эмбеддинг для проверки
-        print('\n🔍 Проверка качества записи...')
+        print('\nПроверка качества записи...')
         verifier = VoiceVerifier()
         if verifier.load_reference_voice(str(output_file)):
-            print('✅ Эмбеддинг голоса создан успешно')
+            print('Эмбеддинг голоса создан успешно')
             
             # Сохраняем эмбеддинг
             embedding_path = output_file.with_suffix('.pkl')
             if verifier.save_reference_embedding(str(embedding_path)):
-                print(f'✅ Эмбеддинг сохранен: {embedding_path}')
+                print(f'Эмбеддинг сохранен: {embedding_path}')
             
             print(f'\n{"="*60}')
-            print('✅ Эталонный голос записан и готов к использованию!')
-            print(f'📁 Аудио файл: {output_file}')
-            print(f'📁 Эмбеддинг: {embedding_path}')
+            print('Эталонный голос записан и готов к использованию!')
+            print(f'Аудио файл: {output_file}')
+            print(f'Эмбеддинг: {embedding_path}')
             print(f'\nУкажите путь к файлу в конфиге:')
             print(f'  voice_sample_path: "{output_file}"')
             print(f'{"="*60}\n')
             return True
         else:
-            print('⚠️  Не удалось создать эмбеддинг (SpeechBrain может быть не установлен)')
+            print('ВНИМАНИЕ: Не удалось создать эмбеддинг (SpeechBrain может быть не установлен)')
             print('Вы все равно можете использовать аудио файл напрямую.')
             return True
 
     except KeyboardInterrupt:
-        print('\n\n❌ Запись прервана пользователем')
+        print('\n\nЗапись прервана пользователем')
         return False
     except Exception as e:
-        print(f'\n❌ Ошибка: {e}')
+        print(f'\nОШИБКА: {e}')
         import traceback
         traceback.print_exc()
         return False

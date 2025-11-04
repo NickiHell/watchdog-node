@@ -284,7 +284,7 @@ Gui.SendMsgToActiveView("ViewFit")
 
 print("Нижняя платформа создана успешно!")
 print(f"Размеры: {CASE_LENGTH}×{CASE_WIDTH}×{FLOOR_THICKNESS} мм")
-print(f"✨ Стильный дизайн:")
+print(f"Стильный дизайн:")
 print(f"  • Закругленные углы (радиус {corner_radius} мм)")
 print(f"  • Шестиугольные платформы для моторов")
 print(f"  • Декоративные канавки по краям")

@@ -280,7 +280,7 @@ doc.recompute()
 Gui.SendMsgToActiveView("ViewFit")
 
 print("Башня лидара создана успешно!")
-print(f"✨ Компактный дизайн с защитой:")
+print(f"Компактный дизайн с защитой:")
 print(f"  • Декоративные вертикальные рёбра ({TOWER_RIB_COUNT} шт)")
 print(f"  • Обтекаемая коническая форма")
 print(f"  • Защитный колпак сверху (высота {PROTECTION_HEIGHT} мм)")

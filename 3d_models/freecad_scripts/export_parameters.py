@@ -86,40 +86,40 @@ def export_document(doc_name):
     try:
         doc = App.getDocument(doc_name)
     except:
-        print(f"❌ Документ '{doc_name}' не найден!")
+        print(f"ОШИБКА: Документ '{doc_name}' не найден!")
         docs = App.listDocuments()
         if docs:
-            print(f"\n📋 Доступные документы:")
+            print(f"\nДоступные документы:")
             for doc_name_avail in docs.keys():
                 print(f"  • {doc_name_avail}")
-            print(f"\n💡 Используйте одно из имён выше")
+            print(f"\nИспользуйте одно из имён выше")
         else:
-            print(f"💡 Нет открытых документов")
+            print(f"Нет открытых документов")
         return
     
     print(f"\n{'='*70}")
-    print(f"📋 Экспорт параметров из документа: {doc_name}")
+    print(f"Экспорт параметров из документа: {doc_name}")
     print(f"{'='*70}\n")
     
     if len(doc.Objects) == 0:
-        print("⚠️  Документ пуст!")
+        print("ВНИМАНИЕ: Документ пуст!")
         return
     
     for i, obj in enumerate(doc.Objects, 1):
         print(f"\n{export_object_parameters(obj)}")
         print("-" * 70)
     
-    print(f"\n✅ Экспортировано {len(doc.Objects)} объектов")
-    print(f"\n💡 Совет: Скопируйте нужные параметры в соответствующие скрипты")
+    print(f"\nЭкспортировано {len(doc.Objects)} объектов")
+    print(f"\nСовет: Скопируйте нужные параметры в соответствующие скрипты")
 
 def export_all_documents():
     """Экспортирует параметры из всех открытых документов"""
     docs = App.listDocuments()
     if not docs:
-        print("❌ Нет открытых документов!")
+        print("ОШИБКА: Нет открытых документов!")
         return
     
-    print(f"\n📚 Найдено {len(docs)} документов\n")
+    print(f"\nНайдено {len(docs)} документов\n")
     
     for doc_name in docs.keys():
         export_document(doc_name)
@@ -134,38 +134,38 @@ def export_assembly_positions(assembly_doc_name=None):
         for doc_name in docs.keys():
             if 'Assembly' in doc_name or 'assembly' in doc_name.lower():
                 assembly_doc_name = doc_name
-                print(f"🔍 Найден документ сборки: '{assembly_doc_name}'")
+                print(f"Найден документ сборки: '{assembly_doc_name}'")
                 break
         
         # Если не нашли, используем первый доступный или показываем список
         if assembly_doc_name is None:
             if docs:
-                print(f"⚠️  Документ сборки не найден. Доступные документы:")
+                print(f"ВНИМАНИЕ: Документ сборки не найден. Доступные документы:")
                 for i, doc_name in enumerate(docs.keys(), 1):
                     print(f"  {i}. {doc_name}")
-                print(f"\n💡 Используйте: export_assembly_positions('имя_документа')")
+                print(f"\nИспользуйте: export_assembly_positions('имя_документа')")
                 return
             else:
-                print("❌ Нет открытых документов!")
-                print("💡 Сначала запустите assemble.py для создания сборки")
+                print("ОШИБКА: Нет открытых документов!")
+                print("Сначала запустите assemble.py для создания сборки")
                 return
     
     try:
         doc = App.getDocument(assembly_doc_name)
     except:
-        print(f"❌ Документ '{assembly_doc_name}' не найден!")
+        print(f"ОШИБКА: Документ '{assembly_doc_name}' не найден!")
         docs = App.listDocuments()
         if docs:
-            print(f"\n📋 Доступные документы:")
+            print(f"\nДоступные документы:")
             for doc_name in docs.keys():
                 print(f"  • {doc_name}")
-            print(f"\n💡 Используйте одно из имён выше")
+            print(f"\nИспользуйте одно из имён выше")
         else:
-            print(f"💡 Нет открытых документов. Запустите assemble.py")
+            print(f"Нет открытых документов. Запустите assemble.py")
         return
     
     print(f"\n{'='*70}")
-    print(f"📍 Экспорт позиций из сборки: {assembly_doc_name}")
+    print(f"Экспорт позиций из сборки: {assembly_doc_name}")
     print(f"{'='*70}\n")
     
     print("# Словарь позиций для assemble.py:")
@@ -189,7 +189,7 @@ def export_assembly_positions(assembly_doc_name=None):
             print(f"    }},")
     
     print("}")
-    print(f"\n✅ Экспортировано {len(doc.Objects)} позиций")
+    print(f"\nЭкспортировано {len(doc.Objects)} позиций")
 
 def export_parameters_to_file(doc_name, output_file=None):
     """Экспортирует параметры в текстовый файл"""
@@ -205,11 +205,11 @@ def export_parameters_to_file(doc_name, output_file=None):
         export_document(doc_name)
     
     sys.stdout = original_stdout
-    print(f"\n✅ Параметры экспортированы в файл: {output_file}")
+    print(f"\nПараметры экспортированы в файл: {output_file}")
 
 # Информация о скрипте
 print("="*70)
-print("📤 Скрипт экспорта параметров из FreeCAD загружен!")
+print("Скрипт экспорта параметров из FreeCAD загружен!")
 print("="*70)
 print("\nДоступные функции:")
 print("  • export_document('WatchDog_BasePlate')        - экспорт одного документа")
@@ -219,7 +219,7 @@ print("  • export_parameters_to_file('WatchDog_BasePlate') - экспорт в
 print("\nПример использования:")
 print("  export_document('WatchDog_BasePlate')")
 print("  export_assembly_positions()  # Автоматически найдёт документ сборки")
-print("\n📋 Список открытых документов:")
+print("\nСписок открытых документов:")
 docs = App.listDocuments()
 if docs:
     for doc_name in docs.keys():

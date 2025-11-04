@@ -96,7 +96,7 @@ for idx, script_info in enumerate(scripts, 1):
     
     if not os.path.exists(script_path):
         error_msg = f"Файл не найден: {script_path}"
-        print(f"  ✗ ОШИБКА: {error_msg}")
+        print(f"  ОШИБКА: {error_msg}")
         errors.append((script_name, error_msg))
         error_count += 1
         print()
@@ -109,21 +109,21 @@ for idx, script_info in enumerate(scripts, 1):
         # Проверяем, что документ создан
         doc_name = script_info['doc']
         if App.getDocument(doc_name) is not None:
-            print(f"  ✓ Успешно создан документ: {doc_name}")
+            print(f"  Успешно создан документ: {doc_name}")
             success_count += 1
         else:
-            print(f"  ⚠ Предупреждение: Документ {doc_name} не найден после выполнения")
+            print(f"  ВНИМАНИЕ: Документ {doc_name} не найден после выполнения")
             success_count += 1  # Считаем успешным, если нет исключений
         
     except ImportError as e:
         error_msg = f"Ошибка импорта: {str(e)}"
-        print(f"  ✗ ОШИБКА: {error_msg}")
+        print(f"  ОШИБКА: {error_msg}")
         print(f"  Подсказка: Убедитесь, что файл parameters.py находится в той же директории")
         errors.append((script_name, error_msg))
         error_count += 1
     except Exception as e:
         error_msg = f"Ошибка выполнения: {str(e)}"
-        print(f"  ✗ ОШИБКА: {error_msg}")
+        print(f"  ОШИБКА: {error_msg}")
         import traceback
         print(f"  Детали: {traceback.format_exc().split(chr(10))[-2]}")
         errors.append((script_name, error_msg))
@@ -145,7 +145,7 @@ if errors:
     print()
 
 if success_count == len(scripts):
-    print("✓ Все детали корпуса успешно созданы!")
+    print("Все детали корпуса успешно созданы!")
     print("\nДокументы FreeCAD:")
     for script_info in scripts:
         doc_name = script_info['doc']
@@ -157,7 +157,7 @@ if success_count == len(scripts):
     print("  3. Экспортируйте каждую деталь в STL для 3D печати:")
     print("     File → Export → STL Mesh (*.stl)")
 else:
-    print("\n⚠ Некоторые детали не были созданы. Проверьте ошибки выше.")
+    print("\nВНИМАНИЕ: Некоторые детали не были созданы. Проверьте ошибки выше.")
     print("\nПодсказки:")
     print("  • Убедитесь, что все файлы находятся в одной директории")
     print("  • Проверьте, что файл parameters.py существует")

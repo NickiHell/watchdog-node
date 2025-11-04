@@ -62,14 +62,14 @@ for doc_name in required_docs:
         missing_docs.append(doc_name)
 
 if missing_docs:
-    print("\n⚠ ВНИМАНИЕ: Не найдены следующие документы:")
+    print("\nВНИМАНИЕ: Не найдены следующие документы:")
     for doc in missing_docs:
         print(f"  • {doc}")
     print("\nСначала запустите create_all.py для создания всех деталей!")
     print("=" * 60)
     # Создаём документ сборки в любом случае
 else:
-    print("\n✓ Все необходимые документы найдены")
+    print("\nВсе необходимые документы найдены")
 
 # Создаём новый документ для сборки
 assembly_doc = App.newDocument("WatchDog_Assembly")
@@ -113,7 +113,7 @@ electronics_height = max(
 # Высота верхней крышки
 cover_height = WALL_THICKNESS
 
-print(f"\n📐 Размеры для сборки:")
+print(f"\nРазмеры для сборки:")
 print(f"  • BasePlate: {CASE_LENGTH}×{CASE_WIDTH}×{FLOOR_THICKNESS} мм")
 print(f"  • ElectronicsCompartment: {CASE_LENGTH}×{CASE_WIDTH}×{electronics_height} мм")
 print(f"  • TopCover: {CASE_LENGTH}×{CASE_WIDTH}×{cover_height} мм")
@@ -226,7 +226,7 @@ for part in parts:
                     break
         
         if source_obj is None:
-            print(f"  ⚠ {doc_name}: объект '{obj_name}' не найден")
+            print(f"  ВНИМАНИЕ: {doc_name}: объект '{obj_name}' не найден")
             failed_count += 1
             continue
         
@@ -235,7 +235,7 @@ for part in parts:
         
         # Проверяем, что форма валидна
         if source_obj.Shape is None:
-            print(f"  ⚠ {doc_name}: объект '{obj_name}' не имеет формы")
+            print(f"  ВНИМАНИЕ: {doc_name}: объект '{obj_name}' не имеет формы")
             failed_count += 1
             continue
         
@@ -257,11 +257,11 @@ for part in parts:
         except Exception:
             pass
         
-        print(f"  ✓ {assembly_name} скопирован из {doc_name}")
+        print(f"  {assembly_name} скопирован из {doc_name}")
         copied_count += 1
         
     except Exception as e:
-        print(f"  ✗ {doc_name}/{obj_name}: {str(e)}")
+        print(f"  ОШИБКА: {doc_name}/{obj_name}: {str(e)}")
         failed_count += 1
         import traceback
         # Печатаем только последнюю строку ошибки для краткости
@@ -644,7 +644,7 @@ except Exception:
     pass
 components.append("Опорное колесо (caster, СПЕРЕДИ под днищем, с механизмом крепления)")
 
-print(f"\n✓ Добавлено {len(components)} компонентов:")
+print(f"\nДобавлено {len(components)} компонентов:")
 for comp in components:
     print(f"  • {comp}")
 
@@ -654,14 +654,14 @@ assembly_doc.recompute()
 print()
 print("=" * 60)
 print(f"Результаты сборки:")
-print(f"  ✓ Успешно скопировано: {copied_count}")
-print(f"  ✓ Добавлено компонентов: {len(components)}")
-print(f"  ✗ Ошибок: {failed_count}")
+print(f"  Успешно скопировано: {copied_count}")
+print(f"  Добавлено компонентов: {len(components)}")
+print(f"  Ошибок: {failed_count}")
 print("=" * 60)
 
 if copied_count > 0:
-    print("\n✓ Сборка создана: WatchDog_Assembly")
-    print("\n📊 Структура сборки (по высоте Z):")
+    print("\nСборка создана: WatchDog_Assembly")
+    print("\nСтруктура сборки (по высоте Z):")
     print(f"  • BasePlate: z = 0 до {FLOOR_THICKNESS} мм")
     print(f"  • ElectronicsCompartment: z = {FLOOR_THICKNESS} до {FLOOR_THICKNESS + electronics_height} мм")
     print(f"  • SidePanels: z = {FLOOR_THICKNESS} до {FLOOR_THICKNESS + electronics_height} мм (высота {electronics_height} мм)")
@@ -694,13 +694,13 @@ if copied_count > 0:
     except:
         pass
     
-    print("\n💡 Советы:")
+    print("\nСоветы:")
     print("   • Вы можете скрыть отдельные детали, сняв галочку")
     print("     рядом с объектом в дереве проекта (Tree View)")
     print("   • Компоненты можно скрыть для лучшего вида корпуса")
     print("   • Все компоненты размещены в соответствии с отсеками корпуса")
 else:
-    print("\n⚠ Не удалось скопировать ни одной детали!")
+    print("\nВНИМАНИЕ: Не удалось скопировать ни одной детали!")
     print("   Убедитесь, что вы сначала запустили create_all.py")
 
 print("\n" + "=" * 60)
