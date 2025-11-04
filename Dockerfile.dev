@@ -1,0 +1,49 @@
+# Development Dockerfile для WatchDog Robot
+FROM osrf/ros:humble-desktop-full
+
+# Установка инструментов разработки
+RUN apt-get update && apt-get install -y \
+    python3-pip \
+    python3-colcon-common-extensions \
+    python3-rosdep \
+    python3-vcstool \
+    build-essential \
+    git \
+    vim \
+    nano \
+    tmux \
+    && rm -rf /var/lib/apt/lists/*
+
+# Установка Python зависимостей включая dev
+RUN pip3 install --no-cache-dir \
+    pytest \
+    pytest-cov \
+    pytest-mock \
+    pytest-asyncio \
+    black \
+    ruff \
+    mypy
+
+# Рабочая директория
+WORKDIR /workspace
+
+# Копирование всего проекта
+COPY . /workspace
+
+# Инициализация rosdep
+RUN rosdep update
+
+# Настройка окружения
+RUN echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc && \
+    echo "source /workspace/ros2_ws/install/setup.bash" >> ~/.bashrc
+
+# Сборка пакетов
+WORKDIR /workspace/ros2_ws
+RUN . /opt/ros/humble/setup.sh && \
+    rosdep install --from-paths src --ignore-src -r -y || true && \
+    colcon build --symlink-install || true
+
+WORKDIR /workspace
+
+CMD ["/bin/bash"]
+
