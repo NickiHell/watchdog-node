@@ -85,10 +85,17 @@ except:
 
 electronics_box = outer_box.cut(inner_box)
 
-# Создание отсека для Beelink Mini S
-minipc_x = WALL_THICKNESS + MINIPC_CLEARANCE
-minipc_y = WALL_THICKNESS + MINIPC_CLEARANCE
-minipc_z = WALL_THICKNESS
+# Позиции отсеков обновлены: электроника размещена без пересечений
+# При виде СВЕРХУ: X - длина (малый X = перед, большой X = зад), Y - ширина (малый Y = слева, большой Y = справа)
+# MiniPC и STM32 в передней части (малый X = 8-123)
+# Battery и Drivers в передней части справа (малый X = 8-138, большой Y = 217-242)
+# Моторы СЗАДИ (X=280), по бокам по Y (18 и 262)
+
+# Отсек для Beelink Mini S (передняя левая часть)
+# Компонент в assemble.py: (8, 8, 16), отсек: (8 - MINIPC_CLEARANCE, 8 - MINIPC_CLEARANCE, WALL_THICKNESS)
+minipc_x = WALL_THICKNESS + MINIPC_CLEARANCE - MINIPC_CLEARANCE  # 3
+minipc_y = WALL_THICKNESS + MINIPC_CLEARANCE - MINIPC_CLEARANCE  # 3
+minipc_z = WALL_THICKNESS  # 3
 
 minipc_compartment = Part.makeBox(
     MINIPC_LENGTH + 2 * MINIPC_CLEARANCE,
@@ -97,10 +104,11 @@ minipc_compartment = Part.makeBox(
     App.Vector(minipc_x, minipc_y, minipc_z)
 )
 
-# Создание отсека для STM32 (рядом с Beelink Mini S)
-stm32_x = minipc_x + MINIPC_LENGTH + 2 * MINIPC_CLEARANCE + 10
-stm32_y = WALL_THICKNESS + STM32_CLEARANCE
-stm32_z = WALL_THICKNESS
+# Отсек для STM32 (правее MiniPC, передняя часть)
+# Компонент в assemble.py: (8, 125, 16), отсек: (8 - STM32_CLEARANCE, 125 - STM32_CLEARANCE, WALL_THICKNESS)
+stm32_x = WALL_THICKNESS + MINIPC_CLEARANCE - STM32_CLEARANCE  # 3
+stm32_y = WALL_THICKNESS + MINIPC_CLEARANCE + MINIPC_WIDTH + 2 * MINIPC_CLEARANCE + 10 - STM32_CLEARANCE  # 120
+stm32_z = WALL_THICKNESS  # 3
 
 stm32_compartment = Part.makeBox(
     STM32_LENGTH + 2 * STM32_CLEARANCE,
@@ -109,10 +117,11 @@ stm32_compartment = Part.makeBox(
     App.Vector(stm32_x, stm32_y, stm32_z)
 )
 
-# Создание отсека для батареи (с другой стороны)
-battery_x = WALL_THICKNESS + BATTERY_CLEARANCE
-battery_y = CASE_WIDTH - WALL_THICKNESS - BATTERY_WIDTH - BATTERY_CLEARANCE
-battery_z = WALL_THICKNESS
+# Отсек для батареи (справа в передней части)
+# Компонент в assemble.py: (8, 217, 16), отсек: (8 - BATTERY_CLEARANCE, 217 - BATTERY_CLEARANCE, WALL_THICKNESS)
+battery_x = WALL_THICKNESS + BATTERY_CLEARANCE - BATTERY_CLEARANCE  # 3
+battery_y = CASE_WIDTH - WALL_THICKNESS - BATTERY_WIDTH - BATTERY_CLEARANCE - BATTERY_CLEARANCE  # 212
+battery_z = WALL_THICKNESS  # 3
 
 battery_compartment = Part.makeBox(
     BATTERY_LENGTH + 2 * BATTERY_CLEARANCE,
@@ -121,10 +130,11 @@ battery_compartment = Part.makeBox(
     App.Vector(battery_x, battery_y, battery_z)
 )
 
-# Создание отсеков для драйверов (2 шт, рядом с батареей)
-driver1_x = battery_x + BATTERY_LENGTH + 2 * BATTERY_CLEARANCE + 10
-driver1_y = battery_y
-driver1_z = WALL_THICKNESS
+# Отсеки для драйверов (рядом с батареей)
+# Driver1 в assemble.py: (138, 217, 14), отсек: (138 - DRIVER_CLEARANCE, 217 - DRIVER_CLEARANCE, WALL_THICKNESS)
+driver1_x = WALL_THICKNESS + BATTERY_CLEARANCE + BATTERY_LENGTH + 2 * BATTERY_CLEARANCE + 10 - DRIVER_CLEARANCE  # 133
+driver1_y = CASE_WIDTH - WALL_THICKNESS - BATTERY_WIDTH - BATTERY_CLEARANCE - DRIVER_CLEARANCE  # 212
+driver1_z = WALL_THICKNESS  # 3
 
 driver1_compartment = Part.makeBox(
     DRIVER_LENGTH + 2 * DRIVER_CLEARANCE,
@@ -133,9 +143,10 @@ driver1_compartment = Part.makeBox(
     App.Vector(driver1_x, driver1_y, driver1_z)
 )
 
-driver2_x = driver1_x
-driver2_y = driver1_y + DRIVER_WIDTH + 2 * DRIVER_CLEARANCE + 5
-driver2_z = WALL_THICKNESS
+# Driver2 в assemble.py: (138, 242, 14), отсек: (138 - DRIVER_CLEARANCE, 242 - DRIVER_CLEARANCE, WALL_THICKNESS)
+driver2_x = driver1_x  # 133
+driver2_y = driver1_y + DRIVER_WIDTH + 2 * DRIVER_CLEARANCE + 5 - DRIVER_CLEARANCE  # 237
+driver2_z = WALL_THICKNESS  # 3
 
 driver2_compartment = Part.makeBox(
     DRIVER_LENGTH + 2 * DRIVER_CLEARANCE,
@@ -230,12 +241,21 @@ electronics_obj = doc.addObject("Part::Feature", "ElectronicsCompartment")
 electronics_obj.Shape = electronics_box
 
 # Создание вспомогательных объектов для визуализации компонентов
+# Позиции соответствуют assemble.py (компоненты на z=16, но в отсеке это z=WALL_THICKNESS + CLEARANCE)
+# В assemble.py компоненты на z=16 относительно корпуса, в отсеке это z=WALL_THICKNESS + CLEARANCE = 8
+try:
+    FLOOR_THICKNESS
+except NameError:
+    FLOOR_THICKNESS = 8
+
 minipc_vis = doc.addObject("Part::Box", "MiniPC_Visualization")
 minipc_vis.Length = MINIPC_LENGTH
 minipc_vis.Width = MINIPC_WIDTH
 minipc_vis.Height = MINIPC_HEIGHT
+# В assemble.py компонент на (8, 8, 16), где 16 = FLOOR_THICKNESS + WALL_THICKNESS + CLEARANCE
+# В отсеке это z = WALL_THICKNESS + CLEARANCE = 3 + 5 = 8
 minipc_vis.Placement = App.Placement(
-    App.Vector(minipc_x + MINIPC_CLEARANCE, minipc_y + MINIPC_CLEARANCE, minipc_z + MINIPC_CLEARANCE),
+    App.Vector(WALL_THICKNESS + MINIPC_CLEARANCE, WALL_THICKNESS + MINIPC_CLEARANCE, WALL_THICKNESS + MINIPC_CLEARANCE),
     App.Rotation()
 )
 minipc_vis.ViewObject.ShapeColor = (0.8, 0.2, 0.2)
@@ -245,7 +265,7 @@ stm32_vis.Length = STM32_LENGTH
 stm32_vis.Width = STM32_WIDTH
 stm32_vis.Height = STM32_HEIGHT
 stm32_vis.Placement = App.Placement(
-    App.Vector(stm32_x + STM32_CLEARANCE, stm32_y + STM32_CLEARANCE, stm32_z + STM32_CLEARANCE),
+    App.Vector(WALL_THICKNESS + MINIPC_CLEARANCE, WALL_THICKNESS + MINIPC_CLEARANCE + MINIPC_WIDTH + 2 * MINIPC_CLEARANCE + 10, WALL_THICKNESS + STM32_CLEARANCE),
     App.Rotation()
 )
 stm32_vis.ViewObject.ShapeColor = (0.2, 0.8, 0.2)
@@ -255,10 +275,30 @@ battery_vis.Length = BATTERY_LENGTH
 battery_vis.Width = BATTERY_WIDTH
 battery_vis.Height = BATTERY_HEIGHT
 battery_vis.Placement = App.Placement(
-    App.Vector(battery_x + BATTERY_CLEARANCE, battery_y + BATTERY_CLEARANCE, battery_z + BATTERY_CLEARANCE),
+    App.Vector(WALL_THICKNESS + BATTERY_CLEARANCE, CASE_WIDTH - WALL_THICKNESS - BATTERY_WIDTH - BATTERY_CLEARANCE, WALL_THICKNESS + BATTERY_CLEARANCE),
     App.Rotation()
 )
 battery_vis.ViewObject.ShapeColor = (0.2, 0.2, 0.8)
+
+driver1_vis = doc.addObject("Part::Box", "Driver1_Visualization")
+driver1_vis.Length = DRIVER_LENGTH
+driver1_vis.Width = DRIVER_WIDTH
+driver1_vis.Height = DRIVER_HEIGHT
+driver1_vis.Placement = App.Placement(
+    App.Vector(WALL_THICKNESS + BATTERY_CLEARANCE + BATTERY_LENGTH + 2 * BATTERY_CLEARANCE + 10, CASE_WIDTH - WALL_THICKNESS - BATTERY_WIDTH - BATTERY_CLEARANCE, WALL_THICKNESS + DRIVER_CLEARANCE),
+    App.Rotation()
+)
+driver1_vis.ViewObject.ShapeColor = (0.8, 0.6, 0.2)
+
+driver2_vis = doc.addObject("Part::Box", "Driver2_Visualization")
+driver2_vis.Length = DRIVER_LENGTH
+driver2_vis.Width = DRIVER_WIDTH
+driver2_vis.Height = DRIVER_HEIGHT
+driver2_vis.Placement = App.Placement(
+    App.Vector(WALL_THICKNESS + BATTERY_CLEARANCE + BATTERY_LENGTH + 2 * BATTERY_CLEARANCE + 10, CASE_WIDTH - WALL_THICKNESS - BATTERY_WIDTH - BATTERY_CLEARANCE + DRIVER_WIDTH + 2 * DRIVER_CLEARANCE + 5, WALL_THICKNESS + DRIVER_CLEARANCE),
+    App.Rotation()
+)
+driver2_vis.ViewObject.ShapeColor = (0.8, 0.6, 0.2)
 
 # Настройка вида
 doc.recompute()

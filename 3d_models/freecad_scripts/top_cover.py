@@ -149,19 +149,21 @@ cable_hole = Part.makeBox(
 top_cover = top_cover.cut(cable_hole)
 
 # Крепление для USB камеры в углу (справа спереди)
+# Система координат: X малый = перед, X большой = зад, Y малый = слева, Y большой = справа
 # Создаём платформу для крепления USB камеры
 USB_CAMERA_SIZE = 40  # Типичный размер USB камеры (примерно)
 USB_CAMERA_MOUNT_HEIGHT = 10  # Высота платформы для крепления
 camera_mount_offset = 15  # Отступ от края
 
 # Платформа для USB камеры (выступает вверх)
+# Камера в переднем правом углу: X малый (перед), Y большой (справа)
 camera_mount_platform = Part.makeBox(
     USB_CAMERA_SIZE,
     USB_CAMERA_SIZE,
     USB_CAMERA_MOUNT_HEIGHT,
     App.Vector(
-        CASE_LENGTH - USB_CAMERA_SIZE - camera_mount_offset,  # Справа
-        CASE_WIDTH - USB_CAMERA_SIZE - camera_mount_offset,    # Спереди
+        camera_mount_offset,  # ПЕРЕД (малый X)
+        CASE_WIDTH - USB_CAMERA_SIZE - camera_mount_offset,  # СПРАВА (большой Y)
         cover_thickness  # На верхней поверхности крышки
     )
 )
@@ -176,8 +178,8 @@ for x_offset in [-hole_spacing/2, hole_spacing/2]:
             hole_diameter / 2,
             USB_CAMERA_MOUNT_HEIGHT + 1,
             App.Vector(
-                CASE_LENGTH - USB_CAMERA_SIZE/2 - camera_mount_offset + x_offset,
-                CASE_WIDTH - USB_CAMERA_SIZE/2 - camera_mount_offset + y_offset,
+                camera_mount_offset + USB_CAMERA_SIZE/2 + x_offset,  # ПЕРЕД (малый X)
+                CASE_WIDTH - USB_CAMERA_SIZE/2 - camera_mount_offset + y_offset,  # СПРАВА (большой Y)
                 cover_thickness - 0.5
             )
         )
@@ -193,8 +195,8 @@ usb_cable_hole = Part.makeBox(
     USB_CAMERA_SIZE + 2,
     5,
     App.Vector(
-        CASE_LENGTH - USB_CAMERA_SIZE/2 - camera_mount_offset - 6,
-        CASE_WIDTH - USB_CAMERA_SIZE - camera_mount_offset - 1,
+        camera_mount_offset + USB_CAMERA_SIZE/2 - 6,  # ПЕРЕД (малый X)
+        CASE_WIDTH - USB_CAMERA_SIZE - camera_mount_offset - 1,  # СПРАВА (большой Y)
         cover_thickness - 5
     )
 )

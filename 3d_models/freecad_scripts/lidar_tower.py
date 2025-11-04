@@ -23,11 +23,12 @@ except ImportError:
 # Создание нового документа
 doc = App.newDocument("WatchDog_LidarTower")
 
-# Параметры башни (более стильный дизайн)
-tower_base_diameter = max(LIDAR_DIAMETER + 40, 120)  # Основание башни
-tower_top_diameter = LIDAR_DIAMETER + 20  # Верхняя платформа
-tower_height = LIDAR_TOWER_HEIGHT
+# Параметры башни (компактный дизайн с защитой)
+tower_base_diameter = max(LIDAR_DIAMETER + 30, 110)  # Основание башни (уменьшено)
+tower_top_diameter = LIDAR_DIAMETER + 15  # Верхняя платформа (уменьшена)
+tower_height = LIDAR_TOWER_HEIGHT  # Уменьшена до 70мм
 tower_wall_thickness = WALL_THICKNESS
+PROTECTION_HEIGHT = 10  # Высота защитного колпака сверху
 
 # Декоративные рёбра на башне
 TOWER_RIB_COUNT = 6  # Количество вертикальных рёбер для стиля
@@ -244,6 +245,32 @@ lidar_vis.Placement = App.Placement(
 )
 lidar_vis.ViewObject.ShapeColor = (0.5, 0.5, 0.5)
 
+# Создание защитного колпака сверху башни (полусфера с отверстием для лидара)
+protection_cap_radius = tower_top_diameter / 2 + 5  # Немного больше верхней платформы
+protection_cap = Part.makeSphere(
+    protection_cap_radius,
+    App.Vector(0, 0, tower_height + protection_cap_radius - PROTECTION_HEIGHT)
+)
+# Отсекаем нижнюю часть, оставляя только верхнюю полусферу
+cut_plane = Part.makeBox(
+    protection_cap_radius * 3,
+    protection_cap_radius * 3,
+    protection_cap_radius * 2,
+    App.Vector(-protection_cap_radius * 1.5, -protection_cap_radius * 1.5, tower_height - PROTECTION_HEIGHT)
+)
+protection_cap = protection_cap.cut(cut_plane)
+
+# Центральное отверстие для лидара (чтобы он мог видеть)
+lidar_opening = Part.makeCylinder(
+    LIDAR_DIAMETER / 2 + 2,  # Зазор 2мм
+    PROTECTION_HEIGHT + 5,
+    App.Vector(0, 0, tower_height - 1)
+)
+protection_cap = protection_cap.cut(lidar_opening)
+
+# Объединяем защитный колпак с башней
+tower = tower.fuse(protection_cap)
+
 # Создание объекта башни
 tower_obj = doc.addObject("Part::Feature", "LidarTower")
 tower_obj.Shape = tower
@@ -253,10 +280,11 @@ doc.recompute()
 Gui.SendMsgToActiveView("ViewFit")
 
 print("Башня лидара создана успешно!")
-print(f"✨ Стильный дизайн:")
+print(f"✨ Компактный дизайн с защитой:")
 print(f"  • Декоративные вертикальные рёбра ({TOWER_RIB_COUNT} шт)")
 print(f"  • Обтекаемая коническая форма")
-print(f"Высота башни: {tower_height} мм")
-print(f"Диаметр основания: {tower_base_diameter} мм")
-print(f"Диаметр верхней платформы: {tower_top_diameter} мм")
+print(f"  • Защитный колпак сверху (высота {PROTECTION_HEIGHT} мм)")
+print(f"Высота башни: {tower_height} мм (уменьшена)")
+print(f"Диаметр основания: {tower_base_diameter} мм (уменьшен)")
+print(f"Диаметр верхней платформы: {tower_top_diameter} мм (уменьшен)")
 

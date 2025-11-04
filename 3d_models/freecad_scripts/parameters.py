@@ -36,7 +36,7 @@ DRIVER_CLEARANCE = 3
 # Лидар MOP3 (цилиндрический, диаметр зависит от модели)
 LIDAR_DIAMETER = 80    # Диаметр лидара
 LIDAR_HEIGHT = 50      # Высота лидара
-LIDAR_TOWER_HEIGHT = 100  # Высота башни для лидара
+LIDAR_TOWER_HEIGHT = 70  # Высота башни для лидара (уменьшена с 100 до 70)
 
 # Камера Raspberry Pi Camera v3
 CAMERA_BRACKET_WIDTH = 30
