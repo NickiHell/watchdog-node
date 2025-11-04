@@ -348,18 +348,6 @@ colcon test-result --verbose
 
 Детальная документация по каждому модулю находится в папке `docs/`.
 
-## Contributing
-
-Проект следует принципам:
-- Clean Code
-- SOLID
-- Design Patterns
-- ROS2 Best Practices
-
-## Лицензия
-
-MIT License
-
 ## Автор
 
 NickiHell

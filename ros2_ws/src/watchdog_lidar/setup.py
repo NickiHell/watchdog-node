@@ -20,7 +20,8 @@ setup(
     maintainer_email='nickihell@ya.ru',
     description='LiDAR driver with support for multiple models',
     license='MIT',
-    tests_require=['pytest'],
+    tests_require=['pytest', 'pytest-cov'],
+    test_suite='test',
     entry_points={
         'console_scripts': [
             'lidar_node = watchdog_lidar.lidar_node:main',

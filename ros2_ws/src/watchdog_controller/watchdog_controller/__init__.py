@@ -1,4 +1,6 @@
-"""WatchDog Controller Package."""
+"""WatchDog Controller package."""
 
-__version__ = '0.1.0'
+from watchdog_controller.controller_node import ControllerNode
+from watchdog_controller.state_machine import StateMachine, RobotMode
 
+__all__ = ['ControllerNode', 'StateMachine', 'RobotMode']

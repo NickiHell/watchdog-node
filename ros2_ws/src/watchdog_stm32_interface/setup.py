@@ -19,7 +19,8 @@ setup(
     maintainer_email='nickihell@ya.ru',
     description='Interface package for communication with STM32 microcontroller',
     license='MIT',
-    tests_require=['pytest'],
+    tests_require=['pytest', 'pytest-cov'],
+    test_suite='test',
     entry_points={
         'console_scripts': [
             'stm32_interface_node = watchdog_stm32_interface.stm32_interface_node:main',
