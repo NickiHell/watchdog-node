@@ -42,26 +42,18 @@ jobs:
         with:
           python-version: '3.11'
       
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            python3-pytest \
-            python3-pytest-cov \
-            python3-pytest-mock \
-            python3-yaml
-      
       - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          pip install pytest pytest-cov pytest-mock pytest-asyncio
       
       - name: Run tests
         run: |
           pytest ros2_ws/src/ -v --cov=ros2_ws/src --cov-report=xml --cov-report=term
       
       - name: Upload coverage
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           file: ./coverage.xml
           flags: unittests
