@@ -12,6 +12,7 @@ from watchdog_common.error_handling import (
     GracefulDegradation,
 )
 from watchdog_common.security import SecurityValidator
+from watchdog_common.node_utils import BaseWatchdogNode, run_node, safe_get_param
 
 __all__ = [
     'get_logger',
@@ -28,5 +29,8 @@ __all__ = [
     'safe_execute',
     'GracefulDegradation',
     'SecurityValidator',
+    'BaseWatchdogNode',
+    'run_node',
+    'safe_get_param',
 ]
 

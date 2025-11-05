@@ -1,7 +1,5 @@
 """ROS2 узел для захвата и публикации изображений с камеры."""
 
-import rclpy
-from rclpy.node import Node
 from sensor_msgs.msg import Image, CameraInfo
 from std_msgs.msg import Header
 try:
@@ -11,6 +9,7 @@ except ImportError:
 import numpy as np
 from typing import Optional, List
 
+from watchdog_common.node_utils import BaseWatchdogNode, run_node
 from watchdog_camera.camera_driver import (
     CameraDriver,
     USBCameraDriver,
@@ -19,7 +18,7 @@ from watchdog_camera.camera_driver import (
 )
 
 
-class CameraNode(Node):
+class CameraNode(BaseWatchdogNode):
     """ROS2 узел для работы с камерой."""
 
     def __init__(self):
@@ -43,17 +42,17 @@ class CameraNode(Node):
         self.bridge = CvBridge()
 
         # Инициализация драйвера камеры
-        camera_type = self.get_parameter('camera.type').get_parameter_value().string_value
-        device_id = self.get_parameter('camera.device_id').get_parameter_value().integer_value
-        width = self.get_parameter('camera.width').get_parameter_value().integer_value
-        height = self.get_parameter('camera.height').get_parameter_value().integer_value
-        fps = self.get_parameter('camera.fps').get_parameter_value().integer_value
+        camera_type = self.get_param_str('camera.type')
+        device_id = self.get_param_int('camera.device_id')
+        width = self.get_param_int('camera.width')
+        height = self.get_param_int('camera.height')
+        fps = self.get_param_int('camera.fps')
 
         self.camera: Optional[CameraDriver] = None
         self._initialize_camera(camera_type, device_id, width, height, fps)
 
         # Издатели
-        camera_topic = self.get_parameter('camera.topic').get_parameter_value().string_value
+        camera_topic = self.get_param_str('camera.topic')
         self.image_pub = self.create_publisher(Image, camera_topic, 10)
         self.camera_info_pub = self.create_publisher(CameraInfo, '/camera/camera_info', 10)
 
@@ -77,9 +76,7 @@ class CameraNode(Node):
             elif camera_type == 'picamera':
                 self.camera = PiCameraDriver(width, height, fps)
             elif camera_type == 'multi':
-                device_ids = self.get_parameter('camera.device_ids').get_parameter_value().integer_array_value
-                if not device_ids:
-                    device_ids = [0, 1]  # По умолчанию две камеры
+                device_ids = self.get_param_list('camera.device_ids') or [0, 1]
                 self.camera = MultiCameraDriver(device_ids, width, height, fps)
             else:
                 self.get_logger().error(f'Неизвестный тип камеры: {camera_type}')
@@ -103,13 +100,8 @@ class CameraNode(Node):
         try:
             # Читаем кадр
             if isinstance(self.camera, MultiCameraDriver):
-                stitch = self.get_parameter('camera.stitch_panorama').get_parameter_value().bool_value
-                if stitch:
-                    frame = self.camera.read_stitched()
-                else:
-                    # Публикуем только первую камеру
-                    frames = self.camera.read_all()
-                    frame = frames[0] if frames else None
+                stitch = self.get_param_bool('camera.stitch_panorama')
+                frame = self.camera.read_stitched() if stitch else (self.camera.read_all() or [None])[0]
             else:
                 frame = self.camera.read()
 
@@ -117,7 +109,7 @@ class CameraNode(Node):
                 return
 
             # Конвертируем в ROS2 сообщение
-            frame_id = self.get_parameter('camera.frame_id').get_parameter_value().string_value
+            frame_id = self.get_param_str('camera.frame_id')
             image_msg = self.bridge.cv2_to_imgmsg(frame, encoding='bgr8')
             image_msg.header.frame_id = frame_id
             image_msg.header.stamp = self.get_clock().now().to_msg()
@@ -139,7 +131,7 @@ class CameraNode(Node):
                 return
 
             camera_info = CameraInfo()
-            camera_info.header.frame_id = self.get_parameter('camera.frame_id').get_parameter_value().string_value
+            camera_info.header.frame_id = self.get_param_str('camera.frame_id')
             camera_info.header.stamp = self.get_clock().now().to_msg()
 
             if isinstance(info, list):
@@ -193,15 +185,7 @@ class CameraNode(Node):
 
 def main(args=None):
     """Точка входа."""
-    rclpy.init(args=args)
-    node = CameraNode()
-    try:
-        rclpy.spin(node)
-    except KeyboardInterrupt:
-        pass
-    finally:
-        node.destroy_node()
-        rclpy.shutdown()
+    run_node(CameraNode, args)
 
 
 if __name__ == '__main__':

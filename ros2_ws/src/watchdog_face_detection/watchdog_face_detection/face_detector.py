@@ -46,11 +46,11 @@ class FaceDetector:
     def _init_haar(self):
         """Инициализирует детектор Haar Cascade."""
         try:
-            if self.model_path and self.model_path:
-                cascade_path = self.model_path
-            else:
-                # Используем стандартный каскад OpenCV
-                cascade_path = cv2.data.haarcascades + 'haarcascade_frontalface_default.xml'
+            cascade_path = (
+                self.model_path
+                if self.model_path
+                else cv2.data.haarcascades + 'haarcascade_frontalface_default.xml'
+            )
 
             self.detector = cv2.CascadeClassifier(cascade_path)
             if self.detector.empty():
@@ -66,10 +66,8 @@ class FaceDetector:
         try:
             import dlib
 
-            if self.model_path:
-                self.detector = dlib.get_frontal_face_detector()
-            else:
-                self.detector = dlib.get_frontal_face_detector()
+            # model_path игнорируется для dlib - всегда используется встроенный детектор
+            self.detector = dlib.get_frontal_face_detector()
             self.logger.info('Dlib HOG детектор загружен')
 
         except ImportError:

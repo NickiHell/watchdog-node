@@ -171,19 +171,17 @@ class ConfigValidator:
         """
         if isinstance(config, dict):
             return {k: ConfigValidator._substitute_env_vars(v) for k, v in config.items()}
-        elif isinstance(config, list):
+        if isinstance(config, list):
             return [ConfigValidator._substitute_env_vars(item) for item in config]
-        elif isinstance(config, str):
+        if isinstance(config, str):
             # Поддержка ${VAR} и ${VAR:default}
             import re
             pattern = r'\$\{([^}:]+)(?::([^}]*))?\}'
 
             def replace_var(match):
-                var_name = match.group(1)
-                default_value = match.group(2) if match.group(2) else None
+                var_name, default_value = match.group(1), match.group(2)
                 return os.getenv(var_name, default_value or '')
 
             return re.sub(pattern, replace_var, config)
-        else:
-            return config
+        return config
 

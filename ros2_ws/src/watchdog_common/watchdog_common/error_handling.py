@@ -96,20 +96,18 @@ def retry(
                     return func(*args, **kwargs)
                 except tuple(config.retryable_exceptions) as e:
                     last_exception = e
+                    is_last_attempt = attempt >= config.max_attempts
 
-                    if attempt < config.max_attempts:
+                    if is_last_attempt:
+                        logger.error(f'{func.__name__} failed after {config.max_attempts} attempts: {e}')
+                    else:
                         delay = config.calculate_delay(attempt)
                         logger.warn(
                             f'{func.__name__} failed (attempt {attempt}/{config.max_attempts}): {e}. '
                             f'Retrying in {delay:.2f}s...'
                         )
                         time.sleep(delay)
-                    else:
-                        logger.error(
-                            f'{func.__name__} failed after {config.max_attempts} attempts: {e}'
-                        )
 
-            # Все попытки исчерпаны
             raise last_exception
 
         return wrapper

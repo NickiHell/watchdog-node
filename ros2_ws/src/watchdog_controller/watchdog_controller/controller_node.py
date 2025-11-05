@@ -8,14 +8,12 @@ This node coordinates all subsystems:
 - Movement control
 """
 
-import rclpy
-from rclpy.node import Node
-from rclpy.qos import QoSProfile, ReliabilityPolicy, DurabilityPolicy
 from geometry_msgs.msg import Twist, PoseStamped
-from sensor_msgs.msg import LaserScan, Image
+from sensor_msgs.msg import LaserScan
 from std_msgs.msg import String, Header
 import time
 
+from watchdog_common.node_utils import BaseWatchdogNode, run_node
 from watchdog_controller.state_machine import StateMachine, RobotMode
 
 # Используем кастомные сообщения если доступны, иначе заглушки
@@ -30,7 +28,7 @@ except ImportError:
     RobotStatus = String
 
 
-class ControllerNode(Node):
+class ControllerNode(BaseWatchdogNode):
     """Main controller node."""
 
     def __init__(self):
@@ -41,11 +39,9 @@ class ControllerNode(Node):
         self.declare_parameter('update_rate', 10.0)  # Hz
         self.declare_parameter('emergency_stop_distance', 0.2)  # meters
 
-        default_mode_str = self.get_parameter('default_mode').get_parameter_value().string_value
-        update_rate = self.get_parameter('update_rate').get_parameter_value().double_value
-        self.emergency_stop_distance = (
-            self.get_parameter('emergency_stop_distance').get_parameter_value().double_value
-        )
+        default_mode_str = self.get_param_str('default_mode')
+        update_rate = self.get_param_float('update_rate')
+        self.emergency_stop_distance = self.get_param_float('emergency_stop_distance')
 
         # State machine
         try:
@@ -73,16 +69,8 @@ class ControllerNode(Node):
         self.start_time = time.time()
 
         # QoS профили
-        qos_sensor = QoSProfile(
-            depth=10,
-            reliability=ReliabilityPolicy.BEST_EFFORT,
-            durability=DurabilityPolicy.VOLATILE,
-        )
-        qos_control = QoSProfile(
-            depth=10,
-            reliability=ReliabilityPolicy.RELIABLE,
-            durability=DurabilityPolicy.VOLATILE,
-        )
+        qos_sensor = self.get_sensor_qos()
+        qos_control = self.get_control_qos()
 
         # Publishers
         self.cmd_vel_pub = self.create_publisher(Twist, '/cmd_vel', qos_control)
@@ -205,22 +193,18 @@ class ControllerNode(Node):
 
     def _handle_navigation_mode(self):
         """Обработка режима навигации."""
-        # Навигация обрабатывается узлом navigation_node
-        # Контроллер только отслеживает статус
+        # Навигация обрабатывается узлом navigation_node, контроллер отслеживает статус
         pass
 
     def _handle_tracking_mode(self):
         """Обработка режима отслеживания."""
-        # Отслеживание обрабатывается соответствующими узлами
-        # Контроллер координирует их работу
+        # Отслеживание обрабатывается соответствующими узлами, контроллер координирует
         pass
 
     def _handle_error_mode(self):
         """Обработка режима ошибки."""
         self._stop_movement()
-
-        # Попытка восстановления после таймаута
-        # Можно добавить логику автоматического восстановления
+        # TODO: Добавить логику автоматического восстановления
 
     def _handle_emergency_stop_mode(self):
         """Обработка режима аварийной остановки."""
@@ -270,52 +254,37 @@ class ControllerNode(Node):
 
     def status_update_loop(self):
         """Периодическое обновление статуса."""
-        # Проверка таймаутов подсистем
-        # Если подсистема не отвечает, отмечаем как неактивную
-        # (можно добавить более сложную логику)
+        if not CUSTOM_MSGS_AVAILABLE:
+            return
 
         # Публикация общего статуса
-        if CUSTOM_MSGS_AVAILABLE:
-            status = RobotStatus()
-            status.header = Header()
-            status.header.stamp = self.get_clock().now().to_msg()
-            status.header.frame_id = 'base_link'
+        status = RobotStatus()
+        status.header = Header()
+        status.header.stamp = self.get_clock().now().to_msg()
+        status.header.frame_id = 'base_link'
 
-            # Определяем системный статус
-            if self.state_machine.get_mode() == RobotMode.EMERGENCY_STOP:
-                status.system_status = 'emergency_stop'
-            elif self.state_machine.get_mode() == RobotMode.ERROR:
-                status.system_status = 'error'
-            elif any(not active for active in self.subsystem_status.values()):
-                status.system_status = 'warning'
-            else:
-                status.system_status = 'operational'
+        # Определяем системный статус
+        current_mode = self.state_machine.get_mode()
+        if current_mode == RobotMode.EMERGENCY_STOP:
+            status.system_status = 'emergency_stop'
+        elif current_mode == RobotMode.ERROR:
+            status.system_status = 'error'
+        elif any(not active for active in self.subsystem_status.values()):
+            status.system_status = 'warning'
+        else:
+            status.system_status = 'operational'
 
-            # TODO: Получить реальные метрики системы
-            status.cpu_temperature = 0.0
-            status.memory_usage = 0
-            status.cpu_usage = 0
-
-            # Используем состояние контроллера
-            if hasattr(self, 'state_pub'):
-                # Можно создать ControllerState здесь
-                pass
-
-            status.error_message = ''
-            self.status_pub.publish(status)
+        # TODO: Получить реальные метрики системы
+        status.cpu_temperature = 0.0
+        status.memory_usage = 0
+        status.cpu_usage = 0
+        status.error_message = ''
+        self.status_pub.publish(status)
 
 
 def main(args=None):
     """Entry point."""
-    rclpy.init(args=args)
-    node = ControllerNode()
-    try:
-        rclpy.spin(node)
-    except KeyboardInterrupt:
-        pass
-    finally:
-        node.destroy_node()
-        rclpy.shutdown()
+    run_node(ControllerNode, args)
 
 
 if __name__ == '__main__':
