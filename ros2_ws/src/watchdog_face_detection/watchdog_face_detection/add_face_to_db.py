@@ -40,61 +40,61 @@ def add_face_from_image(
 
     # Проверяем существование файла
     if not os.path.exists(image_path):
-        print(f'❌ Файл не найден: {image_path}')
+        print(f'ОШИБКА: Файл не найден: {image_path}')
         return False
 
     try:
         # Загружаем изображение
         image = cv2.imread(image_path)
         if image is None:
-            print(f'❌ Не удалось загрузить изображение: {image_path}')
+            print(f'ОШИБКА: Не удалось загрузить изображение: {image_path}')
             return False
 
-        print(f'✅ Изображение загружено: {image.shape[1]}x{image.shape[0]}')
+        print(f'Изображение загружено: {image.shape[1]}x{image.shape[0]}')
 
         # Инициализируем детектор и распознаватель
-        print('\n🔍 Инициализация детектора и распознавателя...')
+        print('\nИнициализация детектора и распознавателя...')
         face_detector = FaceDetector(method=detection_method)
         face_recognizer = FaceRecognizer(method=recognition_method)
 
         # Обнаруживаем лица
-        print('🔍 Поиск лиц на изображении...')
+        print('Поиск лиц на изображении...')
         face_boxes = face_detector.detect_faces(image)
 
         if not face_boxes:
-            print('❌ Лица не найдены на изображении')
-            print('💡 Попробуйте использовать более четкое изображение с хорошо видимым лицом')
+            print('ОШИБКА: Лица не найдены на изображении')
+            print('Совет: Попробуйте использовать более четкое изображение с хорошо видимым лицом')
             return False
 
-        print(f'✅ Найдено лиц: {len(face_boxes)}')
+        print(f'Найдено лиц: {len(face_boxes)}')
 
         # Используем первое найденное лицо
         if len(face_boxes) > 1:
-            print(f'⚠️  Найдено несколько лиц, используется первое')
+            print(f'ВНИМАНИЕ: Найдено несколько лиц, используется первое')
 
         face_box = face_boxes[0]
-        print(f'📐 Координаты: x={face_box[0]}, y={face_box[1]}, w={face_box[2]}, h={face_box[3]}')
+        print(f'Координаты: x={face_box[0]}, y={face_box[1]}, w={face_box[2]}, h={face_box[3]}')
 
         # Извлекаем область лица
         face_region = face_detector.extract_face_region(image, face_box)
         if face_region is None:
-            print('❌ Не удалось извлечь область лица')
+            print('ОШИБКА: Не удалось извлечь область лица')
             return False
 
-        print(f'✅ Область лица извлечена: {face_region.shape[1]}x{face_region.shape[0]}')
+        print(f'Область лица извлечена: {face_region.shape[1]}x{face_region.shape[0]}')
 
         # Создаем эмбеддинг
-        print('🧮 Создание эмбеддинга...')
+        print('Создание эмбеддинга...')
         embedding = face_recognizer.encode_face(face_region)
 
         if embedding is None:
-            print('❌ Не удалось создать эмбеддинг')
+            print('ОШИБКА: Не удалось создать эмбеддинг')
             return False
 
-        print(f'✅ Эмбеддинг создан: размерность {embedding.shape}')
+        print(f'Эмбеддинг создан: размерность {embedding.shape}')
 
         # Добавляем в базу данных
-        print(f'\n💾 Добавление в базу данных...')
+        print(f'\nДобавление в базу данных...')
         database = FaceDatabase(database_path=database_path)
 
         success = database.add_face(
@@ -105,19 +105,19 @@ def add_face_from_image(
 
         if success:
             print(f'{"="*60}')
-            print('✅ Лицо успешно добавлено в базу данных!')
-            print(f'📁 База данных: {database.database_path}')
-            print(f'👤 ID: {person_id}')
-            print(f'👤 Имя: {name}')
+            print('Лицо успешно добавлено в базу данных!')
+            print(f'База данных: {database.database_path}')
+            print(f'ID: {person_id}')
+            print(f'Имя: {name}')
             print(f'\nТеперь робот будет распознавать это лицо!')
             print(f'{"="*60}\n')
             return True
         else:
-            print('❌ Ошибка добавления в базу данных')
+            print('ОШИБКА: Ошибка добавления в базу данных')
             return False
 
     except Exception as e:
-        print(f'\n❌ Ошибка: {e}')
+        print(f'\nОШИБКА: {e}')
         import traceback
         traceback.print_exc()
         return False
@@ -154,10 +154,10 @@ def add_face_from_camera(
         # Открываем камеру
         cap = cv2.VideoCapture(camera_id)
         if not cap.isOpened():
-            print(f'❌ Не удалось открыть камеру {camera_id}')
+            print(f'ОШИБКА: Не удалось открыть камеру {camera_id}')
             return False
 
-        print('📷 Камера открыта')
+        print('Камера открыта')
         print(f'Нажмите пробел для снимка, q для выхода')
 
         # Инициализируем детектор и распознаватель
@@ -229,13 +229,13 @@ def add_face_from_camera(
                         if embedding is not None:
                             embeddings.append(embedding)
                             captured += 1
-                            print(f'✅ Снимок {captured}/{count} сделан')
+                            print(f'Снимок {captured}/{count} сделан')
                         else:
-                            print('⚠️  Не удалось создать эмбеддинг, попробуйте еще раз')
+                            print('ВНИМАНИЕ: Не удалось создать эмбеддинг, попробуйте еще раз')
                     else:
-                        print('⚠️  Не удалось извлечь лицо, попробуйте еще раз')
+                        print('ВНИМАНИЕ: Не удалось извлечь лицо, попробуйте еще раз')
                 else:
-                    print('⚠️  Лицо не обнаружено, попробуйте еще раз')
+                    print('ВНИМАНИЕ: Лицо не обнаружено, попробуйте еще раз')
 
             elif key == ord('q'):
                 break
@@ -244,27 +244,27 @@ def add_face_from_camera(
         cv2.destroyAllWindows()
 
         if len(embeddings) == 0:
-            print('❌ Не удалось создать ни одного эмбеддинга')
+            print('ОШИБКА: Не удалось создать ни одного эмбеддинга')
             return False
 
         # Добавляем все эмбеддинги в базу
-        print(f'\n💾 Добавление {len(embeddings)} эмбеддингов в базу...')
+        print(f'\nДобавление {len(embeddings)} эмбеддингов в базу...')
         for i, embedding in enumerate(embeddings):
             database.add_face(person_id=person_id, name=name, embedding=embedding)
 
         print(f'{"="*60}')
-        print(f'✅ Лицо успешно добавлено в базу данных!')
-        print(f'📁 База данных: {database.database_path}')
-        print(f'👤 ID: {person_id}')
-        print(f'👤 Имя: {name}')
-        print(f'📸 Снимков: {len(embeddings)}')
+        print(f'Лицо успешно добавлено в базу данных!')
+        print(f'База данных: {database.database_path}')
+        print(f'ID: {person_id}')
+        print(f'Имя: {name}')
+        print(f'Снимков: {len(embeddings)}')
         print(f'\nТеперь робот будет распознавать это лицо!')
         print(f'{"="*60}\n')
 
         return True
 
     except Exception as e:
-        print(f'\n❌ Ошибка: {e}')
+        print(f'\nОШИБКА: {e}')
         import traceback
         traceback.print_exc()
         return False

@@ -7,31 +7,27 @@ on:
     branches: [ "dev" ]
 
 jobs:
-  build:
-
+  lint:
+    name: Lint Check
     runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 4
-      matrix:
-        python-version: [ 3.11.3 ]
-
+    timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v5
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v6
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: "3.11"
+          cache: 'pip'
+      
       - name: Install Dependencies
         run: |
-          curl -sSL https://install.python-poetry.org | python3 -
-          poetry install
+          python -m pip install --upgrade pip
+          pip install black ruff
 
       - name: black
         run: |
-          poetry run black --check .
+          black --check ros2_ws/src/
 
       - name: ruff
-        run: poetry run ruff check .
-
-#      - name: probe
-#        run: poetry run python main.py & exit
+        run: ruff check ros2_ws/src/

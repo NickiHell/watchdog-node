@@ -1,10 +1,14 @@
 name: "CodeQL"
 
+# Отключено для экономии минут GitHub Actions (приватный репозиторий)
+# Можно запустить вручную через workflow_dispatch
+
 on:
-  push:
-    branches: [ "main", "dev" ]
-  pull_request:
-    branches: [ "main", "dev" ]
+  workflow_dispatch:  # Только ручной запуск
+  # push:
+  #   branches: [ "main", "dev" ]
+  # pull_request:
+  #   branches: [ "main", "dev" ]
 
 jobs:
   analyze:
@@ -23,17 +27,17 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v5
+      uses: actions/checkout@v4
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v4
+      uses: github/codeql-action/init@v3
       with:
         languages: ${{ matrix.language }}
 
     - name: Autobuild
-      uses: github/codeql-action/autobuild@v4
+      uses: github/codeql-action/autobuild@v3
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v4
+      uses: github/codeql-action/analyze@v3
       with:
         category: "/language:${{matrix.language}}"

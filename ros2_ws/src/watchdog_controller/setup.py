@@ -16,6 +16,8 @@ setup(
         (os.path.join('share', package_name, 'launch'), glob('launch/*.py')),
     ],
     install_requires=['setuptools'],
+    # Зависимость от watchdog_msgs будет добавлена после сборки
+    # install_requires=['setuptools', 'watchdog_msgs'],
     zip_safe=True,
     maintainer='NickiHell',
     maintainer_email='nickihell@ya.ru',

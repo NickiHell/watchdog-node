@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main, dev ]
+
+jobs:
+  lint:
+    name: Lint and Format Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install ruff black
+      
+      - name: Run ruff
+        run: |
+          ruff check ros2_ws/src/
+      
+      - name: Check formatting with black
+        run: |
+          black --check ros2_ws/src/
+
+  # Отключено для экономии минут GitHub Actions (приватный репозиторий)
+  # test:
+  #   name: Run Tests
+  #   runs-on: ubuntu-latest
+  #   if: false  # Отключено для приватных репо
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Set up Python
+  #       uses: actions/setup-python@v5
+  #       with:
+  #         python-version: '3.11'
+  #     - name: Run tests
+  #       run: |
+  #         pytest ros2_ws/src/ -v
+
+  # Отключено для экономии минут GitHub Actions (приватный репозиторий)
+  # build:
+  #   name: Build ROS2 Packages
+  #   runs-on: ubuntu-latest
+  #   if: false  # Отключено для приватных репо
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Set up ROS2
+  #       uses: ros-tooling/setup-ros2@v0.6
+  #       with:
+  #         required-ros-distributions: humble
+  #     - name: Build packages
+  #       run: |
+  #         cd ros2_ws
+  #         source /opt/ros/humble/setup.bash
+  #         colcon build --symlink-install
+
