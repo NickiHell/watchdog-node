@@ -10,6 +10,7 @@ jobs:
   lint:
     name: Lint and Format Check
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
       
@@ -17,11 +18,12 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+          cache: 'pip'
       
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install ruff black mypy
+          pip install ruff black
       
       - name: Run ruff
         run: |
@@ -31,88 +33,35 @@ jobs:
         run: |
           black --check ros2_ws/src/
 
-  test:
-    name: Run Tests
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            portaudio19-dev \
-            build-essential \
-            cmake \
-            libopenblas-dev \
-            liblapack-dev \
-            libatlas-base-dev \
-            gfortran || true
-      
-      - name: Install Python dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt || true
-          pip install pytest pytest-cov pytest-mock pytest-asyncio
-      
-      - name: Run tests
-        run: |
-          pytest ros2_ws/src/ -v --cov=ros2_ws/src --cov-report=xml --cov-report=term
-      
-      - name: Upload coverage
-        if: always()
-        uses: codecov/codecov-action@v4
-        with:
-          file: ./coverage.xml
-          flags: unittests
-          name: codecov-umbrella
-          fail_ci_if_error: false
+  # Отключено для экономии минут GitHub Actions (приватный репозиторий)
+  # test:
+  #   name: Run Tests
+  #   runs-on: ubuntu-latest
+  #   if: false  # Отключено для приватных репо
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Set up Python
+  #       uses: actions/setup-python@v5
+  #       with:
+  #         python-version: '3.11'
+  #     - name: Run tests
+  #       run: |
+  #         pytest ros2_ws/src/ -v
 
-  build:
-    name: Build ROS2 Packages
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      
-      - name: Set up ROS2
-        uses: ros-tooling/setup-ros2@v0.6
-        with:
-          required-ros-distributions: humble
-      
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            python3-colcon-common-extensions \
-            python3-rosdep \
-            python3-vcstool
-      
-      - name: Install package dependencies
-        run: |
-          cd ros2_ws
-          rosdep update
-          rosdep install --from-paths src --ignore-src -r -y || true
-      
-      - name: Build packages
-        run: |
-          cd ros2_ws
-          source /opt/ros/humble/setup.bash
-          colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
-      
-      - name: Test packages
-        run: |
-          cd ros2_ws
-          source /opt/ros/humble/setup.bash
-          source install/setup.bash
-          colcon test --event-handlers console_direct+
-      
-      - name: Check test results
-        run: |
-          cd ros2_ws
-          colcon test-result --verbose
+  # Отключено для экономии минут GitHub Actions (приватный репозиторий)
+  # build:
+  #   name: Build ROS2 Packages
+  #   runs-on: ubuntu-latest
+  #   if: false  # Отключено для приватных репо
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Set up ROS2
+  #       uses: ros-tooling/setup-ros2@v0.6
+  #       with:
+  #         required-ros-distributions: humble
+  #     - name: Build packages
+  #       run: |
+  #         cd ros2_ws
+  #         source /opt/ros/humble/setup.bash
+  #         colcon build --symlink-install
 

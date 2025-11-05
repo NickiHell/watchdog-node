@@ -1,10 +1,14 @@
 name: "CodeQL"
 
+# Отключено для экономии минут GitHub Actions (приватный репозиторий)
+# Можно запустить вручную через workflow_dispatch
+
 on:
-  push:
-    branches: [ "main", "dev" ]
-  pull_request:
-    branches: [ "main", "dev" ]
+  workflow_dispatch:  # Только ручной запуск
+  # push:
+  #   branches: [ "main", "dev" ]
+  # pull_request:
+  #   branches: [ "main", "dev" ]
 
 jobs:
   analyze:
