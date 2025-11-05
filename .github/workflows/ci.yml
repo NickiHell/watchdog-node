@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -39,7 +39,7 @@ jobs:
   #   runs-on: ubuntu-latest
   #   if: false  # Отключено для приватных репо
   #   steps:
-  #     - uses: actions/checkout@v4
+  #     - uses: actions/checkout@v5
   #     - name: Set up Python
   #       uses: actions/setup-python@v5
   #       with:
@@ -54,7 +54,7 @@ jobs:
   #   runs-on: ubuntu-latest
   #   if: false  # Отключено для приватных репо
   #   steps:
-  #     - uses: actions/checkout@v4
+  #     - uses: actions/checkout@v5
   #     - name: Set up ROS2
   #       uses: ros-tooling/setup-ros2@v0.6
   #       with:
