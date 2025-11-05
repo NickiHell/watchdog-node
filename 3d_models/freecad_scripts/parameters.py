@@ -2,29 +2,35 @@
 # Измените эти значения для настройки размеров под ваши компоненты
 
 # Общие размеры корпуса (мм)
-# Увеличены для размещения Beelink Mini S (115×102×41 мм)
-CASE_LENGTH = 320      # Длина корпуса (увеличено для Beelink Mini S)
-CASE_WIDTH = 280       # Ширина корпуса (увеличено для Beelink Mini S)
-CASE_HEIGHT = 220      # Высота корпуса (без лидара, увеличено для Beelink Mini S)
+# Размеры для выбранных компонентов:
+# - Beelink Mini PC: ~115×102×41мм
+# - STM32 Nucleo F411RE: ~70×52×18мм
+# - Моторы 25GA370 + энкодеры E6B2-CWZ6C
+# - Аккумулятор LiPo 3S (2200-5000mAh)
+CASE_LENGTH = 320      # Длина корпуса
+CASE_WIDTH = 280       # Ширина корпуса
+CASE_HEIGHT = 200      # Высота корпуса (без лидара)
 WALL_THICKNESS = 3     # Толщина стенок
 FLOOR_THICKNESS = 8    # Толщина нижней платформы
 
-# Beelink Mini S (115×102×41 мм)
+# Beelink Mini PC (размеры зависят от модели, обычно ~115×102×41 мм)
 MINIPC_LENGTH = 115
 MINIPC_WIDTH = 102
 MINIPC_HEIGHT = 41
-MINIPC_CLEARANCE = 5      # Зазор вокруг устройства
+MINIPC_CLEARANCE = 10     # Зазор для вентиляции (увеличено)
 
-# STM32F407 Nucleo (≈70×52×15 мм)
+# STM32 Nucleo F411RE (≈70×52×18 мм)
 STM32_LENGTH = 70
 STM32_WIDTH = 52
 STM32_HEIGHT = 18
 STM32_CLEARANCE = 5
 
-# Аккумулятор Li-Po 12V 5000mAh (примерно 100×50×30 мм)
-BATTERY_LENGTH = 110
-BATTERY_WIDTH = 55
-BATTERY_HEIGHT = 35
+# Аккумулятор LiPo 3S
+# 2200mAh: ~90×45×25 мм
+# 5000mAh: ~110×55×35 мм (рекомендуется)
+BATTERY_LENGTH = 110      # Для 5000mAh (или 90 для 2200mAh)
+BATTERY_WIDTH = 55        # Для 5000mAh (или 45 для 2200mAh)
+BATTERY_HEIGHT = 35       # Для 5000mAh (или 25 для 2200mAh)
 BATTERY_CLEARANCE = 5
 
 # Драйверы DRV8833 (≈20×15×4 мм)
@@ -33,10 +39,10 @@ DRIVER_WIDTH = 20
 DRIVER_HEIGHT = 6
 DRIVER_CLEARANCE = 3
 
-# Лидар MOP3 (цилиндрический, диаметр зависит от модели)
-LIDAR_DIAMETER = 80    # Диаметр лидара
-LIDAR_HEIGHT = 50      # Высота лидара
-LIDAR_TOWER_HEIGHT = 70  # Высота башни для лидара (уменьшена с 100 до 70)
+# Лидар RPLiDAR ToF C1 (цилиндрический, размеры зависят от модели)
+LIDAR_DIAMETER = 80    # Диаметр лидара (примерно, уточнить у модели)
+LIDAR_HEIGHT = 50      # Высота лидара (примерно, уточнить у модели)
+LIDAR_TOWER_HEIGHT = 70  # Высота башни для лидара от верха корпуса
 
 # Камера Raspberry Pi Camera v3
 CAMERA_BRACKET_WIDTH = 30

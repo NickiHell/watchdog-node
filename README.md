@@ -14,12 +14,18 @@
 
 ### Основной компьютер (ROS2)
 
-**Вариант 1 (Бюджетный):**
+**Вариант 1 (Рекомендуемый - лучшая производительность):**
+- Beelink Mini PC (Intel N100/N95 или аналогичный) ✅
+- Минимум 8GB RAM, рекомендуется 16GB
+- SSD 128GB+ (обычно уже установлен)
+- Источник питания 12V или 19V (в зависимости от модели)
+
+**Вариант 2 (Бюджетный):**
 - Raspberry Pi 4B (4GB RAM) или 4GB+
 - MicroSD 64GB+ (Class 10)
 - Источник питания 5V 3A
 
-**Вариант 2 (Рекомендуемый):**
+**Вариант 3 (Альтернативы):**
 - Raspberry Pi 5 (8GB RAM) или
 - NVIDIA Jetson Nano (4GB) или
 - Intel NUC (i3/i5)
@@ -27,11 +33,15 @@
 
 ### Контроллер движения (STM32)
 
-**Вариант 1:**
+**Вариант 1 (Рекомендуемый):**
 - STM32F407VGT6 (Cortex-M4, 168MHz, 1MB Flash, 192KB RAM)
 - STM32 Discovery Board или Nucleo-F407ZG
 
-**Вариант 2 (Более мощный):**
+**Вариант 2 (Совместимо):**
+- STM32F411RE (Cortex-M4, 100MHz, 512KB Flash, 128KB RAM)
+- NUCLEO-F411RE (✅ Поддерживается)
+
+**Вариант 3 (Более мощный):**
 - STM32H743VIT6 (Cortex-M7, 480MHz, 2MB Flash, 1MB RAM)
 - STM32 Nucleo-H743ZI2
 
@@ -42,8 +52,13 @@
 
 ### Лидар
 
-- **Xiaomi MOP3 LiDAR** (уже имеется)
-- USB-UART конвертер для подключения к Raspberry Pi
+**Рекомендуемые варианты:**
+- **RPLidar A1/A2/A3** - Полная поддержка, хорошо документирован
+- **RPLiDAR ToF C1** - ⚠️ Требует проверки совместимости (см. `docs/RPLIDAR_TOF_C1_SETUP.md`)
+- **Xiaomi MOP3 LiDAR** - Требует generic режим или реверс-инжиниринг
+
+**Дополнительно:**
+- USB-UART конвертер для подключения к Raspberry Pi (CP2102 или CH340)
 - Источник питания 5V для лидара
 
 ### Камера 360°
@@ -347,6 +362,16 @@ colcon test-result --verbose
 ## Документация
 
 Детальная документация по каждому модулю находится в папке `docs/`.
+
+**Важные документы:**
+- `SELECTED_COMPONENTS_SUMMARY.md` - ✅ Итоговый список выбранных компонентов
+- `HARDWARE_SELECTED.md` - Полный список выбранных компонентов с деталями
+- `CHASSIS_DESIGN_GUIDE.md` - 📐 Руководство по проектированию шасси и корпуса
+- `HARDWARE_COMPATIBILITY.md` - Анализ совместимости и недостающие компоненты
+- `docs/BEELINK_MINI_PC_SETUP.md` - Настройка Beelink Mini PC
+- `docs/RPLIDAR_TOF_C1_SETUP.md` - Настройка RPLiDAR ToF C1
+- `docs/HARDWARE_RECOMMENDATIONS.md` - Рекомендации по выбору компонентов
+- `stm32_firmware/STM32CubeMX_Configuration.md` - Конфигурация STM32 (включая F411RE)
 
 ## Автор
 
