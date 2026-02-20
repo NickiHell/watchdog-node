@@ -1,0 +1,201 @@
+[project]
+name = "watchdog"
+version = "0.1.0"
+description = "Watchdog — 13\" reconnaissance/mapping drone on ROS2 Humble + Pixhawk 4"
+authors = [
+    {name = "NickiHell", email = "nickihell@ya.ru"},
+]
+requires-python = ">=3.11"
+readme = "README.md"
+license = {text = "MIT"}
+
+# Только то, что можно установить с PyPI без ROS2 и тяжёлого железа
+dependencies = [
+    "numpy>=1.24.0",
+    "opencv-python>=4.8.0",
+    "pymavlink>=2.4.41",
+    "pyserial>=3.5",
+    "pyyaml>=6.0",
+    "psutil>=5.9.0",
+]
+
+[dependency-groups]
+# ML-стек — устанавливается отдельно (тяжёлый)
+ml = [
+    "ultralytics>=8.0.0",
+    "torch>=2.0.0",
+    "boxmot>=10.0.0",
+]
+# Зависимости для железа RPI 5 (устанавливаются только на борту)
+hardware = [
+    "pigpio>=1.78",
+    "w1thermsensor>=2.3.0",
+]
+# Dev-зависимости для линтинга, тайпчека и тестов
+dev = [
+    "ruff>=0.13.0",
+    "mypy>=1.17.1",
+    "pytest>=8.4.2",
+    "pytest-cov>=4.1.0",
+    "pytest-mock>=3.12.0",
+    "pytest-asyncio>=0.21.0",
+    "types-PyYAML>=6.0",
+    "types-psutil>=5.9.0.post0",
+    "pre-commit>=4.0.0",
+    "commitizen>=4.0.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["ros2_ws/src"]
+
+# ---------------------------------------------------------------------------
+# Ruff — линтер + форматтер (заменяет black + flake8 + isort)
+# ---------------------------------------------------------------------------
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+extend-exclude = ["ros2_ws/src/watchdog_face_detection"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "B",   # flake8-bugbear
+    "Q",   # flake8-quotes
+    "PT",  # flake8-pytest-style
+    "RET", # flake8-return
+    "SIM", # flake8-simplify
+    "C4",  # flake8-comprehensions
+    "PIE", # flake8-pie
+    "UP",  # pyupgrade
+    "C90", # mccabe complexity
+    "TID", # flake8-tidy-imports
+    "PTH", # flake8-use-pathlib
+    "RUF", # ruff-specific
+    "PL",  # pylint
+]
+ignore = [
+    "E501",    # line length — контролируется форматтером
+    "RET504",  # unnecessary assignment before return
+    "RUF001", "RUF002", "RUF003",  # unicode-специфика (кириллица в комментариях)
+    "PLR0913", # too many arguments — нормально для ROS2 nodes
+    "PLR2004", # magic value — в конфигах неизбежно
+    # PTH — pathlib vs os.path: хороший стиль, но постепенно
+    "PTH100", "PTH103", "PTH110", "PTH118", "PTH119", "PTH120", "PTH122", "PTH123", "PTH207",
+    # SIM — simplification: полезно, но требует аккуратного ревью
+    "SIM102", "SIM108", "SIM110",
+    # B905 — zip без strict: добавить позже
+    "B905",
+    # PT011 — pytest raises too broad: исправить постепенно
+    "PT011",
+    # ROS2 и железо вне CI — false positives
+    "F823",    # undefined-local: ложный из-за отсутствия ROS2 стабов
+    "RUF046",  # unnecessary-cast-to-int
+    "RUF059",  # unused-unpacked-variable
+    "RUF012",  # mutable-class-default — в ROS2 nodes это норма
+    "PLC0415", # import-outside-top-level — ROS2 lazy imports
+    # Стиль — мелочи
+    "E721",    # type-comparison
+    "PLR1714", # repeated-equality-comparison
+]
+unfixable = [
+    "B",  # bugbear — не автофиксить, требует ревью
+]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 12
+
+[tool.ruff.lint.isort]
+known-first-party = ["watchdog_msgs", "watchdog_common"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+docstring-code-format = true
+
+# ---------------------------------------------------------------------------
+# Mypy — статический анализ типов
+# ---------------------------------------------------------------------------
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+warn_unused_ignores = true
+no_implicit_reexport = true
+strict_equality = true
+
+# ROS2-пакеты и hardware-библиотеки без стабов — игнорируем
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = [
+    "rclpy.*",
+    "cv_bridge.*",
+    "sensor_msgs.*",
+    "geometry_msgs.*",
+    "std_msgs.*",
+    "mavros_msgs.*",
+    "pigpio.*",
+    "w1thermsensor.*",
+    "ultralytics.*",
+    "boxmot.*",
+]
+ignore_missing_imports = true
+
+# ---------------------------------------------------------------------------
+# Pytest
+# ---------------------------------------------------------------------------
+[tool.pytest.ini_options]
+testpaths = ["ros2_ws/src"]
+norecursedirs = ["watchdog_face_detection"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+asyncio_mode = "auto"
+addopts = [
+    "--tb=short",
+    "--strict-markers",
+    "--import-mode=importlib",
+]
+markers = [
+    "hardware: тест требует реального железа (RPI GPIO, LiDAR)",
+    "ros: тест требует запущенного ROS2",
+    "slow: медленный тест (>1 сек)",
+]
+
+# ---------------------------------------------------------------------------
+# Coverage
+# ---------------------------------------------------------------------------
+[tool.coverage.run]
+source = ["ros2_ws/src"]
+omit = [
+    "*/test_*.py",
+    "*/__init__.py",
+    "*/watchdog_face_detection/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+]
+
+# ---------------------------------------------------------------------------
+# Commitizen — conventional commits + автоматическое версионирование
+# ---------------------------------------------------------------------------
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "v$version"
+version_scheme = "semver"
+version_provider = "pep621"
+update_changelog_on_bump = true
+major_version_zero = true
+changelog_file = "CHANGELOG.md"
+changelog_incremental = true

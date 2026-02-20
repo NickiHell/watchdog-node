@@ -1,0 +1,21 @@
+# Blender бинарные файлы (хранятся локально / LFS)
+*.blend
+*.blend1
+*.blend2
+
+# Экспорт (генерируется скриптом)
+export/*.stl
+export/*.obj
+export/*.mtl
+export/*.fbx
+export/*.glb
+export/*.gltf
+
+# Отчёты (генерируются extract_model_data.py)
+# Раскомментируй если не хочешь коммитить в репо:
+# export/*.json
+# export/*.txt
+
+# Python
+__pycache__/
+*.pyc

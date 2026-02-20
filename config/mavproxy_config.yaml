@@ -1,0 +1,41 @@
+# MAVProxy конфигурация для дрона Watchdog
+# Форвардинг MAVLink: Pixhawk 4 → Mission Planner / QGroundControl
+
+mavproxy:
+  # Источник: Pixhawk 4 по USB
+  master:
+    port: "/dev/ttyACM0"
+    baudrate: 115200
+
+  # Выходы (UDP)
+  outputs:
+    # Mission Planner (широковещательный — работает в любой WiFi/4G сети)
+    - protocol: udpbcast
+      address: "255.255.255.255"
+      port: 14550
+
+    # QGroundControl (опционально)
+    - protocol: udpbcast
+      address: "255.255.255.255"
+      port: 14551
+
+    # Для прямого подключения к конкретному IP (раскомментировать при необходимости)
+    # - protocol: udpout
+    #   address: "192.168.1.100"
+    #   port: 14550
+
+  # Опции MAVProxy
+  aircraft_name: "watchdog"
+  daemon: true
+
+  # Модули (загружаются автоматически)
+  # modules:
+  #   - console    # текстовый вывод (не нужен в daemon режиме)
+  #   - map        # не нужен (используем Mission Planner)
+  #   - log        # запись логов
+
+  # Логирование
+  logging:
+    enabled: true
+    path: "/var/log/mavproxy"
+    format: "tlog"             # .tlog бинарный формат (совместим с Mission Planner)

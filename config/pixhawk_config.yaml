@@ -1,0 +1,54 @@
+# Конфигурация MAVROS для Pixhawk 4
+
+mavros:
+  # Подключение к Pixhawk 4 по USB/UART
+  fcu_url: "serial:///dev/ttyACM0:115200"
+
+  # MAVProxy форвардит GCS-трафик (Mission Planner/QGC), MAVROS не нужен прямой gcs_url
+  gcs_url: ""
+
+  tgt_system: 1
+  tgt_component: 1
+
+  system_id: 255              # Companion computer ID
+  component_id: 240
+
+  plugin_blacklist: []
+  plugin_whitelist: []
+
+  heartbeat_rate: 1.0
+  timeout: 10.0
+
+  # RC переопределение с компаньона (для автономных режимов)
+  rc:
+    override: true
+    timeout: 0.5
+
+  # Геозабор (настраивается и через Mission Planner)
+  safety:
+    geofence:
+      action: 2               # 2 = hold (зависание при выходе за зону)
+      frame: 0                # 0 = global (GPS)
+      type: 0                 # 0 = inclusive (внутри зоны — разрешено)
+      altitude_max: 200.0     # Максимальная высота (м)
+      radius: 1000.0          # Радиус горизонтальной зоны (м)
+
+  # Параметры потоков MAVLink (уменьшены для экономии UART пропускной способности)
+  stream_rates:
+    HEARTBEAT: 1
+    SYS_STATUS: 1
+    STATUSTEXT: 10
+    POSITION_TARGET_LOCAL_NED: 10
+    LOCAL_POSITION_NED: 30
+    GLOBAL_POSITION_INT: 10
+    ATTITUDE: 50
+    RC_CHANNELS: 20
+    ESC_STATUS: 0             # Не нужен по умолчанию (много трафика)
+
+  # Параметры локального планера (PX4)
+  px4:
+    local_position:
+      tf:
+        send: true
+        frame_id: "map"
+        child_frame_id: "base_link"

@@ -1,0 +1,6 @@
+# Игнорируем все сгенерированные файлы
+*
+
+# Кроме .gitignore и README
+!.gitignore
+!README.md

@@ -1,0 +1,161 @@
+# Конфигурация дрона Watchdog
+# 13" квадрокоптер-разведчик, Pixhawk 4, RPI 5, ROS2
+
+# Параметры Pixhawk 4
+pixhawk:
+  port: "/dev/ttyACM0"
+  baudrate: 115200
+  system_id: 1
+  component_id: 191
+  fcu_url: "serial:///dev/ttyACM0:115200"
+
+# Параметры RC пульта (RadioMaster TX16 + ELRS 900 МГц → SBUS → Pixhawk 4)
+# Каналы ELRS TX16:
+#   Ch1: Roll    Ch2: Pitch   Ch3: Throttle  Ch4: Yaw
+#   Ch5: ARM     Ch6: FlightMode  Ch7: GimbalTilt  Ch8: GimbalPan
+rc:
+  enabled: true
+  override_threshold: 1500
+  deadzone: 50
+  max_velocity: 5.0
+  max_vertical_velocity: 2.0
+  max_angular_velocity: 1.5
+  channels:
+    roll: 1
+    pitch: 2
+    throttle: 3
+    yaw: 4
+    arm: 5
+    flight_mode: 6
+    gimbal_tilt: 7
+    gimbal_pan: 8
+  arm_threshold: 1800         # PWM > 1800 = ARM
+  flight_mode_thresholds:
+    stabilize: 1300
+    loiter: 1600
+    auto: 1900
+
+# Параметры навигации
+navigation:
+  safety_distance: 1.0
+  max_linear_velocity: 5.0
+  max_vertical_velocity: 2.0
+  max_angular_velocity: 1.5
+  goal_tolerance: 0.5
+  default_height: 30.0
+  use_slam: false
+  inflation_radius: 1.0
+
+# Параметры лидара (RPLidar S2)
+lidar:
+  type: "rplidar"
+  device: "/dev/ttyUSB0"
+  baudrate: 1000000           # RPLidar S2: 1 000 000 бод (не 115200!)
+  frame_id: "lidar_frame"
+  angle_min: -3.14159
+  angle_max: 3.14159
+  range_min: 0.05
+  range_max: 30.0             # RPLidar S2: до 30 м
+  scan_rate: 10.0
+  # Программная маска мачты: угловые секторы стоек (в радианах от 0)
+  # Измерить после сборки и указать реальные углы
+  mast_mask_sectors: []       # пример: [[1.45, 1.60], [4.60, 4.75]]
+  mast_height_offset: 0.12   # мачта на 120 мм выше верхней плиты
+
+# Параметры камеры (SIYI A8 mini, захват через USB/HDMI)
+camera:
+  device_id: 0
+  width: 3840
+  height: 2160
+  fps: 30
+  frame_id: "camera_frame"
+  topic: "/camera/image_raw"
+  siyi:
+    enabled: true
+    ip: "192.168.144.25"      # SIYI A8 mini default UDP IP
+    port: 37260
+    stream_port: 8554         # RTSP поток
+
+# Параметры подвеса (SIYI A8 mini, MAVLink Gimbal Protocol v2)
+gimbal:
+  enabled: true
+  protocol: "mavlink_v2"      # mavlink_v2 | pwm
+  mavlink_component_id: 154  # MAV_COMP_ID_GIMBAL
+  pitch_min: -90.0            # градусы
+  pitch_max: 25.0
+  yaw_min: -160.0
+  yaw_max: 160.0
+  tracking:
+    enabled: true
+    mode: "center"            # center | follow
+    target_class: "person"   # person | car | any
+    zoom_on_track: 2          # цифровой зум при слежении (1-4)
+  pwm_fallback:
+    tilt_channel: 7
+    pan_channel: 8
+
+# Детекция объектов (YOLOv8n + ByteTrack)
+detection:
+  enabled: true
+  model: "yolov8n.pt"
+  confidence: 0.45
+  iou: 0.5
+  imgsz: 640
+  classes: [0, 2, 3, 5, 7]   # 0=person, 2=car, 3=motorcycle, 5=bus, 7=truck
+  device: "cpu"               # cpu | hailo (если установлен Hailo-8L HAT)
+  yolo_skip_frames: 3         # детекция раз в N кадров, трекер — каждый кадр
+  tracker: "bytetrack"        # boxmot ByteTrack
+  altitude_zoom_table:        # зум в зависимости от высоты
+    50: 1
+    100: 2
+    200: 4
+
+# Термосистема (RPI 5 GPIO)
+thermal:
+  enabled: true
+  sensors:
+    enclosure:
+      gpio_pin: 4             # DS18B20, GPIO 4 (1-Wire)
+      id: "enclosure"
+    lidar_mast:
+      gpio_pin: 4             # на той же 1-Wire шине
+      id: "lidar_mast"
+  fan:
+    gpio_pin: 18              # Hardware PWM GPIO18
+    on_temp: 35.0             # °C — включить
+    off_temp: 28.0
+    max_duty: 100
+  lidar_heater:
+    gpio_pin: 17              # MOSFET gate
+    on_temp: 0.0              # °C — включить нагрев мачты
+    off_temp: 5.0
+    power_watts: 3.0
+
+# Параметры MAVProxy (форвардинг на Mission Planner)
+mavproxy:
+  enabled: true
+  master: "/dev/ttyACM0"
+  master_baud: 115200
+  outputs:
+    - "udp:0.0.0.0:14550"    # Mission Planner (широковещательный)
+    - "udp:0.0.0.0:14551"    # QGroundControl (запасной)
+  options: "--aircraft watchdog --daemon"
+
+# Параметры безопасности
+safety:
+  min_height: 1.0
+  max_height: 200.0           # Рабочий эшелон до 200 м
+  emergency_land_on_rc_loss: true
+  battery_low_threshold: 25.0
+  battery_critical_threshold: 15.0
+  max_flight_time: 3300       # 55 мин — предупреждение о возврате (запас 5 мин)
+  geofence_enabled: true
+  geofence_radius: 1000.0     # метров от точки взлёта
+  geofence_max_alt: 200.0
+
+# Режим энергосбережения
+power_saving:
+  enabled: true
+  detection_only_on_hover: false  # YOLO работает всегда (ByteTrack дешёвый)
+  reduced_lidar_rate_in_cruise: true
+  lidar_cruise_rate: 5.0

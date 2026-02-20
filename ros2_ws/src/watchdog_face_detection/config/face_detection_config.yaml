@@ -1,0 +1,24 @@
+# Конфигурация модуля детекции и распознавания лиц
+
+face_detection:
+  # Детекция лиц
+  detection:
+    method: "face_recognition"  # haar, dlib, face_recognition, opencv_dnn
+    model_path: ""  # Путь к модели (для некоторых методов)
+
+  # Распознавание лиц
+  recognition:
+    method: "face_recognition"  # face_recognition, insightface
+    threshold: 0.6  # Порог схожести (ниже = строже, для face_recognition обычно 0.6)
+
+  # База данных
+  database:
+    path: "~/.watchdog_faces"  # Путь к директории базы данных
+
+  # Камера
+  camera:
+    topic: "/camera/image_raw"  # Топик изображений камеры
+
+  # Обработка
+  processing:
+    frame_skip: 5  # Обрабатывать каждый N-й кадр (для снижения нагрузки)
