@@ -123,11 +123,15 @@ docstring-code-format = true
 # ---------------------------------------------------------------------------
 [tool.mypy]
 python_version = "3.11"
-warn_return_any = true
+warn_return_any = false          # отключено: слишком много false-positive с ROS2 Any
 warn_unused_configs = true
-warn_unused_ignores = true
+warn_unused_ignores = false      # отключено: разные наборы пакетов в CI vs борту
 no_implicit_reexport = true
 strict_equality = true
+disable_error_code = ["no-any-return"]   # ROS2 MagicMock всё возвращает Any
+
+# Исключаем legacy-модуль (face detection) — будет удалён/переработан
+exclude = ["ros2_ws/src/watchdog_face_detection/"]
 
 # ROS2-пакеты и hardware-библиотеки без стабов — игнорируем
 ignore_missing_imports = true

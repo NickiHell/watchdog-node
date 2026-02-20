@@ -18,7 +18,7 @@ class StructuredLogger:
         self.name = name
         self.node = node
         self.ros_logger = rclpy_get_logger(name) if node is None else node.get_logger()
-        self.context = {}
+        self.context: dict[str, object] = {}
 
     def set_context(self, **kwargs):
         """Устанавливает контекст для логирования.

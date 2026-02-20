@@ -90,7 +90,7 @@ def retry(
     def decorator(func: Callable[..., T]) -> Callable[..., T]:
         @functools.wraps(func)
         def wrapper(*args, **kwargs) -> T:
-            last_exception = None
+            last_exception: Exception = RuntimeError("All attempts exhausted")
 
             for attempt in range(1, config.max_attempts + 1):
                 try:

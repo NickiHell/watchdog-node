@@ -67,8 +67,8 @@ class DetectionNode(Node):
 
         self.bridge = CvBridge()
         self.frame_count = 0
-        self.yolo: object | None = None
-        self.tracker: object | None = None
+        self.yolo = None  # type: ignore[var-annotated]
+        self.tracker = None  # type: ignore[var-annotated]
         self.last_detections = np.empty((0, 6))  # [x1,y1,x2,y2,conf,cls]
 
         if not DETECTION_AVAILABLE:
@@ -133,12 +133,12 @@ class DetectionNode(Node):
         # Запускаем YOLO каждые yolo_skip кадров
         if self.frame_count % self.yolo_skip == 0:
             self.last_detections = self._run_yolo(frame)
-            tracks = self.tracker.update(self.last_detections, frame)
+            tracks = self.tracker.update(self.last_detections, frame)  # type: ignore[union-attr]
         else:
             # Только predict (ByteTrack интерполирует)
             if len(self.last_detections) == 0:
                 return
-            tracks = self.tracker.update(np.empty((0, 6)), frame)
+            tracks = self.tracker.update(np.empty((0, 6)), frame)  # type: ignore[union-attr]
 
         dt = (time.monotonic() - t0) * 1000
 
@@ -156,7 +156,7 @@ class DetectionNode(Node):
     def _run_yolo(self, frame: np.ndarray) -> np.ndarray:
         """Запускает YOLOv8n и возвращает [x1,y1,x2,y2,conf,cls]."""
         try:
-            results = self.yolo.predict(
+            results = self.yolo.predict(  # type: ignore[union-attr]
                 frame,
                 conf=self.conf,
                 iou=self.iou,

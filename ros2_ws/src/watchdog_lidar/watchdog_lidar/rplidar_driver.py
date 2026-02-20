@@ -193,6 +193,7 @@ class RPLidarDriver(LidarDriver):
             if not descriptor:
                 return {}
 
+            assert self.serial is not None
             data = self.serial.read(20)
             if len(data) < 20:
                 return {}
@@ -427,6 +428,7 @@ class RPLidarDriver(LidarDriver):
             if not descriptor:
                 return None
 
+            assert self.serial is not None
             data = self.serial.read(3)
             if len(data) < 3:
                 return None

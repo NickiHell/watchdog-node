@@ -70,7 +70,7 @@ class ImageProcessor:
         """
         hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
         h, s, v = cv2.split(hsv)
-        v = cv2.add(v, int(value * 255))
+        v = cv2.add(v, np.full_like(v, int(value * 255)))
         v = np.clip(v, 0, 255).astype(np.uint8)
         hsv = cv2.merge([h, s, v])
         return cv2.cvtColor(hsv, cv2.COLOR_HSV2BGR)
@@ -114,7 +114,7 @@ class ImageProcessor:
         # Используем простой детектор OpenCV
         try:
             gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-            face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+            face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")  # type: ignore[attr-defined]
             faces = face_cascade.detectMultiScale(gray, 1.1, 4)
             return [(int(x), int(y), int(w), int(h)) for (x, y, w, h) in faces]
         except Exception as e:

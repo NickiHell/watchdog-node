@@ -1,6 +1,9 @@
 # Multi-stage build для WatchDog Drone
 FROM osrf/ros:humble-desktop-full AS base
 
+# Устанавливаем uv для управления зависимостями
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /usr/local/bin/
+
 # Установка системных зависимостей
 RUN apt-get update && apt-get install -y \
     python3-pip \
@@ -17,10 +20,12 @@ RUN apt-get update && apt-get install -y \
     python3-rpi.gpio \
     && rm -rf /var/lib/apt/lists/*
 
-# Установка Python зависимостей
+# Установка Python зависимостей через uv
 WORKDIR /workspace
-COPY requirements.txt .
-RUN pip3 install --no-cache-dir -r requirements.txt
+COPY pyproject.toml uv.lock ./
+# Экспортируем из lockfile и устанавливаем системный Python (совместимо с ROS2)
+RUN uv export --frozen --no-dev --group ml --group hardware \
+    | pip3 install --no-cache-dir -r /dev/stdin
 
 # Копирование конфигурации и рабочего пространства ROS2
 COPY config/ /workspace/config/
@@ -38,7 +43,9 @@ RUN . /opt/ros/humble/setup.sh && \
 # Production stage
 FROM osrf/ros:humble-desktop-full AS production
 
-# Установка runtime зависимостей
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /usr/local/bin/
+
+# Установка runtime системных зависимостей
 RUN apt-get update && apt-get install -y \
     python3-pip \
     ros-humble-mavros \
@@ -49,13 +56,14 @@ RUN apt-get update && apt-get install -y \
     python3-rpi.gpio \
     && rm -rf /var/lib/apt/lists/*
 
-# Копирование установленных пакетов
+# Копирование установленных пакетов из base
 COPY --from=base /workspace/ros2_ws/install /workspace/ros2_ws/install
-COPY --from=base /workspace/requirements.txt /workspace/
+COPY --from=base /workspace/pyproject.toml /workspace/pyproject.toml
+COPY --from=base /workspace/uv.lock /workspace/uv.lock
 
-# Установка только runtime зависимостей
-RUN pip3 install --no-cache-dir -r /workspace/requirements.txt && \
-    rm /workspace/requirements.txt
+# Установка runtime Python зависимостей
+RUN uv export --frozen --no-dev --group ml --group hardware \
+    | pip3 install --no-cache-dir -r /dev/stdin
 
 WORKDIR /workspace
 
@@ -63,7 +71,6 @@ WORKDIR /workspace
 RUN echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc && \
     echo "source /workspace/ros2_ws/install/setup.bash" >> ~/.bashrc
 
-# По умолчанию запускаем основной launch файл дрона
 CMD ["bash", "-c", "source /opt/ros/humble/setup.bash && \
      source /workspace/ros2_ws/install/setup.bash && \
      ros2 launch config/launch/drone_full.launch.py"]

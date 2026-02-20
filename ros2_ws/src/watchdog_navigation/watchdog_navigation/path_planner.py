@@ -282,7 +282,7 @@ class PathPlanner:
             if current == goal_grid:
                 # Восстанавливаем путь
                 path = []
-                node = current
+                node: tuple[int, int, int] | None = current
                 while node is not None:
                     path.append(self._grid_to_world(node))
                     node = came_from.get(node)
