@@ -15,10 +15,8 @@ RUN apt-get update && apt-get install -y \
     ros-humble-mavros \
     ros-humble-mavros-extras \
     ros-humble-cv-bridge \
-    python3-pigpio \
-    pigpiod \
-    python3-rpi.gpio \
     && rm -rf /var/lib/apt/lists/*
+# pigpiod и python3-rpi.gpio устанавливаются только на реальном RPI 5 (нет в Ubuntu repos)
 
 # Установка Python зависимостей через uv
 WORKDIR /workspace
@@ -51,10 +49,8 @@ RUN apt-get update && apt-get install -y \
     ros-humble-mavros \
     ros-humble-mavros-extras \
     ros-humble-cv-bridge \
-    python3-pigpio \
-    pigpiod \
-    python3-rpi.gpio \
     && rm -rf /var/lib/apt/lists/*
+# pigpiod и python3-rpi.gpio устанавливаются только на реальном RPI 5 (нет в Ubuntu repos)
 
 # Копирование установленных пакетов из base
 COPY --from=base /workspace/ros2_ws/install /workspace/ros2_ws/install
