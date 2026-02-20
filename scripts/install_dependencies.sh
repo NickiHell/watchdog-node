@@ -56,17 +56,14 @@ else
     echo -e "${YELLOW}ROS2 не найден. Пропускаем установку ROS2 зависимостей.${NC}"
 fi
 
-# Установка Python зависимостей для веб-интерфейса
+# Установка Python зависимостей (uv или pip)
 echo -e "${YELLOW}Установка Python зависимостей...${NC}"
 cd "$(dirname "$0")/.."
-pip3 install --user -r web_interface/requirements.txt
-
-# Установка дополнительных Python пакетов для ROS2
-pip3 install --user \
-    numpy \
-    opencv-python \
-    face-recognition \
-    dlib
+if command -v uv >/dev/null 2>&1; then
+    uv sync --group ml --group hardware
+else
+    pip3 install --user -r requirements.txt 2>/dev/null || pip3 install --user numpy opencv-python pymavlink pyserial pyyaml psutil
+fi
 
 echo ""
 echo -e "${GREEN}=== Зависимости установлены! ===${NC}"

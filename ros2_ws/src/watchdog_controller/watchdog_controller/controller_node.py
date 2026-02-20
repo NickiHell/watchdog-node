@@ -2,7 +2,7 @@
 
 This node coordinates all subsystems:
 - 3D navigation and path planning
-- Camera and face detection
+- Camera and detection (YOLOv8n + ByteTrack)
 - Target tracking
 - Flight control
 - Obstacle avoidance
@@ -29,14 +29,14 @@ from watchdog_controller.state_machine import StateMachine, RobotMode
 
 # Используем кастомные сообщения если доступны, иначе заглушки
 try:
-    from watchdog_msgs.msg import ControllerState, FaceDetections, RobotStatus
+    from watchdog_msgs.msg import ControllerState, DetectionArray, RobotStatus
 
     CUSTOM_MSGS_AVAILABLE = True
 except ImportError:
     CUSTOM_MSGS_AVAILABLE = False
     # Заглушки для разработки
     ControllerState = String
-    FaceDetections = String
+    DetectionArray = String
     RobotStatus = String
 
 
@@ -77,14 +77,14 @@ class ControllerNode(Node):
         self.subsystem_status = {
             "lidar": False,
             "camera": False,
-            "face_detection": False,
+            "detection": False,
             "navigation": False,
             "pixhawk": False,
             "rc": False,
         }
 
         self.last_lidar_scan: LaserScan = None
-        self.last_face_detections: FaceDetections = None
+        self.last_detections: DetectionArray = None
         self.battery_level = 100
         self.start_time = time.time()
 
@@ -115,10 +115,10 @@ class ControllerNode(Node):
 
         # Subscribers
         self.lidar_sub = self.create_subscription(LaserScan, "/sensor/lidar/scan", self.lidar_callback, qos_sensor)
-        self.face_detections_sub = self.create_subscription(
-            FaceDetections if CUSTOM_MSGS_AVAILABLE else String,
-            "/face_detection/detections",
-            self.face_detections_callback,
+        self.detection_sub = self.create_subscription(
+            DetectionArray if CUSTOM_MSGS_AVAILABLE else String,
+            "/detection/tracks",
+            self.detection_callback,
             qos_sensor,
         )
         self.nav_goal_sub = self.create_subscription(PoseStamped, "/navigation/goal", self.nav_goal_callback, 10)
@@ -184,36 +184,35 @@ class ControllerNode(Node):
                 self.get_logger().warning(f"Препятствие слишком близко: {min_distance:.2f}m, аварийная остановка!")
                 self.state_machine.transition_to(RobotMode.EMERGENCY_STOP)
 
-    def face_detections_callback(self, msg):
-        """Callback для обнаруженных лиц.
+    def detection_callback(self, msg):
+        """Callback для треков детекции (YOLOv8n + ByteTrack).
 
         Args:
-            msg: Сообщение FaceDetections или String
+            msg: Сообщение DetectionArray или String
         """
-        self.last_face_detections = msg
-        self.subsystem_status["face_detection"] = True
+        self.last_detections = msg
+        self.subsystem_status["detection"] = True
 
-        # Проверка безопасности: если человек обнаружен, проверяем расстояние
-        person_detected = False
-        if CUSTOM_MSGS_AVAILABLE and hasattr(msg, "count") and msg.count > 0:
-            person_detected = True
+        # Проверка безопасности: если объекты обнаружены, проверяем расстояние
+        objects_detected = False
+        if CUSTOM_MSGS_AVAILABLE and hasattr(msg, "detections") and len(msg.detections) > 0:
+            objects_detected = True
 
             # Если включена безопасность и есть данные лидара, проверяем расстояние
             if self.person_safety_enabled and self.last_lidar_scan:
                 min_distance = self._get_min_valid_lidar_distance(self.last_lidar_scan)
                 if min_distance < self.min_distance_to_person:
                     self.get_logger().warning(
-                        f"БЕЗОПАСНОСТЬ: Человек слишком близко ({min_distance:.2f}m), "
+                        f"БЕЗОПАСНОСТЬ: Объект слишком близко ({min_distance:.2f}m), "
                         f"требуется минимум {self.min_distance_to_person:.2f}m!"
                     )
-                    # Переходим в режим аварийной остановки или отдаления
                     if self.state_machine.can_transition_to(RobotMode.EMERGENCY_STOP):
                         self.state_machine.transition_to(RobotMode.EMERGENCY_STOP)
 
-        # Переход в режим отслеживания при обнаружении лиц в режиме IDLE
+        # Переход в режим отслеживания при обнаружении объектов в режиме IDLE
         if (
             self.state_machine.get_mode() == RobotMode.IDLE
-            and person_detected
+            and objects_detected
             and self.state_machine.can_transition_to(RobotMode.TRACKING)
         ):
             self.state_machine.transition_to(RobotMode.TRACKING)
@@ -336,7 +335,7 @@ class ControllerNode(Node):
             state.mode = self.state_machine.get_mode().value
             state.lidar_active = self.subsystem_status["lidar"]
             state.camera_active = self.subsystem_status["camera"]
-            state.face_detection_active = self.subsystem_status["face_detection"]
+            state.detection_active = self.subsystem_status["detection"]
             state.navigation_active = self.subsystem_status["navigation"]
             state.pixhawk_connected = self.subsystem_status["pixhawk"]
             state.rc_active = self.subsystem_status["rc"]

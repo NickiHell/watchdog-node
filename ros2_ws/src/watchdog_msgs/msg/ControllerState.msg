@@ -10,7 +10,7 @@ string mode
 # Активны ли подсистемы
 bool lidar_active
 bool camera_active
-bool face_detection_active
+bool detection_active
 bool navigation_active
 bool pixhawk_connected
 bool rc_active

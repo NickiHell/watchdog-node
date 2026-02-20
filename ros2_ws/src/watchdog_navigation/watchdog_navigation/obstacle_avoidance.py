@@ -14,7 +14,6 @@ class ObstacleAvoidance:
         max_linear_velocity: float = 0.5,
         max_angular_velocity: float = 1.0,
         front_sector_angle: float = 1.57,  # 90 градусов по обе стороны
-        min_distance_to_person: float = 1.0,  # Минимальное расстояние до людей (м)
     ):
         """Инициализирует модуль избежания препятствий.
 
@@ -23,16 +22,13 @@ class ObstacleAvoidance:
             max_linear_velocity: Максимальная линейная скорость (м/с)
             max_angular_velocity: Максимальная угловая скорость (рад/с)
             front_sector_angle: Угол переднего сектора для проверки (радианы)
-            min_distance_to_person: Минимальное расстояние до людей для безопасности (метры)
         """
         self.safety_distance = safety_distance
-        self.min_distance_to_person = min_distance_to_person
         self.max_linear_velocity = max_linear_velocity
         self.max_angular_velocity = max_angular_velocity
         self.front_sector_angle = front_sector_angle
         self.logger = get_logger("ObstacleAvoidance")
         self.last_scan: LaserScan | None = None
-        self.person_detected = False  # Флаг обнаружения человека
 
     def update_scan(self, scan: LaserScan):
         """Обновляет данные скана лидара.
@@ -41,14 +37,6 @@ class ObstacleAvoidance:
             scan: Сообщение LaserScan от лидара
         """
         self.last_scan = scan
-
-    def set_person_detected(self, detected: bool):
-        """Устанавливает флаг обнаружения человека.
-
-        Args:
-            detected: True если человек обнаружен
-        """
-        self.person_detected = detected
 
     def compute_safe_velocity(self, desired_linear: float, desired_angular: float) -> tuple[float, float]:
         """Вычисляет безопасную скорость движения.
@@ -61,51 +49,28 @@ class ObstacleAvoidance:
             Кортеж (safe_linear, safe_angular) - безопасные скорости
         """
         if self.last_scan is None:
-            # Если человек обнаружен, но нет данных лидара - останавливаемся
-            if self.person_detected:
-                return 0.0, desired_angular
             return desired_linear, desired_angular
 
         # Проверяем препятствия в переднем секторе
         front_obstacle = self._check_front_obstacle()
 
-        # Если человек обнаружен, используем увеличенное безопасное расстояние
-        effective_safety_distance = self.min_distance_to_person if self.person_detected else self.safety_distance
-
         if front_obstacle:
             # Есть препятствие впереди - останавливаемся или поворачиваем
             distance, angle = front_obstacle
 
-            if distance < effective_safety_distance:
-                # Слишком близко - останавливаемся и поворачиваем
-                if self.person_detected:
-                    self.logger.warning(
-                        f"Человек слишком близко: {distance:.2f}m, "
-                        f"требуется минимум {self.min_distance_to_person:.2f}m!"
-                    )
+            if distance < self.safety_distance:
                 safe_linear = 0.0
                 safe_angular = self._compute_avoidance_angle(angle)
             else:
                 # Замедляемся пропорционально расстоянию
-                if distance < effective_safety_distance * 1.5:
-                    # В зоне замедления
-                    safe_linear = desired_linear * (
-                        (distance - effective_safety_distance) / (effective_safety_distance * 0.5)
-                    )
+                if distance < self.safety_distance * 1.5:
+                    safe_linear = desired_linear * ((distance - self.safety_distance) / (self.safety_distance * 0.5))
                     safe_linear = max(0.0, min(safe_linear, self.max_linear_velocity))
                 else:
-                    # Достаточно далеко
-                    safe_linear = desired_linear
-                    safe_linear = min(safe_linear, self.max_linear_velocity)
+                    safe_linear = min(desired_linear, self.max_linear_velocity)
                 safe_angular = desired_angular
         else:
-            # Нет препятствий - можем двигаться
-            # Но если человек обнаружен, ограничиваем скорость приближения
-            if self.person_detected and desired_linear > 0:
-                # Ограничиваем скорость приближения к человеку
-                safe_linear = min(desired_linear, self.max_linear_velocity * 0.5)
-            else:
-                safe_linear = np.clip(desired_linear, -self.max_linear_velocity, self.max_linear_velocity)
+            safe_linear = np.clip(desired_linear, -self.max_linear_velocity, self.max_linear_velocity)
             safe_angular = np.clip(desired_angular, -self.max_angular_velocity, self.max_angular_velocity)
 
         return safe_linear, safe_angular

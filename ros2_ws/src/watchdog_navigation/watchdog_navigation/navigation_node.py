@@ -29,19 +29,16 @@ class NavigationNode(Node):
         self.declare_parameter("inflation_radius", 1.0)
         self.declare_parameter("default_height", 30.0)
         self.declare_parameter("max_height", 200.0)  # Ограничение эшелона
-        self.declare_parameter("safety.min_distance_to_person", 1.0)
 
         # Инициализация модулей
         safety_distance = self.get_parameter("safety_distance").get_parameter_value().double_value
         max_linear = self.get_parameter("max_linear_velocity").get_parameter_value().double_value
         max_angular = self.get_parameter("max_angular_velocity").get_parameter_value().double_value
-        min_distance_to_person = self.get_parameter("safety.min_distance_to_person").get_parameter_value().double_value
 
         self.obstacle_avoidance = ObstacleAvoidance(
             safety_distance=safety_distance,
             max_linear_velocity=max_linear,
             max_angular_velocity=max_angular,
-            min_distance_to_person=min_distance_to_person,
         )
 
         self.local_navigator = LocalNavigator()
@@ -63,7 +60,6 @@ class NavigationNode(Node):
         self.navigation_mode = "idle"  # idle, exploring, navigating
         self.goal_tolerance = self.get_parameter("goal_tolerance").get_parameter_value().double_value
         self.current_local_position: PoseStamped | None = None
-        self.person_detected = False  # Флаг обнаружения человека
 
         # Издатели
         self.cmd_vel_pub = self.create_publisher(Twist, "/cmd_vel", 10)
@@ -71,23 +67,6 @@ class NavigationNode(Node):
 
         # Подписчики
         self.lidar_sub = self.create_subscription(LaserScan, "/sensor/lidar/scan", self.lidar_callback, 10)
-
-        # Подписка на обнаружение лиц для безопасности
-        try:
-            from watchdog_msgs.msg import FaceDetections
-
-            self.face_detections_sub = self.create_subscription(
-                FaceDetections, "/face_detection/detections", self.face_detections_callback, 10
-            )
-            self.CUSTOM_MSGS_AVAILABLE = True
-        except ImportError:
-            from std_msgs.msg import String
-
-            self.face_detections_sub = self.create_subscription(
-                String, "/face_detection/detections", self.face_detections_callback, 10
-            )
-            self.CUSTOM_MSGS_AVAILABLE = False
-
         self.goal_sub = self.create_subscription(PoseStamped, "/navigation/goal", self.goal_callback, 10)
 
         self.cancel_sub = self.create_subscription(String, "/navigation/cancel", self.cancel_callback, 10)
@@ -114,27 +93,6 @@ class NavigationNode(Node):
             msg: Сообщение LaserScan
         """
         self.obstacle_avoidance.update_scan(msg)
-        # Обновляем флаг обнаружения человека в модуле избежания препятствий
-        self.obstacle_avoidance.set_person_detected(self.person_detected)
-
-    def face_detections_callback(self, msg):
-        """Обработчик обнаружения лиц для безопасности.
-
-        Args:
-            msg: Сообщение FaceDetections или String
-        """
-        # Определяем, обнаружен ли человек
-        if self.CUSTOM_MSGS_AVAILABLE and hasattr(msg, "count"):
-            self.person_detected = msg.count > 0
-        else:
-            # Для String сообщения проверяем наличие данных
-            self.person_detected = bool(msg.data) if hasattr(msg, "data") else False
-
-        # Передаем информацию в модуль избежания препятствий
-        self.obstacle_avoidance.set_person_detected(self.person_detected)
-
-        if self.person_detected:
-            self.get_logger().debug("Человек обнаружен - активирована безопасная дистанция")
 
     def goal_callback(self, msg: PoseStamped):
         """Обработчик новой цели.

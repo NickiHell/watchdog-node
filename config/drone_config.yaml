@@ -62,18 +62,13 @@ lidar:
   mast_mask_sectors: []       # пример: [[1.45, 1.60], [4.60, 4.75]]
   mast_height_offset: 0.12   # мачта на 120 мм выше верхней плиты
 
-# Параметры камеры (SIYI A8 mini, захват через USB/HDMI)
+# Параметры камеры (SIYI A8 mini, захват по RTSP)
 camera:
-  device_id: 0
-  width: 3840
-  height: 2160
-  fps: 30
   frame_id: "camera_frame"
   topic: "/camera/image_raw"
   siyi:
-    enabled: true
-    ip: "192.168.144.25"      # SIYI A8 mini default UDP IP
-    port: 37260
+    ip: "192.168.144.25"      # SIYI A8 mini в сети
+    port: 37260               # UDP управление
     stream_port: 8554         # RTSP поток
 
 # Параметры подвеса (SIYI A8 mini, MAVLink Gimbal Protocol v2)

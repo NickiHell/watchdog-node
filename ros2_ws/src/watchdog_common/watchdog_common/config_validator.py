@@ -42,10 +42,17 @@ class ConfigValidator:
                 "required": True,
                 "type": dict,
                 "schema": {
-                    "device_id": {"type": int, "required": True, "min": 0},
-                    "width": {"type": int, "required": True, "min": 1},
-                    "height": {"type": int, "required": True, "min": 1},
-                    "fps": {"type": int, "required": True, "min": 1, "max": 120},
+                    "frame_id": {"type": str, "required": False},
+                    "topic": {"type": str, "required": False},
+                    "siyi": {
+                        "type": dict,
+                        "required": True,
+                        "schema": {
+                            "ip": {"type": str, "required": True},
+                            "port": {"type": int, "required": True, "min": 1, "max": 65535},
+                            "stream_port": {"type": int, "required": True, "min": 1, "max": 65535},
+                        },
+                    },
                 },
             },
             "pixhawk": {
