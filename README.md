@@ -1,4 +1,13 @@
 # Watchdog — Дрон-разведчик 13"
+[![CI](https://github.com/nickihell/watchdog-node/actions/workflows/ci.yml/badge.svg)](https://github.com/nickihell/watchdog-node/actions/workflows/ci.yml)
+[![Coverage](https://codecov.io/gh/nickihell/watchdog-node/branch/main/graph/badge.svg)](https://codecov.io/gh/nickihell/watchdog-node)
+[![Docker](https://github.com/nickihell/watchdog-node/actions/workflows/docker.yml/badge.svg)](https://github.com/nickihell/watchdog-node/actions/workflows/docker.yml)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+![Ruff](https://img.shields.io/badge/ruff-checked-blue.svg)
+![MyPy](https://img.shields.io/badge/mypy-checked-blue.svg)
+![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen.svg)
+
+
 
 Автономный квадрокоптер-разведчик/картограф. 13" True-X рама, Pixhawk 4, Raspberry Pi 5, ROS2 Humble.
 Управление через Mission Planner (автономные миссии) и TX16 ELRS (ручное RC).
@@ -335,14 +344,3 @@ uv run pre-commit install
 # Создать коммит (Conventional Commits)
 uv run cz commit
 ```
-
----
-
-## Статус
-
-- [ ] Физическая сборка рамы + первый запуск моторов
-- [ ] Настройка Pixhawk через Mission Planner (ESC калибровка, геозабор, RC каналы)
-- [ ] Первый полёт в Stabilize режиме (без ROS2), настройка PID
-- [ ] Первый полёт с ROS2 (Loiter → Auto миссия)
-- [ ] Калибровка маски LiDAR мачты (записать реальные углы секторов)
-- [ ] Проверка автослежения SIYI A8 mini
