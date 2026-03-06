@@ -49,3 +49,5 @@ Thumbs.db
 *.cmake
 CMakeCache.txt
 CMakeFiles/
+
+.history/

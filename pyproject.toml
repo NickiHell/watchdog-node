@@ -5,7 +5,7 @@ description = "Watchdog — 13\" reconnaissance/mapping drone on ROS2 Humble + P
 authors = [
     {name = "NickiHell", email = "nickihell@ya.ru"},
 ]
-requires-python = ">=3.11"
+requires-python = ">=3.13"
 readme = "README.md"
 license = {text = "MIT"}
 
@@ -57,7 +57,7 @@ packages = ["ros2_ws/src"]
 # ---------------------------------------------------------------------------
 [tool.ruff]
 line-length = 120
-target-version = "py311"
+target-version = "py313"
 extend-exclude = ["ros2_ws/src/watchdog_face_detection"]
 
 [tool.ruff.lint]
@@ -122,7 +122,7 @@ docstring-code-format = true
 # Mypy — статический анализ типов
 # ---------------------------------------------------------------------------
 [tool.mypy]
-python_version = "3.11"
+python_version = "3.13"
 warn_return_any = false          # отключено: слишком много false-positive с ROS2 Any
 warn_unused_configs = true
 warn_unused_ignores = false      # отключено: разные наборы пакетов в CI vs борту
