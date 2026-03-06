@@ -1,6 +1,6 @@
 [project]
 name = "watchdog"
-version = "0.1.0"
+version = "0.2.0"
 description = "Watchdog — 13\" reconnaissance/mapping drone on ROS2 Humble + Pixhawk 4"
 authors = [
     {name = "NickiHell", email = "nickihell@ya.ru"},
